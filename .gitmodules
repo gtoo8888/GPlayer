@@ -1,0 +1,3 @@
+[submodule "Client/GPlayer/3rdparty"]
+	path = Client/GPlayer/3rdparty
+	url = git@192.168.1.25:cppproject/3rdparty.git

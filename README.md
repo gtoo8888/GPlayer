@@ -11,6 +11,18 @@
 └─Server
        GPlayerServer
 ```
+# Usage
+
+```bash
+git clone git@github.com:gtoo8888/GPlayer.git
+git submodule init
+git submodule update 
+
+# vim .git/config
+# url = git@github.com:gtoo8888/GPlayer.git
+# url = git@gitee.com:gtoo888/GPlayer.git
+# url = git@192.168.1.25:cppproject/GPlayer.git
+```
 
 # Technology Stack
 ## Client：GPlayer

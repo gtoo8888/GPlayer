@@ -1,12 +1,11 @@
-#include "ThreadPool.h"
 #include <unistd.h>
+#include "ThreadPool.h"
 
-void taskFunc(void* arg){
+void taskFunc(void* arg) {
     int num = *(int*)arg;
-    printf("thread %ld is working, number = %d\n",pthread_self(),num);
+    printf("thread %ld is working, number = %d\n", pthread_self(), num);
     sleep(1);
 }
-
 
 // int main(void){
 //     ThreadPool pool(3,3);

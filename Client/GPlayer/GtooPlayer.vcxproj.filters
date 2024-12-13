@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{7cdced7f-6392-4cd9-a0eb-a94d54fffac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{b381120d-5f53-476a-9773-e336d07d6b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\VideoPlay">
+      <UniqueIdentifier>{4a0d0b25-0966-4ec2-9519-2b55d2a5fcf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{dd8661fa-167d-4db6-9661-eb7b7e6e29cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{cb4af611-d367-499e-b569-f22b50dbea69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\uic">
+      <UniqueIdentifier>{80b7c100-d6ca-4ef5-8251-2fa47359f03e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\moc">
+      <UniqueIdentifier>{1e9ed934-7e8f-4b19-ba4d-77402991ae4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SmalApp">
+      <UniqueIdentifier>{16045eca-dd91-4205-8f24-d69408789bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SmalApp\RemWord">
+      <UniqueIdentifier>{31018e36-9768-4a5e-bb20-ae31a50b6b63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SmalApp\XiaomiWatchDisplay">
+      <UniqueIdentifier>{83296c1b-3778-4bc0-8937-8b9b8289c602}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\GtooPlayer.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\About.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\PlayList.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\VideoCtrl.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\RemWordToolWdg.ui">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\RemWordWdg.ui">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.ui">
+      <Filter>SmalApp\XiaomiWatchDisplay</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\About.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayImage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="test\TestReadThread.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ReadThread.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoDecode.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayList.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GtooPlayer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GtooLogger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoCtrl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VoiceDecode.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\RemWordToolWdg.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\RemWordWdg.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.cpp">
+      <Filter>SmalApp\XiaomiWatchDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\cJSON.c">
+      <Filter>SmalApp\XiaomiWatchDisplay</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="include\About.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="include\GtooPlayer.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="include\PlayImage.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ReadThread.h">
+      <Filter>src\VideoPlay</Filter>
+    </QtMoc>
+    <QtMoc Include="include\PlayList.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="include\VideoCtrl.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\RemWordToolWdg.h">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\RemWordWdg.h">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.h">
+      <Filter>SmalApp\XiaomiWatchDisplay</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\README.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\NameNote.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\Log.md">
+      <Filter>doc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\VideoDecode.h">
+      <Filter>src\VideoPlay</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_About.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_PlayList.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_PlayListOld.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GtooLogger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VoiceDecode.h">
+      <Filter>src\VideoPlay</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="GtooPlayer.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GtooPlayer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

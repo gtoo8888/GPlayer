@@ -66,7 +66,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib\;$(ProjectDir)lib\SDL2;$(ProjectDir)lib\ffmpeg;$(ProjectDir)lib\gtest;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)3rdparty\lib\;$(ProjectDir)3rdparty\lib\SDL2;$(ProjectDir)3rdparty\lib\ffmpeg;$(ProjectDir)3rdparty\lib\gtest;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;gtest.lib;gtest_main.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

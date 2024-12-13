@@ -1,7 +1,7 @@
 
 # GPlayer
-[Client](Client/GPlayer/README.md)
-[Server](Server/GPlayerServer/README.md)
+[Client](Client/GPlayer/README.md)<br/>
+[Server](Server/GPlayerServer/README.md)<br/>
 
 # Directory Structure
 ```bash
@@ -13,7 +13,7 @@
 ```
 
 # Technology Stack
-## First Client：GPlayer
+## Client：GPlayer
 1. build
    1. VS2017
    2. msvc2017_64
@@ -23,7 +23,7 @@
    2. spdlog
    3. Google Test
 
-## Second Server：GPlayerServer
+## Server：GPlayerServer
 1. build
    1. CMake
    2. make or ninja

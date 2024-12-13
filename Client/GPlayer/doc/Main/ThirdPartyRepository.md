@@ -8,3 +8,29 @@
 SDL2.lib
 SDL2main.lib
 SDL2test.lib
+
+# Directory Structure
+│  
+├─ffmpeg
+│      avcodec.lib
+│      avdevice.lib
+│      avfilter.lib
+│      avformat.lib
+│      avutil.lib
+│      postproc.lib
+│      swresample.lib
+│      swscale.lib
+│      
+├─gtest
+│      gmock.lib
+│      gmock_main.lib
+│      gtest.lib
+│      gtest_main.lib
+│      
+├─SDL2
+│      SDL2.lib
+│      SDL2main.lib
+│      SDL2test.lib
+│      
+└─spdlog
+        spdlogd.lib

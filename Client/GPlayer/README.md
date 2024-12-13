@@ -34,6 +34,9 @@ python ./CountWord.py
    1. 添加gitlab
 2. 包含Clock
 3. 融合xiaomage的VSPlayer
+4. 缺少
+   1. 3rdparty
+   2. lib
 
 
 # 参考资料

@@ -1,7 +1,7 @@
 
 # GPlayer
-[Client](Client/GtooPlayer/README.md)
-[Server](Server/GtooPlayer/README.md)
+[Client](Client/GPlayer/README.md)
+[Server](Server/GPlayerServer/README.md)
 
 # Directory Structure
 ```bash

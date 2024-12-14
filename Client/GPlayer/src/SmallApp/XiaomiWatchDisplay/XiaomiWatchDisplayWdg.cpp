@@ -8,7 +8,6 @@
 #include <string>
 #include "GtooLogger.h"
 
-
 XiaomiWatchDisplayWdg::XiaomiWatchDisplayWdg(QWidget* parent)
     : QWidget(parent) {
     ui->setupUi(this);
@@ -36,10 +35,10 @@ void XiaomiWatchDisplayWdg::parseCSV() {
     while (fgets(line, sizeof(line), fd)) {
         std::string jsonSub(line);
 
-        if (jsonSub.length() > 3) { // 还需要去掉末尾的\0
+        if (jsonSub.length() > 3) {  // 还需要去掉末尾的\0
             jsonSub = jsonSub.substr(1, jsonSub.length() - 3);
         } else {
-            jsonSub.clear();  
+            jsonSub.clear();
         }
 
         size_t pos = jsonSub.find("\"\"");
@@ -47,12 +46,11 @@ void XiaomiWatchDisplayWdg::parseCSV() {
             jsonSub.replace(pos, 2, "\"");
             pos = jsonSub.find("\"\"", pos + 1);
         }
-        LOG_INFO("replace:\n {}", jsonSub.c_str());
+        LOG_DBG("replace:\n {}", jsonSub.c_str());
         vLine.push_back(jsonSub);
     }
 
     fclose(fd);
-
 
     ParseSleepData praseData;
     for (int i = 0; i < vLine.size(); i++) {
@@ -106,7 +104,7 @@ SleepDetail ParseSleepData::parseSleepJson(const char* json_str) {
     sleepDetail.total_sleep_awake_duration = cJSON_GetObjectItemCaseSensitive(root, "sleep_awake_duration")->valueint;
     sleepDetail.total_sleep_deep_duration = cJSON_GetObjectItemCaseSensitive(root, "sleep_deep_duration")->valueint;
     sleepDetail.total_sleep_light_duration = cJSON_GetObjectItemCaseSensitive(root, "sleep_light_duration")->valueint;
-    //total_sleep_rem_duration = cJSON_GetObjectItemCaseSensitive(root, "sleep_rem_duration")->valueint;
+    // total_sleep_rem_duration = cJSON_GetObjectItemCaseSensitive(root, "sleep_rem_duration")->valueint;
     sleepDetail.sleep_score = cJSON_GetObjectItemCaseSensitive(root, "sleep_score")->valueint;
     sleepDetail.sleep_stage = cJSON_GetObjectItemCaseSensitive(root, "sleep_stage")->valueint;
     sleepDetail.total_duration = cJSON_GetObjectItemCaseSensitive(root, "total_duration")->valueint;
@@ -116,29 +114,29 @@ SleepDetail ParseSleepData::parseSleepJson(const char* json_str) {
 }
 
 void ParseSleepData::printSleepJson(void) {
-    //std::cout << "Average Heart Rate: " << avg_hr << "\n";
-    //std::cout << "Average SpO2: " << avg_spo2 << "\n";
-    //std::cout << "Day Sleep Evaluation: " << day_sleep_evaluation << "\n";
+    // std::cout << "Average Heart Rate: " << avg_hr << "\n";
+    // std::cout << "Average SpO2: " << avg_spo2 << "\n";
+    // std::cout << "Day Sleep Evaluation: " << day_sleep_evaluation << "\n";
 
-    //for (const auto& detail : segment_details) {
-    //    std::cout << "Bedtime: " << detail.bedtime << "\n";
-    //    std::cout << "Sleep Deep Duration: " << detail.sleep_deep_duration << "\n";
-    //    std::cout << "Duration: " << detail.duration << "\n";
-    //    std::cout << "Sleep Light Duration: " << detail.sleep_light_duration << "\n";
-    //    std::cout << "Timezone: " << detail.timezone << "\n";
-    //    std::cout << "Awake Count: " << detail.awake_count << "\n";
-    //    std::cout << "Sleep Awake Duration: " << detail.sleep_awake_duration << "\n";
-    //    std::cout << "Wake Up Time: " << detail.wake_up_time << "\n";
-    //}
+    // for (const auto& detail : segment_details) {
+    //     std::cout << "Bedtime: " << detail.bedtime << "\n";
+    //     std::cout << "Sleep Deep Duration: " << detail.sleep_deep_duration << "\n";
+    //     std::cout << "Duration: " << detail.duration << "\n";
+    //     std::cout << "Sleep Light Duration: " << detail.sleep_light_duration << "\n";
+    //     std::cout << "Timezone: " << detail.timezone << "\n";
+    //     std::cout << "Awake Count: " << detail.awake_count << "\n";
+    //     std::cout << "Sleep Awake Duration: " << detail.sleep_awake_duration << "\n";
+    //     std::cout << "Wake Up Time: " << detail.wake_up_time << "\n";
+    // }
 
-    //std::cout << "Long Sleep Evaluation: " << long_sleep_evaluation << "\n";
-    //std::cout << "Max Heart Rate: " << max_hr << "\n";
-    //std::cout << "Min Heart Rate: " << min_hr << "\n";
-    //std::cout << "Total Sleep Awake Duration: " << total_sleep_awake_duration << "\n";
-    //std::cout << "Total Sleep Deep Duration: " << total_sleep_deep_duration << "\n";
-    //std::cout << "Total Sleep Light Duration: " << total_sleep_light_duration << "\n";
-    //std::cout << "Total Sleep REM Duration: " << total_sleep_rem_duration << "\n";
-    //std::cout << "Sleep Score: " << sleep_score << "\n";
-    //std::cout << "Sleep Stage: " << sleep_stage << "\n";
-    //std::cout << "Total Duration: " << total_duration << "\n";
+    // std::cout << "Long Sleep Evaluation: " << long_sleep_evaluation << "\n";
+    // std::cout << "Max Heart Rate: " << max_hr << "\n";
+    // std::cout << "Min Heart Rate: " << min_hr << "\n";
+    // std::cout << "Total Sleep Awake Duration: " << total_sleep_awake_duration << "\n";
+    // std::cout << "Total Sleep Deep Duration: " << total_sleep_deep_duration << "\n";
+    // std::cout << "Total Sleep Light Duration: " << total_sleep_light_duration << "\n";
+    // std::cout << "Total Sleep REM Duration: " << total_sleep_rem_duration << "\n";
+    // std::cout << "Sleep Score: " << sleep_score << "\n";
+    // std::cout << "Sleep Stage: " << sleep_stage << "\n";
+    // std::cout << "Total Duration: " << total_duration << "\n";
 }

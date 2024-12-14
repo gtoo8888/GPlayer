@@ -30,8 +30,8 @@ VideoFileInfo::VideoFileInfo()
       mCodecName() {
 }
 
-void VideoFileInfo::clear()  // TODO 没有清理完全
-{
+// TODO 没有清理完全
+void VideoFileInfo::clear() {
     mTotalTimeMs = 0;
     mNowTimeMs = 0;
     mTotalTimeStamp = 0;
@@ -115,9 +115,11 @@ bool VideoDecode::open(const QString& url) {
     av_dict_set(&dict, "rtsp_transport", "tcp",
                 0);  // 设置rtsp流使用tcp打开，如果打开失败错误信息为【Error number -135
                      // occurred】可以切换（UDP、tcp、udp_multicast、http），比如vlc推流就需要使用udp打开
-    av_dict_set(&dict, "max_delay", "3", 0);  // 设置最大复用或解复用延迟（以微秒为单位）。当通过【UDP】
-                                              // 接收数据时，解复用器尝试重新排序接收到的数据包（因为它们可能无序到达，或者数据包可能完全丢失）。这可以通过将最大解复用延迟设置为零（通过max_delayAVFormatContext
-                                              // 字段）来禁用。
+    av_dict_set(
+        &dict, "max_delay", "3",
+        0);  // 设置最大复用或解复用延迟（以微秒为单位）。当通过【UDP】
+             // 接收数据时，解复用器尝试重新排序接收到的数据包（因为它们可能无序到达，或者数据包可能完全丢失）。这可以通过将最大解复用延迟设置为零（通过max_delayAVFormatContext
+             // 字段）来禁用。
     av_dict_set(&dict, "timeout", "1000000",
                 0);  // 以微秒为单位设置套接字 TCP I/O 超时，如果等待时间过短，也可能会还没连接就返回了。
 
@@ -167,22 +169,22 @@ bool VideoDecode::open(const QString& url) {
         // 查找音频解码器
         const AVCodec* audioCodec = avcodec_find_decoder(m_formatContext->streams[m_audioIndex]->codecpar->codec_id);
         if (!audioCodec) {
-            LOG_ERROR("找不到音频解码器");
+            LOG_ERR("找不到音频解码器");
         }
 
         AVCodecContext* m_audioCodecContext = avcodec_alloc_context3(audioCodec);
         if (!m_audioCodecContext) {
-            LOG_ERROR("无法分配音频解码器上下文");
+            LOG_ERR("无法分配音频解码器上下文");
         }
 
         // 将参数复制到音频解码器上下文
         if (avcodec_parameters_to_context(m_audioCodecContext, m_formatContext->streams[m_audioIndex]->codecpar) < 0) {
-            LOG_ERROR("无法复制音频解码器参数");
+            LOG_ERR("无法复制音频解码器参数");
         }
 
         // 打开音频解码器
         if (avcodec_open2(m_audioCodecContext, audioCodec, NULL) < 0) {
-            LOG_ERROR("无法打开音频解码器");
+            LOG_ERR("无法打开音频解码器");
         }
     }
 
@@ -203,8 +205,8 @@ bool VideoDecode::open(const QString& url) {
     mVideoFileInfo->mTotalFrames = mTotalFrames;
     mVideoFileInfo->mCodecName = QString(codec->name);
 
-    LOG_DEBUG("resolution ：[w:{},h:{}] framse：{}  ", mSize.width(), mSize.height(), mFrameRate);
-    LOG_DEBUG("total framse： {}  codec： {}", mTotalFrames, codec->name);
+    LOG_DBG("resolution ：[w:{},h:{}] framse：{}  ", mSize.width(), mSize.height(), mFrameRate);
+    LOG_DBG("total framse： {}  codec： {}", mTotalFrames, codec->name);
     // #if PRINT_LOG
     //     qDebug() << QString("分辨率：[w:%1,h:%2] 帧率：%3  总帧数：%4  解码器：%5")
     //         .arg(mSize.width()).arg(mSize.height()).arg(mFrameRate).arg(mTotalFrames).arg(codec->name);
@@ -213,7 +215,7 @@ bool VideoDecode::open(const QString& url) {
     // 分配AVCodecContext并将其字段设置为默认值。
     m_codecContext = avcodec_alloc_context3(codec);
     if (!m_codecContext) {
-        LOG_ERROR("创建视频解码器上下文失败！");
+        LOG_ERR("创建视频解码器上下文失败！");
         free();
         return false;
     }
@@ -249,14 +251,14 @@ bool VideoDecode::open(const QString& url) {
     // 分配AVFrame并将其字段设置为默认值。
     m_frame = av_frame_alloc();
     if (!m_frame) {
-        LOG_WARN("av_frame_alloc() Error！");
+        LOG_WRN("av_frame_alloc() Error！");
         free();
         return false;
     }
 
     m_audioFrame = av_frame_alloc();
     if (!m_audioFrame) {
-        LOG_WARN("av_frame_alloc() Error！");
+        LOG_WRN("av_frame_alloc() Error！");
         free();
         return false;
     }
@@ -309,7 +311,7 @@ QImage VideoDecode::read() {
         // if (m_packet->stream_index == m_audioIndex) {
         //     if (avcodec_send_packet(m_audioCodecContext, m_packet) < 0)
         //     {
-        //         LOG_ERROR("无法发送音频包到解码器");
+        //         LOG_ERR("无法发送音频包到解码器");
         //     }
 
         //    int ret = avcodec_receive_frame(m_audioCodecContext, m_audioFrame);
@@ -363,10 +365,10 @@ QImage VideoDecode::read() {
     mVideoFileInfo->mNowTimeStamp = m_frame->best_effort_timestamp;
     mVideoFileInfo->transformTime();
 
-    LOG_DEBUG("Ms-{}:{} Stamp-{}:{} ", mVideoFileInfo->mNowTimeMs, mVideoFileInfo->mTotalTimeMs,
-              mVideoFileInfo->mNowTimeStamp, mVideoFileInfo->mTotalTimeStamp);
-    LOG_DEBUG("Str-{}/{} Progress:{} ", mVideoFileInfo->mNowTimeStr.toStdString(),
-              mVideoFileInfo->mTotalTimeStr.toStdString(), mVideoFileInfo->mProgressValue);
+    LOG_DBG("Ms-{}:{} Stamp-{}:{} ", mVideoFileInfo->mNowTimeMs, mVideoFileInfo->mTotalTimeMs,
+            mVideoFileInfo->mNowTimeStamp, mVideoFileInfo->mTotalTimeStamp);
+    LOG_DBG("Str-{}/{} Progress:{} ", mVideoFileInfo->mNowTimeStr.toStdString(),
+            mVideoFileInfo->mTotalTimeStr.toStdString(), mVideoFileInfo->mProgressValue);
     // qDebug() << QString("Ms-%1:%2 Stamp-%3:%4 Str-%5/%6 Progress:%7").
     //     arg(mVideoFileInfo->mNowTimeMs).arg(mVideoFileInfo->mTotalTimeMs).
     //     arg(mVideoFileInfo->mNowTimeStamp).arg(mVideoFileInfo->mTotalTimeStamp).

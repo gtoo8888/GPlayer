@@ -47,6 +47,12 @@
     <Filter Include="SmalApp\XiaomiWatchDisplay">
       <UniqueIdentifier>{83296c1b-3778-4bc0-8937-8b9b8289c602}</UniqueIdentifier>
     </Filter>
+    <Filter Include="doc\App">
+      <UniqueIdentifier>{c9e07e5b-ec97-4504-b95a-b6ec313e0dc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\Main">
+      <UniqueIdentifier>{2c1cf58e-7a0c-40b5-a475-06d6fab72b4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\GtooPlayer.ui">
@@ -148,17 +154,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <None Include="doc\README.md">
-      <Filter>doc</Filter>
-    </None>
-    <None Include="doc\NameNote.md">
-      <Filter>doc</Filter>
-    </None>
-    <None Include="doc\Log.md">
-      <Filter>doc</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src\VideoDecode.h">
       <Filter>src\VideoPlay</Filter>
     </ClInclude>
@@ -193,5 +188,34 @@
     <ResourceCompile Include="GtooPlayer.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\App\1_RemWordReadMe.md">
+      <Filter>doc\App</Filter>
+    </None>
+    <None Include="doc\App\2_Clock.md">
+      <Filter>doc\App</Filter>
+    </None>
+    <None Include="doc\App\3_XiaomiWatchDisplay.md">
+      <Filter>doc\App</Filter>
+    </None>
+    <None Include="doc\Main\GPlayer.md">
+      <Filter>doc\Main</Filter>
+    </None>
+    <None Include="doc\Main\GPlayerLog.md">
+      <Filter>doc\Main</Filter>
+    </None>
+    <None Include="doc\Main\GPlayerServer.md">
+      <Filter>doc\Main</Filter>
+    </None>
+    <None Include="doc\Main\NameNote.md">
+      <Filter>doc\Main</Filter>
+    </None>
+    <None Include="doc\Main\ThirdPartyRepository.md">
+      <Filter>doc\Main</Filter>
+    </None>
+    <None Include="doc\Main\Tool.md">
+      <Filter>doc\Main</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -21,45 +21,28 @@ ReadThread::~ReadThread() {
     }
 }
 
-/**
- * @brief      传入播放的视频地址并开启线程
- * @param url
- */
 void ReadThread::open(const QString &url) {
     if (!this->isRunning()) {
         m_url = url;
-        emit this->start();  // QThread的启动信号？
+        emit this->start();  
     }
 }
 
-/**
- * @brief       控制暂停、继续
- * @param flag  true：暂停  fasle：继续
- */
+
 void ReadThread::pause(bool flag) {
     m_pause = flag;
 }
 
-/**
- * @brief 关闭播放
- */
 void ReadThread::close() {
     m_play = false;
     m_pause = false;
 }
 
-/**
- * @brief    返回当前播放的地址
- * @return
- */
 const QString &ReadThread::url() {
     return m_url;
 }
 
-/**
- * @brief      非阻塞延时
- * @param msec 延时毫秒
- */
+// 非阻塞延时
 void sleepMsec(int msec) {
     if (msec <= 0) return;
     QEventLoop loop;                                // 定义一个新的事件循环

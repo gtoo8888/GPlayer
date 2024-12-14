@@ -6,6 +6,7 @@
 
 # 自己的文件
 3rdparty
+*.txt
 *.lib
 *.zip
 *.la

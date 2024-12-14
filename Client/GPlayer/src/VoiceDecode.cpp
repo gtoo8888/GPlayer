@@ -49,16 +49,18 @@ bool VoiceDecode::open(const QString &url) {
     av_dict_set(&dict, "rtsp_transport", "tcp",
                 0);  // 设置rtsp流使用tcp打开，如果打开失败错误信息为【Error number -135
                      // occurred】可以切换（UDP、tcp、udp_multicast、http），比如vlc推流就需要使用udp打开
-    av_dict_set(&dict, "max_delay", "3", 0);  // 设置最大复用或解复用延迟（以微秒为单位）。当通过【UDP】
-                                              // 接收数据时，解复用器尝试重新排序接收到的数据包（因为它们可能无序到达，或者数据包可能完全丢失）。这可以通过将最大解复用延迟设置为零（通过max_delayAVFormatContext
-                                              // 字段）来禁用。
+    av_dict_set(
+        &dict, "max_delay", "3",
+        0);  // 设置最大复用或解复用延迟（以微秒为单位）。当通过【UDP】
+             // 接收数据时，解复用器尝试重新排序接收到的数据包（因为它们可能无序到达，或者数据包可能完全丢失）。这可以通过将最大解复用延迟设置为零（通过max_delayAVFormatContext
+             // 字段）来禁用。
     av_dict_set(&dict, "timeout", "1000000",
                 0);  // 以微秒为单位设置套接字 TCP I/O 超时，如果等待时间过短，也可能会还没连接就返回了。
 
     // 打开输入流并返回解封装上下文
     int ret = avformat_open_input(&pFormatCtx, url.toStdString().data(), nullptr, &dict);
     if (ret < 0) {
-        LOG_ERROR("Failed to open video file! avformat_open_input {:d}\n", ret);
+        LOG_ERR("Failed to open video file! avformat_open_input {:d}\n", ret);
         return false;
     }
     if (dict)  // 释放参数字典
@@ -73,7 +75,7 @@ bool VoiceDecode::open(const QString &url) {
 
     mVoiceIndex = av_find_best_stream(pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
     if (mVoiceIndex < 0) {
-        LOG_ERROR("Din't find a video stream! av_find_best_stream {:d}\n", mVoiceIndex);
+        LOG_ERR("Din't find a video stream! av_find_best_stream {:d}\n", mVoiceIndex);
         return false;
     }
 
@@ -81,19 +83,19 @@ bool VoiceDecode::open(const QString &url) {
 
     const AVCodec *pCodec = avcodec_find_decoder(pCodecPara->codec_id);
     if (pCodec == nullptr) {
-        LOG_ERROR("Unsupported codec! avcodec_find_decoder {:d}\n", mVoiceIndex);
+        LOG_ERR("Unsupported codec! avcodec_find_decoder {:d}\n", mVoiceIndex);
         return false;
     }
 
     pCodecCtx = avcodec_alloc_context3(pCodec);
     ret = avcodec_parameters_to_context(pCodecCtx, pCodecPara);
     if (ret < 0) {
-        LOG_ERROR("Couldn't copy codec context! avcodec_parameters_to_context {:d}\n", ret);
+        LOG_ERR("Couldn't copy codec context! avcodec_parameters_to_context {:d}\n", ret);
         return false;
     }
     ret = avcodec_open2(pCodecCtx, pCodec, nullptr);
     if (ret < 0) {
-        LOG_ERROR("Failed to open decoder! avcodec_open2 {:d}\n", ret);
+        LOG_ERR("Failed to open decoder! avcodec_open2 {:d}\n", ret);
         return false;
     }
     packet = (AVPacket *)av_malloc(sizeof(AVPacket));
@@ -112,7 +114,7 @@ bool VoiceDecode::open(const QString &url) {
     out_buffer = (uint8_t *)av_malloc(MAX_AUDIO_FRAME_SIZE * 2);
 
     if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER)) {
-        LOG_ERROR("Could not initialize SDL {:s}\n", SDL_GetError());
+        LOG_ERR("Could not initialize SDL {:s}\n", SDL_GetError());
         return false;
     }
 
@@ -159,7 +161,7 @@ bool VoiceDecode::open(const QString &url) {
             audio_chunk = (Uint8 *)out_buffer;
             audio_len = out_buffer_size;
             audio_pos = audio_chunk;
-            LOG_DEBUG("audio_len:{:d}", audio_len);
+            LOG_DBG("audio_len:{:d}", audio_len);
             while (audio_len > 0) {
                 SDL_Delay(1);  // 延迟播放
             }

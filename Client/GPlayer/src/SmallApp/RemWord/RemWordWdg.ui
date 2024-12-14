@@ -68,14 +68,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnWordExample">
+       <widget class="QPushButton" name="btnTool">
         <property name="text">
          <string>工具</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnTool">
+       <widget class="QPushButton" name="btnWordExample">
         <property name="text">
          <string>样例</string>
         </property>
@@ -98,7 +98,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true"/>
+    <widget class="QWidget" name="funWdg" native="true"/>
    </item>
   </layout>
  </widget>

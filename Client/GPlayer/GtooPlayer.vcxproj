@@ -21,7 +21,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -136,11 +136,6 @@
     <ResourceCompile Include="GtooPlayer.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="doc\Log.md" />
-    <None Include="doc\README.md" />
-    <None Include="doc\NameNote.md" />
-  </ItemGroup>
-  <ItemGroup>
     <QtMoc Include="src\ReadThread.h" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +152,17 @@
     <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h" />
     <QtMoc Include="include\PlayList.h" />
     <ClInclude Include="src\VideoDecode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\App\1_RemWordReadMe.md" />
+    <None Include="doc\App\2_Clock.md" />
+    <None Include="doc\App\3_XiaomiWatchDisplay.md" />
+    <None Include="doc\Main\GPlayer.md" />
+    <None Include="doc\Main\GPlayerLog.md" />
+    <None Include="doc\Main\GPlayerServer.md" />
+    <None Include="doc\Main\NameNote.md" />
+    <None Include="doc\Main\ThirdPartyRepository.md" />
+    <None Include="doc\Main\Tool.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

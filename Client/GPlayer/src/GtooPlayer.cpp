@@ -80,7 +80,7 @@ int testSDL() {
         audio_chunk = (Uint8 *)pcm_buffer;
         audio_len = pcm_buffer_size;  // 长度为读出数据长度，在read_audio_data中做减法
         audio_pos = audio_chunk;
-        LOG_DEBUG("audio_len:{:d}", audio_len);
+        LOG_DBG("audio_len:{:d}", audio_len);
 
         while (audio_len > 0)  // 判断是否播放完毕
             SDL_Delay(1);
@@ -108,18 +108,18 @@ GtooPlayer::GtooPlayer(QWidget *parent)
 }
 
 void testLog(void) {
-    LOG_INFO("中文");
-    LOG_TRACE("trace");
-    LOG_DEBUG("debug");
-    LOG_INFO("info");
-    LOG_WARN("warn");
-    LOG_ERROR("error");
-    LOG_CRITICAL("critical");
+    LOG_DBG("中文");
+    LOG_TRC("trace");
+    LOG_DBG("debug");
+    LOG_DBG("info");
+    LOG_WRN("warn");
+    LOG_ERR("error");
+    LOG_CRT("critical");
 
-    LOG_INFO("PID:[{:08d}] {:08d} ", 123, 123);
-    LOG_INFO("str:{}", "test");
+    LOG_DBG("PID:[{:08d}] {:08d} ", 123, 123);
+    LOG_DBG("str:{}", "test");
     QString qstr("qstr");
-    LOG_INFO("qstr:{}", qstr.toStdString());  // 不能直接输出QString
+    LOG_DBG("qstr:{}", qstr.toStdString());  // 不能直接输出QString
 }
 
 void GtooPlayer::initUtils(void) {
@@ -196,7 +196,7 @@ void GtooPlayer::openExample2PlayList(void) {
 }
 
 void GtooPlayer::openFile(void) {
-    LOG_DEBUG("openFile");
+    LOG_DBG("openFile");
     QString filePath = QFileDialog::getOpenFileName(
         this, "选择播放视频~！", "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
         "视频 (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
@@ -210,7 +210,7 @@ void GtooPlayer::showVideoCtrl(void) {
 }
 
 void GtooPlayer::startVideo(void) {
-    LOG_DEBUG("startVideo");
+    LOG_DBG("startVideo");
     if (ui->pushButtonStart->text() == "开始") {
         mReadThread->open(nowPlayFilePath);
     } else {
@@ -219,7 +219,7 @@ void GtooPlayer::startVideo(void) {
 }
 
 void GtooPlayer::startVideoPlayList(QString playFilePath) {
-    LOG_DEBUG("startVideoPlayList");
+    LOG_DBG("startVideoPlayList");
     nowPlayFilePath = playFilePath;
     if (ui->pushButtonStart->text() == "开始") {
         mReadThread->open(nowPlayFilePath);
@@ -228,14 +228,13 @@ void GtooPlayer::startVideoPlayList(QString playFilePath) {
     }
 }
 
-void GtooPlayer::slotActionRemWord(void)
-{
-    RemWordWdg* remWordWdg = new RemWordWdg();
+void GtooPlayer::slotActionRemWord(void) {
+    RemWordWdg *remWordWdg = new RemWordWdg();
     remWordWdg->show();
 }
 
 void GtooPlayer::pauseVideo(void) {
-    LOG_DEBUG("pauseVideo");
+    LOG_DBG("pauseVideo");
 }
 
 void GtooPlayer::onPlayState(ReadThread::PlayState state) {

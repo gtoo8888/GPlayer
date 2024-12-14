@@ -50,7 +50,7 @@ Viewer* mpViewer;
 // 3. mb开头的变量表示布尔（bool）型类成员变量
 bool mbOnlyTracking;
 
-// 4. mv开头的变量表示向量（vector）型类成员变量；
+// 4. mv开头的变量表示向量（vector）型类成员变量
 std::vector<int> mvIniLastMatches;
 std::vector<cv::Point3f> mvIniP3D;
 
@@ -59,13 +59,18 @@ std::thread* mptLocalMapping;
 std::thread* mptLoopClosing;
 std::thread* mptViewer;
 
-// 6. ml开头的变量表示列表（list）型类成员变量；
+// 6. ml开头的变量表示列表（list）型类成员变量
 // mlp开头的变量表示列表（list）型类成员变量，并且它的元素类型是指针（pointer）；
 // mlb开头的变量表示列表（list）型类成员变量，并且它的元素类型是布尔型（bool）；
 list<double> mlFrameTimes;
 list<bool> mlbLost;
 list<cv::Mat> mlRelativeFramePoses;
 list<KeyFrame*> mlpReferences;
+
+
+// 7. ms开头的变量表示列表（string）型类成员变量
+std::string msTest;
+
 ```
 
 # Qt相关
@@ -80,6 +85,12 @@ void sigSendMessage(void){}
 // 小驼峰
 public slots:
 void slotForwardPlay (void){}
+
+
+// Qt控件命名方法
+QPushButton btnTest;
+QLineEdit leTest;
+
 
 ```
 

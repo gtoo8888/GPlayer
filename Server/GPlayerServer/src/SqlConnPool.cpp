@@ -1,4 +1,4 @@
-#include "sql_connection_pool.h"
+#include "SqlConnPool.h"
 
 PIGG_connection_pool::PIGG_connection_pool() {
     PIGG_CurConn = 0;

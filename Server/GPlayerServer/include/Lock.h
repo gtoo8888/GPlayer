@@ -4,8 +4,8 @@
 // > * 信号量
 // > * 互斥锁
 // > * 条件变量
-#ifndef _PIGG_LOCK_H_
-#define _PIGG_LOCK_H_
+#ifndef LOCK_H_
+#define LOCK_H_
 
 #include <pthread.h>
 #include <semaphore.h>  // 信号量头文件

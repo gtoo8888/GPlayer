@@ -1,6 +1,6 @@
 build/
-CMakeFiles/
-PIGG_output/
+Out/
+*.log
 .vscode/*.log
 .vscode/settings.json
 *_ServerLog
@@ -9,7 +9,6 @@ temp.json
 *.mp4
 bin/release/*
 PIGG_test/threadpool/*.out
-core
 
 
 

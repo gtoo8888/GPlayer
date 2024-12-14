@@ -1,8 +1,8 @@
-#include "PIGG_log.h"
 #include <pthread.h>
 #include <stdarg.h>    // 可变参的头文件，va_list
 #include <sys/time.h>  // gettimeofday()用于多线程中获取时间
 #include <cstring>
+#include "Logger.h"
 
 PIGG_log::PIGG_log() {
     PIGG_count = 0;

@@ -1,5 +1,5 @@
-#ifndef _PIGG_LST_TIMER_
-#define _PIGG_LST_TIMER_
+#ifndef LST_TIMER_H
+#define LST_TIMER_H
 
 
 // 定时器处理非活动连接

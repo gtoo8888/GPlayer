@@ -14,10 +14,10 @@ fix:使用阻塞队列插入，但是自己还没有实现阻塞队列的内容�
 2. 遗留的问题：单例模式在vscode中如何调试，因为进去就是一个instant()函数了
 
 ## 2022-7-30
-1. 实现了阻塞队列PIGG_block_queue.h和线程锁PIGG_lock.h，但是都还没有开始使用，现在都是没有线程不安全的
+1. 实现了阻塞队列BlockQueue.h和线程锁Lock.h，但是都还没有开始使用，现在都是没有线程不安全的
 
 ## 2022-7-31
-1. 增加了mysql连接池的构造函数sql_connection_pool.h
+1. 增加了mysql连接池的构造函数SqlConnPool.h
 
 ## 2022-9-16
 1. 修改CMake文件http和sql_connection加入编译，修改语法问题
@@ -90,12 +90,12 @@ PIGG_log.cpp/.h
 5. *[支线]*零基础做的项目，对有些函数的实现不清楚，所以加了一个PIGG_test.cpp来测试一些小模块的使用
 PIGG_test.cpp/.h
 6. 补充基础模块，日志的阻塞队列+线程锁
-PIGG_block_queue.h+PIGG_lock.h
+BlockQueue.h+Lock.h
 7. http协议的处理
 PIGG_http.cpp/.h
 8. 补充了PIGG_webserver.cpp中epoll连接的部分
 9. 线程池
-PIGG_threadpool.h
+ThreadPool.h
 10. mysql连接池
 sql_connection_pool.cpp/.h
 11. 使用json作为配置文件

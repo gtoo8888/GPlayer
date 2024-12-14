@@ -1,5 +1,5 @@
-#ifndef PIGG_CONFIG_H
-#define PIGG_CONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <iostream>
 

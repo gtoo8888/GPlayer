@@ -1,4 +1,4 @@
-#include "PIGG_config.h"
+#include "Config.h"
 #include <json/json.h>
 #include <fstream>
 

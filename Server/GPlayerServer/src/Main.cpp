@@ -5,11 +5,11 @@
 #include <memory>  //shared_ptr
 #include <sstream>
 #include <string>
-#include "PIGG_config/PIGG_config.h"
-#include "PIGG_lock/PIGG_lock.h"
-#include "PIGG_log/PIGG_log.h"
+#include "Config.h"
+#include "Lock.h"
+#include "Logger.h"
 #include "PIGG_test/PIGG_test.h"
-#include "PIGG_webserver.h"
+#include "Webserver.h"
 
 // #include <QDebug>
 // #include <QObject>
@@ -113,7 +113,7 @@ void test_all() {
     // my_test.test_callback4();
     // my_test.test_callback5();
 
-    my_test.test_redis_command();
+    // my_test.test_redis_command();
     exit(0);  // 仅仅为了跑测试程序
 }
 

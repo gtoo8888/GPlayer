@@ -2,9 +2,9 @@
 #define _PIGG_TEST_H_
 
 #include <iostream>
-#include "hiredis/hiredis.h"
+// #include "hiredis/hiredis.h"
 
-#include "../PIGG_log/PIGG_log.h"
+#include "Logger.h"
 // 如果想要写的函数被主函数中使用，需要在.h的命名空间中定义，在.cpp中定义不会被获取到
 namespace PIGG_init_test {  // 测试的命名空间
 
@@ -43,8 +43,8 @@ public:
     void test_json2_write();
     void test_json3();
 
-    redisContext* test_redis_connect();
-    void test_redis_command();
+    // redisContext* test_redis_connect();
+    // void test_redis_command();
 };
 
 // PIGG_test::PIGG_test(){

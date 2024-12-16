@@ -8,8 +8,9 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");  // 或者"GBK",不分大小写
-    QTextCodec::setCodecForLocale(codec);
+    // 如果解开注释textBrower会输出乱码
+    //QTextCodec *codec = QTextCodec::codecForName("UTF-8");  // 或者"GBK",不分大小写
+    //QTextCodec::setCodecForLocale(codec);
 
     // GtooPlayer w;
     // w.show();

@@ -30,6 +30,10 @@ RemWordToolWdg::~RemWordToolWdg() {
 }
 
 void RemWordToolWdg::slotBtnOpenFileTransform(void) {
+    cleanWdg();
+    vsMergeWord.clear();
+    vsEnglishWord.clear();
+    vsChineseWord.clear();
     QString transformFilePath = QFileDialog::getOpenFileName(
         this, "Selecting Source File", "E:/Desktop/languguetest/CplusplusProject/GPlayer/Client/GPlayer",
         "WordList(*.txt.word);; Other(*)");
@@ -40,9 +44,18 @@ void RemWordToolWdg::slotBtnOpenFileTransform(void) {
     ui->leTransform->setText(transformFilePath);
     msTransformFilePath = transformFilePath.toStdString();
     LOG_INF("Read transform file path: {}", msTransformFilePath);
+
+    // TODO 是否考虑输入输出参数
+    if (!readFileDatafstream(msTransformFilePath)) {
+        QMessageBox::warning(this, "警告", "警告！中英文单词数量不相等");
+        return;
+    }
+    showEnglishWordTxt();
 }
 
 void RemWordToolWdg::slotBtnTransform(void) {
+    cleanWdg();
+    vsMergeWord.clear();
     QString transformOutputFilePath = QFileDialog::getSaveFileName(
         this, "Selecting Source Output File", "E:/Desktop/languguetest/CplusplusProject/GPlayer/Client/GPlayer",
         "WordList(*.txt.word);; Other(*)");
@@ -56,18 +69,21 @@ void RemWordToolWdg::slotBtnTransform(void) {
     // fileName = outputFileInfo.fileName(); // 文件名
     // fileSuffix = outputFileInfo.suffix(); // 文件后缀
     // absolutePath = outputFileInfo.absolutePath(); // 绝对路径
-    msTransformOutputFilePath = transformOutputFilePath.toStdString();
+    // msTransformOutputFilePath = transformOutputFilePath.toStdString();
 
     // TOTEST
-    msTransformFilePath = R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\input.txt.word)";
-    msTransformOutputFilePath = R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\ouput.txt.word)";
+    // msTransformFilePath = R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\input.txt.word)";
+    // msTransformOutputFilePath = R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\ouput.txt.word)";
+    msTransformOutputFilePath = transformOutputFilePath.toStdString();
     LOG_INF("Transform outpur file path: {}", msTransformOutputFilePath);
-
-    // TODO 是否考虑输入输出参数
-    if (!readFileDatafstream(msTransformFilePath)) {
-        QMessageBox::warning(this, "警告", "警告！中英文单词数量不相等");
+    if (msTransformOutputFilePath == msTransformFilePath) {
+        LOG_WRN("Output file path is the same as the input file path: {}", msTransformOutputFilePath);
+        //std::string warnSamePath("警告！输出文件路径和输入文件路径相同！");
+        //ui->textBrowser->append(QString(QString::fromLocal8Bit(warnSamePath.c_str())));
+        QMessageBox::warning(this, "警告", "警告！输出文件路径和输入文件路径相同");
         return;
     }
+
 
     ui->progressBar->setValue(mProgressBarMax * 0.3);
     if (!mergeChineseAndEnglishWord()) {
@@ -78,6 +94,7 @@ void RemWordToolWdg::slotBtnTransform(void) {
         return;
     }
     ui->progressBar->setValue(mProgressBarMax * 1);
+    showMergeWord();
 }
 
 void RemWordToolWdg::slotBtnOpenFileImport(void) {
@@ -117,6 +134,9 @@ bool RemWordToolWdg::readFileDatafstream(std::string filePath) {
             LOG_INF("Is Blank line");
             continue;
         }
+
+        std::string::iterator end_pos = std::remove(inputLine.begin(), inputLine.end(), ' ');
+        inputLine.erase(end_pos, inputLine.end());
         // LOG_DBG("{} isLetterC:{}", inputLine, isLetterC(inputLine[0]));
         if (isLetterC(inputLine[0])) {
             vsEnglishWord.push_back(inputLine);
@@ -186,10 +206,14 @@ bool RemWordToolWdg::mergeChineseAndEnglishWord(void) {
     vsMergeWord.resize(wordLen);
     for (int i = 0; i < wordLen; i++) {
         int fillBlankNum = mEnglishTotalLen - vsEnglishWord[i].size();
+        if (fillBlankNum < 0) {
+            LOG_WRN("The word {} length is over {}", vsEnglishWord[i], mEnglishTotalLen);
+            continue;
+        }
         // TODO 字符串拼接是否可以效率优化？
         // TODO 效率提升多少？
         std::string wordMerge = vsEnglishWord[i] + std::string(fillBlankNum, ' ') + "| " + vsChineseWord[i];
-        //LOG_DBG("idx:{} {}", i, wordMerge);
+        // LOG_DBG("idx:{} {}", i, wordMerge);
         vsMergeWord[i] = wordMerge;
     }
     LOG_INF("Merge chinese and english word finsh");
@@ -212,5 +236,34 @@ bool RemWordToolWdg::writeMergeWord(std::string filePath) {
 
     outputFile.close();
     LOG_INF("Write Merge Word finsh");
+    return true;
+}
+
+bool RemWordToolWdg::showEnglishWordTxt(void) {
+    int wordLen = vsChineseWord.size();
+    for (int i = 0; i < wordLen;i++) {
+        const QString qstringEnglishWord = QString(QString::fromLocal8Bit(vsEnglishWord[i].c_str()));
+        ui->textBrowser->append(qstringEnglishWord);
+        const QString qstringChineseWord = QString(QString::fromLocal8Bit(vsChineseWord[i].c_str()));
+        ui->textBrowser->append(qstringChineseWord);
+    }
+    return true;
+}
+
+bool RemWordToolWdg::showMergeWord(void) {
+    int wordLen = vsMergeWord.size();
+    for (std::string& str : vsMergeWord) {
+        // 只有这种方式string转QString中文不会乱码
+        const QString qstringMergeWord = QString(QString::fromLocal8Bit(str.c_str()));
+        ui->textBrowser->append(qstringMergeWord);
+    }
+    return true;
+}
+
+bool RemWordToolWdg::cleanWdg(void) {
+    QString browserText = ui->textBrowser->toPlainText();
+    if (browserText != QString("")) {
+        ui->textBrowser->clear();
+    }
     return true;
 }

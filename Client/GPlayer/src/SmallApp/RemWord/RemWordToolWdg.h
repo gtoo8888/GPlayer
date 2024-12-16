@@ -31,6 +31,9 @@ private:
     bool isLetterCplusplus(char letter);
     bool mergeChineseAndEnglishWord(void);
     bool writeMergeWord(std::string filePath);
+    bool showEnglishWordTxt(void);
+    bool showMergeWord(void);
+    bool cleanWdg(void);
 
     // TODO 变量统一做初始化
     Ui::RemWordToolWdg* ui;

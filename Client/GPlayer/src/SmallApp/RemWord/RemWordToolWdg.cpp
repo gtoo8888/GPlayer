@@ -10,6 +10,8 @@ RemWordToolWdg::RemWordToolWdg(QWidget* parent)
       mEnglishTotalLen(40),
       mProgressBarMin(0),
       mProgressBarMax(100),
+      msOpenPath(
+          R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\src\SmallApp\RemWord\DailyWords\20241217)"),
       msTransformFilePath(std::string("")),
       msTransformOutputFilePath(std::string("output.txt.word")),
       msImportFilPath(std::string("")),
@@ -35,8 +37,7 @@ void RemWordToolWdg::slotBtnOpenFileTransform(void) {
     vsEnglishWord.clear();
     vsChineseWord.clear();
     QString transformFilePath = QFileDialog::getOpenFileName(
-        this, "Selecting Source File", "E:/Desktop/languguetest/CplusplusProject/GPlayer/Client/GPlayer",
-        "WordList(*.txt.word);; Other(*)");
+        this, "Selecting Source File", QString::fromStdString(msOpenPath), "WordList(*.txt.word);; Other(*)");
     if (transformFilePath.isEmpty()) {
         LOG_WRN("No transform file path");
         return;
@@ -57,8 +58,7 @@ void RemWordToolWdg::slotBtnTransform(void) {
     cleanWdg();
     vsMergeWord.clear();
     QString transformOutputFilePath = QFileDialog::getSaveFileName(
-        this, "Selecting Source Output File", "E:/Desktop/languguetest/CplusplusProject/GPlayer/Client/GPlayer",
-        "WordList(*.txt.word);; Other(*)");
+        this, "Selecting Source Output File", QString::fromStdString(msOpenPath), "WordList(*.txt.word);; Other(*)");
     if (transformOutputFilePath.isEmpty()) {
         LOG_WRN("No transform file path");
         return;
@@ -78,12 +78,11 @@ void RemWordToolWdg::slotBtnTransform(void) {
     LOG_INF("Transform outpur file path: {}", msTransformOutputFilePath);
     if (msTransformOutputFilePath == msTransformFilePath) {
         LOG_WRN("Output file path is the same as the input file path: {}", msTransformOutputFilePath);
-        //std::string warnSamePath("警告！输出文件路径和输入文件路径相同！");
-        //ui->textBrowser->append(QString(QString::fromLocal8Bit(warnSamePath.c_str())));
+        // std::string warnSamePath("警告！输出文件路径和输入文件路径相同！");
+        // ui->textBrowser->append(QString(QString::fromLocal8Bit(warnSamePath.c_str())));
         QMessageBox::warning(this, "警告", "警告！输出文件路径和输入文件路径相同");
         return;
     }
-
 
     ui->progressBar->setValue(mProgressBarMax * 0.3);
     if (!mergeChineseAndEnglishWord()) {
@@ -98,19 +97,61 @@ void RemWordToolWdg::slotBtnTransform(void) {
 }
 
 void RemWordToolWdg::slotBtnOpenFileImport(void) {
+    cleanWdg();
     QString importFilePath = QFileDialog::getOpenFileName(
-        this, "Selecting Import file", "E:/Desktop/languguetest/CplusplusProject/GPlayer/Client/GPlayer",
-        "WordList(*.txt.word);; Other(*)");
+        this, "Selecting Import file", QString::fromStdString(msOpenPath), "WordList(*.txt.word);; Other(*)");
     if (importFilePath.isEmpty()) {
         LOG_WRN("No import file path");
         return;
     }
     ui->leImportPath->setText(importFilePath);
     msImportFilPath = importFilePath.toStdString();
-    LOG_WRN("Read import file path: {}", msImportFilPath);
+    LOG_INF("Read import file path: {}", msImportFilPath);
+
+    if (!readImportFileDatafgets(msImportFilPath)) {
+        return;
+    }
+    showPreImportTxt();
 }
 
 void RemWordToolWdg::slotBtnImport(void) {
+    cleanWdg();
+    // TODO 考虑这个结构的内存释放
+    rootWordTree = std::make_shared<WordTreeNode>("root", false);
+    // QString importOutputFilePath = QFileDialog::getOpenFileName(
+    //     this, "Selecting Import file", QString::fromStdString(msOpenPath), "Markdown (*.md);; Other(*)");
+    // if (importOutputFilePath.isEmpty()) {
+    //     LOG_WRN("No import file path");
+    //     return;
+    // }
+
+    //---TOTEST
+    msImportFilPath =
+        R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\src\SmallApp\RemWord\DailyWords\20241217\ouput.txt.word)";
+    LOG_INF("Read import file path: {}", msImportFilPath);
+    if (!readImportFileDatafgets(msImportFilPath)) {
+        return;
+    }
+    showPreImportTxt();
+    msImportOutputFilePath =
+        R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\src\SmallApp\RemWord\DailyWords\20241217\1217.md)";
+    //---TOTEST
+
+    // msImportOutputFilePath = importOutputFilePath.toStdString();
+    LOG_INF("Import file output path: {}", msImportOutputFilePath);
+
+    if (!parseInfoFromPreImport()) {
+        return;
+    }
+    if (!initOutputFilename(msImportOutputFilePath)) {
+        return;
+    }
+    if (!processWordTree2Vector()) {
+        return;
+    }
+    if (!writeWordMd()) {
+        return;
+    }
 }
 
 bool RemWordToolWdg::readFileDatafstream(std::string filePath) {
@@ -226,6 +267,8 @@ bool RemWordToolWdg::writeMergeWord(std::string filePath) {
         return false;
     }
 
+    outputFile << "# Title\n";
+    outputFile << "## Sub Title\n";
     for (const std::string& word : vsMergeWord) {
         outputFile << word << "\n";
     }
@@ -241,20 +284,20 @@ bool RemWordToolWdg::writeMergeWord(std::string filePath) {
 
 bool RemWordToolWdg::showEnglishWordTxt(void) {
     int wordLen = vsChineseWord.size();
-    for (int i = 0; i < wordLen;i++) {
-        const QString qstringEnglishWord = QString(QString::fromLocal8Bit(vsEnglishWord[i].c_str()));
-        ui->textBrowser->append(qstringEnglishWord);
-        const QString qstringChineseWord = QString(QString::fromLocal8Bit(vsChineseWord[i].c_str()));
-        ui->textBrowser->append(qstringChineseWord);
+    for (int i = 0; i < wordLen; i++) {
+        ui->textBrowser->append(QString::fromLocal8Bit(vsEnglishWord[i].c_str()));
+        ui->textBrowser->append(QString::fromLocal8Bit(vsChineseWord[i].c_str()));
     }
     return true;
 }
 
 bool RemWordToolWdg::showMergeWord(void) {
+    ui->textBrowser->append(QString("# Title"));
+    ui->textBrowser->append(QString("## Sub Title"));
     int wordLen = vsMergeWord.size();
     for (std::string& str : vsMergeWord) {
         // 只有这种方式string转QString中文不会乱码
-        const QString qstringMergeWord = QString(QString::fromLocal8Bit(str.c_str()));
+        const QString qstringMergeWord = QString::fromLocal8Bit(str.c_str());
         ui->textBrowser->append(qstringMergeWord);
     }
     return true;
@@ -266,4 +309,271 @@ bool RemWordToolWdg::cleanWdg(void) {
         ui->textBrowser->clear();
     }
     return true;
+}
+
+bool RemWordToolWdg::readImportFileDatafgets(std::string filePath) {
+    std::ifstream inputFile;
+    inputFile.open(filePath, std::fstream::in);
+    if (!inputFile.is_open()) {
+        LOG_ERR("Can't open file: {}", filePath);
+        if (inputFile.rdstate() & std::ifstream::failbit) {
+            LOG_ERR("Formatting input/output failed or file not found");
+        }
+        if (inputFile.rdstate() & std::ifstream::badbit) {
+            LOG_ERR("Read/write error, possibly a hardware problem or file corruption");
+        }
+        LOG_ERR("({})", strerror(errno));
+        return false;
+    }
+
+    std::string inputLine;
+    while (std::getline(inputFile, inputLine)) {
+        if (inputLine.size() == 0) {
+            LOG_INF("Is Blank line");
+            continue;
+        }
+
+        // 空格要小心处理，中间的都不要去掉，是格式化的空格
+        // std::string::iterator end_pos = std::remove(inputLine.begin(), inputLine.end(), ' ');
+        // inputLine.erase(end_pos, inputLine.end());
+        // LOG_DBG("{}", inputLine);
+        vsPreImportWord.push_back(inputLine);
+    }
+    inputFile.close();
+    LOG_INF("Read Import File Data finish");
+
+    return true;
+}
+
+bool RemWordToolWdg::showPreImportTxt(void) {
+    int wordLen = vsPreImportWord.size();
+    for (int i = 0; i < wordLen; i++) {
+        ui->textBrowser->append(QString::fromLocal8Bit(vsPreImportWord[i].c_str()));
+    }
+    return true;
+}
+
+bool RemWordToolWdg::initOutputFilename(std::string filePath) {
+    std::string fnWithoutExt = getFilenameWithoutExe(filePath);
+    std::string fileSuffix = getFileSuffix(filePath);
+    std::string absolutePath = getAbsolutePath(filePath);
+
+    oFnChinese = absolutePath + "\\" + fnWithoutExt + "_cn" + fileSuffix;
+    oFnEnglish = absolutePath + "\\" + fnWithoutExt + "_en" + fileSuffix;
+    oFnCnAdnEn = absolutePath + "\\" + fnWithoutExt + "_en_cn" + fileSuffix;
+
+    FILE* fdCn = fopen(oFnChinese.c_str(), "w+");
+    if (fdCn == NULL) {
+        LOG_ERR("Open fail errno = %d reason = %s \n", errno, strerror(errno));
+        return false;
+    }
+    fclose(fdCn);
+    FILE* fdEn = fopen(oFnEnglish.c_str(), "w+");
+    if (fdEn == NULL) {
+        LOG_ERR("Open fail errno = %d reason = %s \n", errno, strerror(errno));
+        return false;
+    }
+    fclose(fdEn);
+    FILE* fdCnAdnEn = fopen(oFnCnAdnEn.c_str(), "w+");
+    if (fdCnAdnEn == NULL) {
+        LOG_ERR("Open fail errno = %d reason = %s \n", errno, strerror(errno));
+        return false;
+    }
+    fclose(fdCnAdnEn);
+
+    return true;
+}
+
+bool RemWordToolWdg::parseInfoFromPreImport(void) {
+    int preImportLen = vsPreImportWord.size();
+    int chapterNum = 0;
+    int wordNumInCharpter = 0;
+    std::shared_ptr<WordTreeNode> mainTitle = nullptr;
+    std::shared_ptr<WordTreeNode> subTitle = nullptr;
+    for (int i = 0; i < preImportLen; i++) {
+        std::string nowLine = vsPreImportWord[i];
+        std::string startStr = nowLine.substr(0, 2);
+        if (startStr == "# ") {
+            wordNumInCharpter = 0;
+            std::string mainTitleStr = nowLine.substr(2, nowLine.size() - 2);
+            mainTitle = std::make_shared<WordTreeNode>(mainTitleStr, false);
+            rootWordTree->addSubTitle(mainTitle);
+        } else if (startStr == "##") {
+            wordNumInCharpter = 0;
+            std::string subTitleStr = nowLine.substr(3, nowLine.size() - 3);
+            subTitle = std::make_shared<WordTreeNode>(subTitleStr, true);
+            mainTitle->addSubTitle(subTitle);
+        } else {
+            wordNumInCharpter++;
+            std::string leftPart, rightPart;
+            splitStringAtDelimiter(nowLine, '|', leftPart, rightPart);
+            WordInfo wordInfo(wordNumInCharpter, leftPart, rightPart);
+            subTitle->addWord(wordInfo);
+        }
+    }
+    return true;
+}
+
+bool RemWordToolWdg::splitStringAtDelimiter(const std::string& str, char delimiter, std::string& left,
+                                            std::string& right) {
+    size_t delimiterPos = str.find(delimiter);
+    if (delimiterPos != std::string::npos) {
+        // 提取左边部分，并去除前导和尾随空格
+        left = str.substr(0, delimiterPos);
+        left.erase(0, left.find_first_not_of(" \t\n\r\f\v"));  // 去除前导空格
+        left.erase(left.find_last_not_of(" \t\n\r\f\v") + 1);  // 去除尾随空格
+
+        // 提取右边部分，并去除前导和尾随空格
+        right = str.substr(delimiterPos + 1);
+        right.erase(0, right.find_first_not_of(" \t\n\r\f\v"));  // 去除前导空格
+        right.erase(right.find_last_not_of(" \t\n\r\f\v") + 1);  // 去除尾随空格
+        return true;
+    } else {
+        // 如果没有找到分隔符，则原字符串为左部分，右部分为空
+        left = str;
+        right.clear();
+        return false;
+    }
+    return true;
+}
+
+std::string RemWordToolWdg::wordInfo2String(WordInfo wordInfo) {
+    int fillBlankNum = mEnglishTotalLen - wordInfo.english.size();
+    if (fillBlankNum < 0) {
+        LOG_WRN("The word {} length is over {}", wordInfo.english, mEnglishTotalLen);
+        return "";
+    }
+    char buf[4];
+    sprintf(buf, "%03d. ", wordInfo.idx);
+    std::string mergeWord =
+        std::string(buf) + wordInfo.english + std::string(fillBlankNum, ' ') + "| " + wordInfo.chinese;
+    LOG_DBG("mergeWord:{}", mergeWord);
+
+    return mergeWord;
+}
+
+bool RemWordToolWdg::processWordTree2Vector(void) {
+    std::vector<std::shared_ptr<WordTreeNode>> mainTitle = rootWordTree->subTitle;
+    std::string tmpTitle;
+    for (std::shared_ptr<WordTreeNode> item : mainTitle) {
+        tmpTitle = std::string("# ") + std::string(item->title);
+        vsOChAndEnWord.push_back(tmpTitle);
+        for (std::shared_ptr<WordTreeNode> it : item->subTitle) {
+            char bufWordNum[5];
+            sprintf(bufWordNum, " (%d)", it->words.size());
+            tmpTitle = std::string("## ") + std::string(it->title) + std::string(bufWordNum);
+            vsOChAndEnWord.push_back(std::string(tmpTitle));
+            for (WordInfo word : it->words) {
+                std::string mergeWord = wordInfo2String(word);
+                vsOChAndEnWord.push_back(mergeWord);
+            }
+        }
+    }
+    return true;
+}
+
+bool RemWordToolWdg::writeWordMd(void) {
+    bool isWriteOk = true;
+    if (!writeLanguagueMd(oFnChinese, LanguageType::Chinese)) {
+        isWriteOk = false;
+    }
+    if (!writeLanguagueMd(oFnEnglish, LanguageType::English)) {
+        isWriteOk = false;
+    }
+    if (!writeLanguagueMd(oFnCnAdnEn, LanguageType::ChAndEn)) {
+        isWriteOk = false;
+    }
+    if (!isWriteOk) {
+        LOG_ERR("Write Wort to Markdown Fail");
+        return false;
+    }
+    return true;
+}
+
+bool RemWordToolWdg::writeLanguagueMd(std::string path, LanguageType type) {
+    std::ofstream outputFile(path, std::ifstream::out | std::ifstream::trunc);
+    if (!outputFile.is_open()) {
+        LOG_ERR("Open fail errno = %d reason = %s \n", errno, strerror(errno));
+        return false;
+    }
+    std::vector<std::string> oWord;
+    switch (type) {
+        case Chinese:
+            outputFile << "# 单独中文\n";
+            oWord = vsOChineseWord;
+            break;
+        case English:
+            outputFile << "# 单独英文\n";
+            oWord = vsOEnglishWord;
+            break;
+        case ChAndEn:
+            outputFile << "# 中英文混合\n";
+            oWord = vsOChAndEnWord;
+            break;
+        default:
+            break;
+    }
+
+    for (const std::string& line : oWord) {
+        outputFile << line << "\n";
+    }
+
+    if (outputFile.fail()) {
+        return false;
+    }
+    outputFile.close();
+    return true;
+}
+
+std::string RemWordToolWdg::getFilename(const std::string& path) {
+    size_t pos = path.find_last_of("/\\");
+
+    if (pos != std::string::npos) {
+        return path.substr(pos + 1);
+    }
+    // 如果没有找到斜杠，说明整个字符串就是文件名
+    return path;
+}
+
+std::string RemWordToolWdg::getFilenameWithoutExe(const std::string& path) {
+    size_t namePos = path.find_last_of("/\\");
+
+    std::string filename;
+    if (namePos != std::string::npos) {
+        filename = path.substr(namePos + 1);
+    } else {
+        filename = path;
+    }
+
+    size_t dosPos = filename.find_last_of(".");
+    if (dosPos != std::string::npos && dosPos > 0) {
+        return filename.substr(0, dosPos);
+    }
+    // 如果没有找到点号或者点号是第一个字符，返回原始文件名
+    return filename;
+}
+
+std::string RemWordToolWdg::getFileSuffix(const std::string& path) {
+    size_t namePos = path.find_last_of("/\\");
+
+    std::string filename;
+    if (namePos != std::string::npos) {
+        filename = path.substr(namePos + 1);
+    } else {
+        filename = path;
+    }
+
+    size_t dosPos = filename.find_last_of(".");
+    if (dosPos != std::string::npos && dosPos > 0) {
+        return filename.substr(dosPos);
+    }
+    return "";
+}
+
+std::string RemWordToolWdg::getAbsolutePath(const std::string& path) {
+    size_t pos = path.find_last_of("/\\");
+    if (pos != std::string::npos) {
+        return path.substr(0, pos);
+    }
+    return path;
 }

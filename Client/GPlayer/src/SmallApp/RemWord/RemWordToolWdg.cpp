@@ -497,17 +497,21 @@ bool RemWordToolWdg::writeLanguagueMd(std::string path, LanguageType type) {
         return false;
     }
     std::vector<std::string> oWord;
+    // ofstream 不能使用裸的中文输入，会直接将将破坏整个文件的编码格式
     switch (type) {
         case Chinese:
-            outputFile << "# 单独中文\n";
+            // outputFile << "# 单独中文\n";
+            outputFile << "# Only Chinese\n";
             oWord = vsOChineseWord;
             break;
         case English:
-            outputFile << "# 单独英文\n";
+            // outputFile << "# 单独英文\n";
+            outputFile << "# Only English\n";
             oWord = vsOEnglishWord;
             break;
         case ChAndEn:
-            outputFile << "# 中英文混合\n";
+            // outputFile << "# 中英文混合\n";
+            outputFile << "# Mixed Chinese and English\n";
             oWord = vsOChAndEnWord;
             break;
         default:

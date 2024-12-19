@@ -61,13 +61,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)3rdparty\lib\;$(ProjectDir)3rdparty\lib\SDL2;$(ProjectDir)3rdparty\lib\ffmpeg;$(ProjectDir)3rdparty\lib\gtest;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;gtest.lib;gtest_main.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)3rdparty\lib\;$(ProjectDir)3rdparty\lib\SDL2;$(ProjectDir)3rdparty\lib\ffmpeg;$(ProjectDir)3rdparty\lib\gtest;$(ProjectDir)3rdparty\lib\sqlite3;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;gtest.lib;gtest_main.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -116,6 +117,7 @@
     <ClCompile Include="src\ReadThread.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordToolWdg.cpp" />
+    <ClCompile Include="src\SmallApp\RemWord\WordSql.cpp" />
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\cJSON.c" />
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.cpp" />
     <ClCompile Include="src\VideoCtrl.cpp" />
@@ -144,6 +146,7 @@
     <QtMoc Include="src\SmallApp\RemWord\RemWordWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordToolWdg.h" />
     <QtMoc Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.h" />
+    <ClInclude Include="src\SmallApp\RemWord\WordSql.h" />
     <ClInclude Include="src\VoiceDecode.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />
     <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h" />

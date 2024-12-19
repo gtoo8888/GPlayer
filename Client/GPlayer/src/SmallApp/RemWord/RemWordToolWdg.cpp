@@ -58,7 +58,7 @@ void RemWordToolWdg::slotBtnTransform(void) {
     cleanWdg();
     vsMergeWord.clear();
     QString transformOutputFilePath = QFileDialog::getSaveFileName(
-        this, "Selecting Source Output File", QString::fromStdString(msOpenPath), "WordList(*.txt.word);; Other(*)");
+        this, "Selecting Source Output File", QString::fromStdString(msOpenPath), "Markdown (*.md);; Other(*)");
     if (transformOutputFilePath.isEmpty()) {
         LOG_WRN("No transform file path");
         return;
@@ -99,7 +99,7 @@ void RemWordToolWdg::slotBtnTransform(void) {
 void RemWordToolWdg::slotBtnOpenFileImport(void) {
     cleanWdg();
     QString importFilePath = QFileDialog::getOpenFileName(
-        this, "Selecting Import file", QString::fromStdString(msOpenPath), "WordList(*.txt.word);; Other(*)");
+        this, "Selecting Import file", QString::fromStdString(msOpenPath), "Markdown (*.md);; Other(*)");
     if (importFilePath.isEmpty()) {
         LOG_WRN("No import file path");
         return;
@@ -118,26 +118,14 @@ void RemWordToolWdg::slotBtnImport(void) {
     cleanWdg();
     // TODO 考虑这个结构的内存释放
     rootWordTree = std::make_shared<WordTreeNode>("root", false);
-    // QString importOutputFilePath = QFileDialog::getOpenFileName(
+    // QString importOutputFilePath = QFileDialog::getSaveFileName(
     //     this, "Selecting Import file", QString::fromStdString(msOpenPath), "Markdown (*.md);; Other(*)");
     // if (importOutputFilePath.isEmpty()) {
     //     LOG_WRN("No import file path");
     //     return;
     // }
 
-    //---TOTEST
-    msImportFilPath =
-        R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\src\SmallApp\RemWord\DailyWords\20241217\ouput.txt.word)";
-    LOG_INF("Read import file path: {}", msImportFilPath);
-    if (!readImportFileDatafgets(msImportFilPath)) {
-        return;
-    }
-    showPreImportTxt();
-    msImportOutputFilePath =
-        R"(E:\Desktop\languguetest\CplusplusProject\GPlayer\Client\GPlayer\src\SmallApp\RemWord\DailyWords\20241217\1217.md)";
-    //---TOTEST
-
-    // msImportOutputFilePath = importOutputFilePath.toStdString();
+    msImportOutputFilePath = msImportFilPath;
     LOG_INF("Import file output path: {}", msImportOutputFilePath);
 
     if (!parseInfoFromPreImport()) {
@@ -150,6 +138,10 @@ void RemWordToolWdg::slotBtnImport(void) {
         return;
     }
     if (!writeWordMd()) {
+        return;
+    }
+
+    if (!saveWord2Sqlite()) {
         return;
     }
 }
@@ -243,9 +235,9 @@ bool RemWordToolWdg::isLetterCplusplus(char value) {
 }
 
 bool RemWordToolWdg::mergeChineseAndEnglishWord(void) {
-    int wordLen = vsChineseWord.size();
+    size_t wordLen = vsChineseWord.size();
     vsMergeWord.resize(wordLen);
-    for (int i = 0; i < wordLen; i++) {
+    for (size_t i = 0; i < wordLen; i++) {
         int fillBlankNum = mEnglishTotalLen - vsEnglishWord[i].size();
         if (fillBlankNum < 0) {
             LOG_WRN("The word {} length is over {}", vsEnglishWord[i], mEnglishTotalLen);
@@ -283,8 +275,8 @@ bool RemWordToolWdg::writeMergeWord(std::string filePath) {
 }
 
 bool RemWordToolWdg::showEnglishWordTxt(void) {
-    int wordLen = vsChineseWord.size();
-    for (int i = 0; i < wordLen; i++) {
+    size_t wordLen = vsChineseWord.size();
+    for (size_t i = 0; i < wordLen; i++) {
         ui->textBrowser->append(QString::fromLocal8Bit(vsEnglishWord[i].c_str()));
         ui->textBrowser->append(QString::fromLocal8Bit(vsChineseWord[i].c_str()));
     }
@@ -294,7 +286,6 @@ bool RemWordToolWdg::showEnglishWordTxt(void) {
 bool RemWordToolWdg::showMergeWord(void) {
     ui->textBrowser->append(QString("# Title"));
     ui->textBrowser->append(QString("## Sub Title"));
-    int wordLen = vsMergeWord.size();
     for (std::string& str : vsMergeWord) {
         // 只有这种方式string转QString中文不会乱码
         const QString qstringMergeWord = QString::fromLocal8Bit(str.c_str());
@@ -437,17 +428,25 @@ bool RemWordToolWdg::splitStringAtDelimiter(const std::string& str, char delimit
     return true;
 }
 
-std::string RemWordToolWdg::wordInfo2String(WordInfo wordInfo) {
-    int fillBlankNum = mEnglishTotalLen - wordInfo.english.size();
-    if (fillBlankNum < 0) {
-        LOG_WRN("The word {} length is over {}", wordInfo.english, mEnglishTotalLen);
-        return "";
-    }
+std::string RemWordToolWdg::wordInfo2String(WordInfo wordInfo, LanguageType type) {
     char buf[4];
-    sprintf(buf, "%03d. ", wordInfo.idx);
-    std::string mergeWord =
-        std::string(buf) + wordInfo.english + std::string(fillBlankNum, ' ') + "| " + wordInfo.chinese;
-    LOG_DBG("mergeWord:{}", mergeWord);
+    sprintf(buf, "%03d. \0", wordInfo.idx);
+    std::string mergeWord;
+    if (type == Chinese) {
+        mergeWord = std::string(buf) + wordInfo.chinese;
+    } else if (type == English) {
+        mergeWord = std::string(buf) + wordInfo.english;
+    } else if (type == ChAndEn) {
+        int blankNum = mEnglishTotalLen - wordInfo.english.size();
+        // TODO 未知原因，只要这个判断开启，就有乱码加入，其中什么都不做，也会乱码
+        // if (blankNum > 0) {
+        //    // LOG_WRN("The word {} length is over {}", wordInfo.english, mEnglishTotalLen);
+        //    // return "";
+        //}
+        mergeWord = std::string(buf) + wordInfo.english + std::string(blankNum, ' ') + "| " + wordInfo.chinese;
+        // mergeWord = std::string(buf) + wordInfo.english;
+        LOG_DBG("mergeWord:{}", mergeWord);
+    }
 
     return mergeWord;
 }
@@ -456,16 +455,21 @@ bool RemWordToolWdg::processWordTree2Vector(void) {
     std::vector<std::shared_ptr<WordTreeNode>> mainTitle = rootWordTree->subTitle;
     std::string tmpTitle;
     for (std::shared_ptr<WordTreeNode> item : mainTitle) {
-        tmpTitle = std::string("# ") + std::string(item->title);
+        tmpTitle = std::string("# ") + item->title;
         vsOChAndEnWord.push_back(tmpTitle);
+        vsOChineseWord.push_back(tmpTitle);
+        vsOEnglishWord.push_back(tmpTitle);
         for (std::shared_ptr<WordTreeNode> it : item->subTitle) {
             char bufWordNum[5];
             sprintf(bufWordNum, " (%d)", it->words.size());
-            tmpTitle = std::string("## ") + std::string(it->title) + std::string(bufWordNum);
-            vsOChAndEnWord.push_back(std::string(tmpTitle));
+            tmpTitle = std::string("## ") + it->title + std::string(bufWordNum);
+            vsOChAndEnWord.push_back(tmpTitle);
+            vsOChineseWord.push_back(tmpTitle);
+            vsOEnglishWord.push_back(tmpTitle);
             for (WordInfo word : it->words) {
-                std::string mergeWord = wordInfo2String(word);
-                vsOChAndEnWord.push_back(mergeWord);
+                vsOChAndEnWord.push_back(wordInfo2String(word, LanguageType::ChAndEn));
+                vsOChineseWord.push_back(wordInfo2String(word, LanguageType::Chinese));
+                vsOEnglishWord.push_back(wordInfo2String(word, LanguageType::English));
             }
         }
     }
@@ -493,7 +497,7 @@ bool RemWordToolWdg::writeWordMd(void) {
 bool RemWordToolWdg::writeLanguagueMd(std::string path, LanguageType type) {
     std::ofstream outputFile(path, std::ifstream::out | std::ifstream::trunc);
     if (!outputFile.is_open()) {
-        LOG_ERR("Open fail errno = %d reason = %s \n", errno, strerror(errno));
+        LOG_ERR("Open fail errno = {} reason = {} \n", errno, strerror(errno));
         return false;
     }
     std::vector<std::string> oWord;
@@ -527,6 +531,14 @@ bool RemWordToolWdg::writeLanguagueMd(std::string path, LanguageType type) {
     }
     outputFile.close();
     return true;
+}
+
+bool RemWordToolWdg::saveWord2Sqlite(void) {
+    mspWordSql = std::make_shared<WordSql>();
+    if (!mspWordSql->initDatabase()) {
+        return false;
+    }
+    return false;
 }
 
 std::string RemWordToolWdg::getFilename(const std::string& path) {

@@ -4,6 +4,7 @@
 #include <QVBoxLayout>
 #include "ui_RemWordWdg.h"
 #include "RemWordToolWdg.h"
+#include "GtooLogger.h"
 
 class RemWordWdg : public QWidget
 {

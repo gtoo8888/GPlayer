@@ -1,4 +1,4 @@
-#include "VoiceDecode.h"
+ï»¿#include "VoiceDecode.h"
 #include "GtooLogger.h"
 
 extern "C" {
@@ -30,7 +30,7 @@ static uint8_t *audio_pos;
 //     int len);
 void read_audio_data(void *udata, Uint8 *stream, int len) {
     fprintf(stderr, "stream addr:%p, audio_len:%d, len:%d\n", stream, audio_len, len);
-    // Ê×ÏÈÊ¹ÓÃSDL_memset()½«streamÖÐµÄÊý¾ÝÉèÖÃÎª0
+    // é¦–å…ˆä½¿ç”¨SDL_memset()å°†streamä¸­çš„æ•°æ®è®¾ç½®ä¸º0
     SDL_memset(stream, 0, len);
     if (audio_len == 0) return;
     len = (len > audio_len ? audio_len : len);
@@ -47,31 +47,31 @@ bool VoiceDecode::open(const QString &url) {
 
     AVDictionary *dict = nullptr;
     av_dict_set(&dict, "rtsp_transport", "tcp",
-                0);  // ÉèÖÃrtspÁ÷Ê¹ÓÃtcp´ò¿ª£¬Èç¹û´ò¿ªÊ§°Ü´íÎóÐÅÏ¢Îª¡¾Error number -135
-                     // occurred¡¿¿ÉÒÔÇÐ»»£¨UDP¡¢tcp¡¢udp_multicast¡¢http£©£¬±ÈÈçvlcÍÆÁ÷¾ÍÐèÒªÊ¹ÓÃudp´ò¿ª
+                0);  // è®¾ç½®rtspæµä½¿ç”¨tcpæ‰“å¼€ï¼Œå¦‚æžœæ‰“å¼€å¤±è´¥é”™è¯¯ä¿¡æ¯ä¸ºã€Error number -135
+                     // occurredã€‘å¯ä»¥åˆ‡æ¢ï¼ˆUDPã€tcpã€udp_multicastã€httpï¼‰ï¼Œæ¯”å¦‚vlcæŽ¨æµå°±éœ€è¦ä½¿ç”¨udpæ‰“å¼€
     av_dict_set(
         &dict, "max_delay", "3",
-        0);  // ÉèÖÃ×î´ó¸´ÓÃ»ò½â¸´ÓÃÑÓ³Ù£¨ÒÔÎ¢ÃëÎªµ¥Î»£©¡£µ±Í¨¹ý¡¾UDP¡¿
-             // ½ÓÊÕÊý¾ÝÊ±£¬½â¸´ÓÃÆ÷³¢ÊÔÖØÐÂÅÅÐò½ÓÊÕµ½µÄÊý¾Ý°ü£¨ÒòÎªËüÃÇ¿ÉÄÜÎÞÐòµ½´ï£¬»òÕßÊý¾Ý°ü¿ÉÄÜÍêÈ«¶ªÊ§£©¡£Õâ¿ÉÒÔÍ¨¹ý½«×î´ó½â¸´ÓÃÑÓ³ÙÉèÖÃÎªÁã£¨Í¨¹ýmax_delayAVFormatContext
-             // ×Ö¶Î£©À´½ûÓÃ¡£
+        0);  // è®¾ç½®æœ€å¤§å¤ç”¨æˆ–è§£å¤ç”¨å»¶è¿Ÿï¼ˆä»¥å¾®ç§’ä¸ºå•ä½ï¼‰ã€‚å½“é€šè¿‡ã€UDPã€‘
+             // æŽ¥æ”¶æ•°æ®æ—¶ï¼Œè§£å¤ç”¨å™¨å°è¯•é‡æ–°æŽ’åºæŽ¥æ”¶åˆ°çš„æ•°æ®åŒ…ï¼ˆå› ä¸ºå®ƒä»¬å¯èƒ½æ— åºåˆ°è¾¾ï¼Œæˆ–è€…æ•°æ®åŒ…å¯èƒ½å®Œå…¨ä¸¢å¤±ï¼‰ã€‚è¿™å¯ä»¥é€šè¿‡å°†æœ€å¤§è§£å¤ç”¨å»¶è¿Ÿè®¾ç½®ä¸ºé›¶ï¼ˆé€šè¿‡max_delayAVFormatContext
+             // å­—æ®µï¼‰æ¥ç¦ç”¨ã€‚
     av_dict_set(&dict, "timeout", "1000000",
-                0);  // ÒÔÎ¢ÃëÎªµ¥Î»ÉèÖÃÌ×½Ó×Ö TCP I/O ³¬Ê±£¬Èç¹ûµÈ´ýÊ±¼ä¹ý¶Ì£¬Ò²¿ÉÄÜ»á»¹Ã»Á¬½Ó¾Í·µ»ØÁË¡£
+                0);  // ä»¥å¾®ç§’ä¸ºå•ä½è®¾ç½®å¥—æŽ¥å­— TCP I/O è¶…æ—¶ï¼Œå¦‚æžœç­‰å¾…æ—¶é—´è¿‡çŸ­ï¼Œä¹Ÿå¯èƒ½ä¼šè¿˜æ²¡è¿žæŽ¥å°±è¿”å›žäº†ã€‚
 
-    // ´ò¿ªÊäÈëÁ÷²¢·µ»Ø½â·â×°ÉÏÏÂÎÄ
+    // æ‰“å¼€è¾“å…¥æµå¹¶è¿”å›žè§£å°è£…ä¸Šä¸‹æ–‡
     int ret = avformat_open_input(&pFormatCtx, url.toStdString().data(), nullptr, &dict);
     if (ret < 0) {
         LOG_ERR("Failed to open video file! avformat_open_input {:d}\n", ret);
         return false;
     }
-    if (dict)  // ÊÍ·Å²ÎÊý×Öµä
+    if (dict)  // é‡Šæ”¾å‚æ•°å­—å…¸
     {
         av_dict_free(&dict);
     }
 
-    ret = avformat_find_stream_info(pFormatCtx, nullptr);  // ¶ÁÈ¡Ã½ÌåÎÄ¼þµÄÊý¾Ý°üÒÔ»ñÈ¡Á÷ÐÅÏ¢
-    // ¿ÉÒÔ²»µ÷ÓÃ
-    // »ñÈ¡²¥·ÅÊ±³¤µÄÐÅÏ¢
-    qint64 totalTime = pFormatCtx->duration / (AV_TIME_BASE / 1000);  // ¼ÆËãÊÓÆµ×ÜÊ±³¤£¨ºÁÃë£©
+    ret = avformat_find_stream_info(pFormatCtx, nullptr);  // è¯»å–åª’ä½“æ–‡ä»¶çš„æ•°æ®åŒ…ä»¥èŽ·å–æµä¿¡æ¯
+    // å¯ä»¥ä¸è°ƒç”¨
+    // èŽ·å–æ’­æ”¾æ—¶é•¿çš„ä¿¡æ¯
+    qint64 totalTime = pFormatCtx->duration / (AV_TIME_BASE / 1000);  // è®¡ç®—è§†é¢‘æ€»æ—¶é•¿ï¼ˆæ¯«ç§’ï¼‰
 
     mVoiceIndex = av_find_best_stream(pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
     if (mVoiceIndex < 0) {
@@ -102,9 +102,9 @@ bool VoiceDecode::open(const QString &url) {
     av_init_packet(packet);
     pFrame = av_frame_alloc();
 
-    uint64_t out_channel_layout = AV_CH_LAYOUT_STEREO;       // Êä³öÁ¢ÌåÉù
+    uint64_t out_channel_layout = AV_CH_LAYOUT_STEREO;       // è¾“å‡ºç«‹ä½“å£°
 
-    enum AVSampleFormat out_sample_fmt = AV_SAMPLE_FMT_S16;  // Êä³ö¸ñÊ½S16
+    enum AVSampleFormat out_sample_fmt = AV_SAMPLE_FMT_S16;  // è¾“å‡ºæ ¼å¼S16
 
     int out_channels = av_get_channel_layout_nb_channels(out_channel_layout);
     int out_sample_rate = 44100;
@@ -128,9 +128,9 @@ bool VoiceDecode::open(const QString &url) {
     spec.userdata = pCodecCtx;
 
     // SDL_AudioSpec spec;
-    // spec.freq = 44100;//¸ù¾ÝÄãÂ¼ÖÆµÄPCM²ÉÑùÂÊ¾ö¶¨
+    // spec.freq = 44100;//æ ¹æ®ä½ å½•åˆ¶çš„PCMé‡‡æ ·çŽ‡å†³å®š
     // spec.format = AUDIO_S16SYS;
-    // spec.channels = 1; //µ¥ÉùµÀ
+    // spec.channels = 1; //å•å£°é“
     // spec.silence = 0;
     // spec.samples = 1024;
     // spec.callback = read_audio_data2;
@@ -138,7 +138,7 @@ bool VoiceDecode::open(const QString &url) {
 
     int64_t in_channel_layout;
     in_channel_layout = av_get_default_channel_layout(pCodecCtx->channels);
-    printf("in_channel_layout --->%d\n", in_channel_layout);
+    printf("in_channel_layout --->%lld\n", in_channel_layout);
     auConvertCtx = swr_alloc();
     auConvertCtx = swr_alloc_set_opts(auConvertCtx, out_channel_layout, out_sample_fmt, out_sample_rate,
                                       in_channel_layout, pCodecCtx->sample_fmt, pCodecCtx->sample_rate, 0, NULL);
@@ -155,7 +155,7 @@ bool VoiceDecode::open(const QString &url) {
             avcodec_send_packet(pCodecCtx, packet);
             while (avcodec_receive_frame(pCodecCtx, pFrame) == 0) {
                 swr_convert(auConvertCtx, &out_buffer, MAX_AUDIO_FRAME_SIZE, (const uint8_t **)pFrame->data,
-                            pFrame->nb_samples);  // ×ª»»ÒôÆµ
+                            pFrame->nb_samples);  // è½¬æ¢éŸ³é¢‘
             }
 
             audio_chunk = (Uint8 *)out_buffer;
@@ -163,11 +163,12 @@ bool VoiceDecode::open(const QString &url) {
             audio_pos = audio_chunk;
             LOG_DBG("audio_len:{:d}", audio_len);
             while (audio_len > 0) {
-                SDL_Delay(1);  // ÑÓ³Ù²¥·Å
+                SDL_Delay(1);  // å»¶è¿Ÿæ’­æ”¾
             }
         }
         av_packet_unref(packet);
     }
     swr_free(&auConvertCtx);
     SDL_Quit();
+    return true;
 }

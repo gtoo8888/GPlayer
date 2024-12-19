@@ -123,6 +123,9 @@
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\cJSON.c">
       <Filter>SmalApp\XiaomiWatchDisplay</Filter>
     </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\WordSql.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -177,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="src\VoiceDecode.h">
       <Filter>src\VideoPlay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SmallApp\RemWord\WordSql.h">
+      <Filter>SmalApp\RemWord</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

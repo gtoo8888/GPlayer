@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "GtooLogger.h"
+#include "WordSql.h"
 #include "ui_RemWordToolWdg.h"
 
 class WordInfo {
@@ -53,6 +54,9 @@ enum LanguageType {
     English,
     ChAndEn
 };
+
+class WordSql;
+
 
 class RemWordToolWdg : public QWidget {
     Q_OBJECT
@@ -104,12 +108,13 @@ private:
     bool processWordTree2Vector(void);
     bool writeWordMd(void);
     bool writeLanguagueMd(std::string path, LanguageType type);
+    bool saveWord2Sqlite(void);
 
     std::string getFilename(const std::string& path);
     std::string getFilenameWithoutExe(const std::string& path);
     std::string getFileSuffix(const std::string& path);
     std::string getAbsolutePath(const std::string& path);
-    std::string wordInfo2String(WordInfo wordInfo);
+    std::string wordInfo2String(WordInfo wordInfo, LanguageType type);
 
     std::string oFnChinese;
     std::string oFnEnglish;
@@ -119,4 +124,6 @@ private:
     std::vector<std::string> vsOChineseWord;
     std::vector<std::string> vsOEnglishWord;
     std::vector<std::string> vsOChAndEnWord;
+
+    std::shared_ptr<WordSql> mspWordSql;
 };

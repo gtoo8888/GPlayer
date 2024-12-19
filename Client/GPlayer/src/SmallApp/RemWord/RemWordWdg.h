@@ -1,17 +1,15 @@
 #pragma once
 
-#include <QWidget>
 #include <QVBoxLayout>
-#include "ui_RemWordWdg.h"
+#include <QWidget>
 #include "RemWordToolWdg.h"
-#include "GtooLogger.h"
+#include "ui_RemWordWdg.h"
 
-class RemWordWdg : public QWidget
-{
+class RemWordWdg : public QWidget {
     Q_OBJECT
 
 public:
-    RemWordWdg(QWidget *parent = nullptr);
+    RemWordWdg(QWidget* parent = nullptr);
     ~RemWordWdg();
 
 public slots:

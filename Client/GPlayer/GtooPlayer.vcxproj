@@ -61,7 +61,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>

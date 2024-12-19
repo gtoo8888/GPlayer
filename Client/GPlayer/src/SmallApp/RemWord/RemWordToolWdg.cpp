@@ -128,6 +128,11 @@ void RemWordToolWdg::slotBtnImport(void) {
     msImportOutputFilePath = msImportFilPath;
     LOG_INF("Import file output path: {}", msImportOutputFilePath);
 
+    if (!saveWord2Sqlite()) {
+        return;
+    }
+    return;
+
     if (!parseInfoFromPreImport()) {
         return;
     }
@@ -138,10 +143,6 @@ void RemWordToolWdg::slotBtnImport(void) {
         return;
     }
     if (!writeWordMd()) {
-        return;
-    }
-
-    if (!saveWord2Sqlite()) {
         return;
     }
 }
@@ -535,7 +536,10 @@ bool RemWordToolWdg::writeLanguagueMd(std::string path, LanguageType type) {
 
 bool RemWordToolWdg::saveWord2Sqlite(void) {
     mspWordSql = std::make_shared<WordSql>();
-    if (!mspWordSql->initDatabase()) {
+    if (!mspWordSql->initDB()) {
+        return false;
+    }
+    if (!mspWordSql->testDB()) {
         return false;
     }
     return false;

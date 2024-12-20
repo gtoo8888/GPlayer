@@ -114,10 +114,29 @@ fix:使用阻塞队列插入，但是自己还没有实现阻塞队列的内容�
 2. [GPlayerServer] 重构文件名、目录结构
 3. [GPlayer][RemWord] 开发Tool中，原始文件Transform功能，主要处理ifstream,fgets,QFile读取文件中文乱码问题
 
+# 2024-12-15
+1. [GPlayer][RemWord] 开发Transform功能，实现基本的文件转换
+2. [GPlayer] 修改GtooLogger.h，统一日志输出宏定义长度
+
+# 2024-12-16
+1. [GPlayer][RemWord] 完善Transform按钮，得到文件后，可以输出到textBrowser中显示
+
+# 2024-12-17
+1. [GPlayer][RemWord] 自定义类似树的数据结构WordTreeNode，实现Input按钮对输入MarkDown的解析
+
 # 2024-12-18
 1. [GPlayer][RemWord] 终于解决输出文件为乱码问题
    1. ofstream 不能使用裸的中文输入，会直接将将破坏整个文件的编码格式！！！！
-2. 排查时间，12-18 0:30-1:30 12-18 22:30-23:50，接近两小时
-3. 关闭各个函数，观察状态，终于发现是 outputFile << "# 单独中文\n"; 裸中文输出导致整个文件编码格式错乱，包括其他正确的中文格式
-4. 尝试了各种方法，都没有解决
-5. 读取的文件中包含中不会出现问题
+2. [GPlayer][RemWord] 排查时间，12-18 0:30-1:30 12-18 22:30-23:50，接近两小时
+3. [GPlayer][RemWord] 关闭各个函数，观察状态，终于发现是 outputFile << "# 单独中文\n"; 裸中文输出导致整个文件编码格式错乱，包括其他正确的中文格式
+4. [GPlayer][RemWord] 尝试了各种方法，都没有解决
+5. [GPlayer][RemWord] 读取的文件中包含中文不会出现问题
+
+# 2024-12-19
+1. [GPlayer][RemWord] 从sqlite3官网下载源码和windows库文件，得到.lib和头文件，添加到项目submodule的3rdparty文件夹中
+2. [GPlayer] 更新添加了sqlite3的git submodule
+3. [GPlayer][RemWord] init class WordSql
+
+# 2024-12-20
+1. [GPlayerUnittest] 单独建立项目GPlayerUnittest，作为GPlayer单元测试模块
+2. [GPlayerUnittest] 将GPlayer的配置：头文件，静态库，静态库路径，手动添加到GPlayerUnittest项目中

@@ -7,6 +7,7 @@
 ```bash
 ├─Client
 │      GPlayer
+│      GPlayerUnittest
 │      GPlayerRemote      
 └─Server
        GPlayerServer
@@ -33,7 +34,9 @@ git submodule update
 3. 3rdParty
    1. cJSON
    2. spdlog
-   3. Google Test
+
+## Client GPlayerUnittest
+1. Google Test
 
 ## Server：GPlayerServer
 1. build

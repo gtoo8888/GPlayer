@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{fecd0014-90fb-48f3-8862-030f6408b7a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SmallApp">
+      <UniqueIdentifier>{26f9e059-1e6a-4ba1-905f-5fc86e79aacb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SmallApp\RemWord">
+      <UniqueIdentifier>{da3d74e8-de5e-47ff-9f87-d8cfa85ed6ed}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SmallApp\RemWord\TestWordSql.cpp">
+      <Filter>SmallApp\RemWord</Filter>
+    </ClCompile>
+    <ClCompile Include="GPlayerUnittest.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPlayer\src\GtooLogger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPlayer\src\SmallApp\RemWord\WordSql.cpp">
+      <Filter>SmallApp\RemWord</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

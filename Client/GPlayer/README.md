@@ -6,6 +6,7 @@
 [命名规范](doc/Main/NameNote.md)<br/>
 [第三方库](doc/Main/ThirdPartyRepository.md)<br/>
 [开发日志](doc/Main/GPlayerLog.md)<br/>
+[单元测试](doc/Main/Unittest.md)<br/>
 
 # 小模块
 [1_背单词App_RemWord](doc/App/1_RemWordReadMe.md)<br/>
@@ -30,13 +31,8 @@ python ./CountWord.py
 
 # 工程方面待办
 
-1. 单独开仓库
-   1. 添加gitlab
-2. 包含Clock
-3. 融合xiaomage的VSPlayer
-4. 缺少
-   1. 3rdparty
-   2. lib
+1. 包含Clock
+2. 融合xiaomage的VSPlayer
 
 
 # 参考资料

@@ -1,10 +1,7 @@
 ﻿#pragma once
 
+#include "global.h"
 #include <QWidget>
-#include <fstream>
-#include <string>
-#include <vector>
-#include "GtooLogger.h"
 #include "WordSql.h"
 #include "ui_RemWordToolWdg.h"
 

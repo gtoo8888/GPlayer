@@ -141,6 +141,7 @@
     <QtMoc Include="src\ReadThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\global.h" />
     <ClInclude Include="include\GtooLogger.h" />
     <QtMoc Include="include\VideoCtrl.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordWdg.h" />

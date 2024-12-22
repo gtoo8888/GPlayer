@@ -26,6 +26,11 @@ RemWordToolWdg::RemWordToolWdg(QWidget* parent)
     connect(ui->btnTransform, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnTransform);
     connect(ui->btnImportFile, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnOpenFileImport);
     connect(ui->btnImport, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnImport);
+
+    // TOTEST
+    if (!saveWord2Sqlite()) {
+        return;
+    }
 }
 
 RemWordToolWdg::~RemWordToolWdg() {
@@ -128,10 +133,6 @@ void RemWordToolWdg::slotBtnImport(void) {
     msImportOutputFilePath = msImportFilPath;
     LOG_INF("Import file output path: {}", msImportOutputFilePath);
 
-    if (!saveWord2Sqlite()) {
-        return;
-    }
-    return;
 
     if (!parseInfoFromPreImport()) {
         return;
@@ -535,7 +536,7 @@ bool RemWordToolWdg::writeLanguagueMd(std::string path, LanguageType type) {
 }
 
 bool RemWordToolWdg::saveWord2Sqlite(void) {
-    mspWordSql = std::make_shared<WordSql>();
+    mspWordSql = std::make_shared<WordSql>("word.db", "WordList");
     if (!mspWordSql->initDB()) {
         return false;
     }

@@ -184,6 +184,9 @@
     <ClInclude Include="src\SmallApp\RemWord\WordSql.h">
       <Filter>SmalApp\RemWord</Filter>
     </ClInclude>
+    <ClInclude Include="include\global.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GtooPlayer.qrc">

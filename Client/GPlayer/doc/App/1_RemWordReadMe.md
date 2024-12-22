@@ -42,3 +42,34 @@
 2. 在会大量重复的for循环内使用Debug，在外部使用info
 3. 开启if语句中文会乱码
 4. ofstream会中文乱码
+
+
+
+# 可读SQL
+
+```sql
+CREATE TABLE IF NOT EXISTS WordList (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   word TEXT NOT NULL,
+   word_translation TEXT NOT NULL,
+   part_of_speech TEXT,
+   search_mean TEXT,
+   synonym TEXT,
+   meet_time INTEGER,
+   create_time INTEGER,
+   modify_time INTEGER,
+   delete_time INTEGER
+);
+```
+
+# 实际SQL
+```sql
+CREATE TABLE IF NOT EXISTS WordList (id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,word_translation TEXT NOT NULL,part_of_speech TEXT,search_mean TEXT,synonym TEXT,meet_time INTEGER,create_time INTEGER,modify_time INTEGER,delete_time INTEGER);
+
+INSERT INTO WordList (word, word_translation, part_of_speech, search_mean, synonym, meet_time, create_time, modify_time, delete_time) 
+values ('test','中文','','','',0,1734854494,0,0);
+
+
+SELECT * FROM WordList;
+```
+

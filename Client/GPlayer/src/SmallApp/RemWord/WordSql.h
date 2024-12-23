@@ -6,7 +6,7 @@
 class WordSqlInfo {
 public:
     WordSqlInfo() = default;
-    WordSqlInfo(std::string word,std::string wordTranslation);
+    WordSqlInfo(std::string word, std::string wordTranslation);
     ~WordSqlInfo() = default;
     std::string toStrPrint(void);
     std::string toStrSql(void);
@@ -36,15 +36,16 @@ public:
     bool insertWord(WordSqlInfo wordSqlInfo);
     WordSqlInfo selectWord(std::string word);
     std::vector<WordSqlInfo> getWordTable(void);
-    bool deleteWord(void);
-    bool updateWord(void);
+    bool deleteWord(std::string word);  // TODO 是否仅仅修改删除时间
+    bool updateWordTranslation(std::string word, std::string wordTranslation);
+    bool updateModifyTime(std::string word, int64 time);
+    bool updateModifyTimeNow(std::string word);
     bool cleanWordTable(void);
-    
+    bool deleteWordTable(void);
 
-    bool praseError(int32 ret, int8 *stmt, int8 *errStr);
+    bool praseError(int32 ret, int8* stmt, int8* errStr);
     int64 getNowTime(void);
     WordSqlInfo WordSql::createWordSqlInfoFromStmt(sqlite3_stmt* stmt);
-
 
 private:
     std::string mDBPath;

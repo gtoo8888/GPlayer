@@ -47,17 +47,20 @@ bool WordSql::testDB(void) {
     //     return false;
     // }
     // WordSqlInfo tWord = selectWord("test6");
-    WordSqlInfo tWord = selectWord("test5");
-    if (tWord.id == 0) {
+    // WordSqlInfo tWord = selectWord("test5");
+    // if (tWord.id == 0) {
+    //    return false;
+    //}
+
+    if (!deleteWord("test5")) {
         return false;
     }
 
-    if (!updateWord()) {
-        return false;
-    }
-    if (!deleteWord()) {
-        return false;
-    }
+    updateWordTranslation("test4", "测试123");
+    updateModifyTime("test4", 123);
+    updateModifyTimeNow("test4");
+
+
     if (!cleanWordTable()) {
         return false;
     }
@@ -102,10 +105,11 @@ int64 WordSql::getNowTime(void) {
 // query 或 sqlQuery - 如果你习惯使用"query"来指代SQL语句。
 bool WordSql::createWordTable(void) {
     int8 sqlStmt[512];
+    // TODO 验证UNIQUE
     snprintf(sqlStmt, sizeof(sqlStmt),
              "CREATE TABLE IF NOT EXISTS %s ("
              "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-             "word TEXT NOT NULL,"
+             "word TEXT NOT NULL UNIQUE,"
              "word_translation TEXT NOT NULL,"
              "part_of_speech TEXT,"
              "search_mean TEXT,"
@@ -216,16 +220,68 @@ WordSqlInfo WordSql::selectWord(std::string word) {
     return tmpWordSqlInfo;
 }
 
-bool WordSql::deleteWord(void) {
-    
-    return false;
+// TODO 判断没有删除
+bool WordSql::deleteWord(std::string word) {
+    int8 sqlStmt[512];
+    snprintf(sqlStmt, sizeof(sqlStmt), "DELETE FROM %s WHERE word = '%s'", mTableName.c_str(), word.c_str());
+
+    char *zErrMsg = nullptr;
+    int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
+    return praseError(ret, sqlStmt, zErrMsg);
 }
 
-bool WordSql::updateWord(void) {
-    return false;
+bool WordSql::updateWordTranslation(std::string word, std::string wordTranslation) {
+    int8 sqlStmt[512];
+    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE %s SET word_translation = '%s' WHERE word = '%s'", mTableName.c_str(),
+             wordTranslation.c_str(), word.c_str());
+
+    char *zErrMsg = nullptr;
+    int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
+    return praseError(ret, sqlStmt, zErrMsg);
+}
+
+bool WordSql::updateModifyTime(std::string word, int64 time) {
+    int8 sqlStmt[512];
+    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE %s SET modify_time = %lld WHERE word = '%s'", mTableName.c_str(),
+        time, word.c_str());
+
+    char *zErrMsg = nullptr;
+    int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
+    return praseError(ret, sqlStmt, zErrMsg);
+}
+
+bool WordSql::updateModifyTimeNow(std::string word) {
+    int64 nowTime = getNowTime();
+    int8 sqlStmt[512];
+    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE %s SET modify_time = %lld WHERE word = '%s'", mTableName.c_str(),
+        nowTime, word.c_str());
+
+    char *zErrMsg = nullptr;
+    int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
+    return praseError(ret, sqlStmt, zErrMsg);
 }
 
 bool WordSql::cleanWordTable(void) {
+    int8 sqlStmt[512];
+    snprintf(sqlStmt, sizeof(sqlStmt), "DELETE FROM %s", mTableName.c_str());
+
+    char *zErrMsg = nullptr;
+    int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
+    if (praseError(ret, sqlStmt, zErrMsg) == false) {
+        return false;
+    }
+
+    memset(sqlStmt, 0x00,sizeof(sqlStmt));
+    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE sqlite_sequence SET id=0 WHERE name='%s'", mTableName.c_str());
+
+    ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
+    if (praseError(ret, sqlStmt, zErrMsg) == false) {
+        return false;
+    }
+}
+
+bool WordSql::deleteWordTable(void)
+{
     return false;
 }
 

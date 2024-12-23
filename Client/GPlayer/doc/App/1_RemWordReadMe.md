@@ -50,7 +50,7 @@
 ```sql
 CREATE TABLE IF NOT EXISTS WordList (
    id INTEGER PRIMARY KEY AUTOINCREMENT,
-   word TEXT NOT NULL,
+   word TEXT NOT NULL UNIQUE,
    word_translation TEXT NOT NULL,
    part_of_speech TEXT,
    search_mean TEXT,
@@ -67,9 +67,17 @@ CREATE TABLE IF NOT EXISTS WordList (
 CREATE TABLE IF NOT EXISTS WordList (id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,word_translation TEXT NOT NULL,part_of_speech TEXT,search_mean TEXT,synonym TEXT,meet_time INTEGER,create_time INTEGER,modify_time INTEGER,delete_time INTEGER);
 
 INSERT INTO WordList (word, word_translation, part_of_speech, search_mean, synonym, meet_time, create_time, modify_time, delete_time) 
-values ('test','中文','','','',0,1734854494,0,0);
-
+values ('test7','中文7','','','',0,1734854494,0,0);
 
 SELECT * FROM WordList;
+
+DELETE FROM WordList WHERE word = "test7";
+
+UPDATE WordList SET word_translation = '测试2' WHERE word = "test7";
+UPDATE WordList SET modify_time = 2 WHERE word = "test7";
+
+DELETE FROM WordList; -- 删除表TxtData数据
+UPDATE sqlite_sequence SET id=0 WHERE name='%s'； --更新主键从1开始
+
 ```
 

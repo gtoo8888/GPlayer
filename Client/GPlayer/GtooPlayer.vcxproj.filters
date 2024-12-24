@@ -79,6 +79,12 @@
     <QtUic Include="src\SmallApp\RemWord\RemWordListWdg.ui">
       <Filter>SmalApp\RemWord</Filter>
     </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\RemWordExWdg.ui">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\RemWordRemWdg.ui">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\About.cpp">
@@ -132,6 +138,12 @@
     <ClCompile Include="src\SmallApp\RemWord\RemWordListWdg.cpp">
       <Filter>SmalApp\RemWord</Filter>
     </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\RemWordExWdg.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\RemWordRemWdg.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -162,6 +174,12 @@
       <Filter>SmalApp\XiaomiWatchDisplay</Filter>
     </QtMoc>
     <QtMoc Include="src\SmallApp\RemWord\RemWordListWdg.h">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\RemWordExWdg.h">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\RemWordRemWdg.h">
       <Filter>SmalApp\RemWord</Filter>
     </QtMoc>
   </ItemGroup>

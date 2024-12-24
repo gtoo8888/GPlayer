@@ -100,7 +100,9 @@
     <QtRcc Include="GtooPlayer.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="src\SmallApp\RemWord\RemWordExWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordListWdg.ui" />
+    <QtUic Include="src\SmallApp\RemWord\RemWordRemWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordToolWdg.ui" />
     <QtUic Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.ui" />
@@ -117,7 +119,9 @@
     <ClCompile Include="src\PlayImage.cpp" />
     <ClCompile Include="src\PlayList.cpp" />
     <ClCompile Include="src\ReadThread.cpp" />
+    <ClCompile Include="src\SmallApp\RemWord\RemWordExWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordListWdg.cpp" />
+    <ClCompile Include="src\SmallApp\RemWord\RemWordRemWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordToolWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\WordSql.cpp" />
@@ -151,6 +155,8 @@
     <QtMoc Include="src\SmallApp\RemWord\RemWordToolWdg.h" />
     <QtMoc Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordListWdg.h" />
+    <QtMoc Include="src\SmallApp\RemWord\RemWordExWdg.h" />
+    <QtMoc Include="src\SmallApp\RemWord\RemWordRemWdg.h" />
     <ClInclude Include="src\SmallApp\RemWord\WordSql.h" />
     <ClInclude Include="src\VoiceDecode.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />

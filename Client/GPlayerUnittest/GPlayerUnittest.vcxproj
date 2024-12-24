@@ -89,9 +89,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)GPlayer\include\;$(SolutionDir)GPlayer\3rdparty\;$(SolutionDir)GPlayer\3rdparty\SDL2\;$(SolutionDir)GPlayer\3rdparty\ffmpeg\;$(SolutionDir)GPlayer\3rdparty\sqlite3\;$(SolutionDir)GPlayer\src;$(SolutionDir)GPlayer\src\SmallApp\XiaomiWatchDisplay;$(SolutionDir)GPlayer\src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

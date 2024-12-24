@@ -28,9 +28,9 @@ RemWordToolWdg::RemWordToolWdg(QWidget* parent)
     connect(ui->btnImport, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnImport);
 
     // TOTEST
-    if (!saveWord2Sqlite()) {
-        return;
-    }
+    // if (!saveWord2Sqlite()) {
+    //    return;
+    //}
 }
 
 RemWordToolWdg::~RemWordToolWdg() {
@@ -132,7 +132,6 @@ void RemWordToolWdg::slotBtnImport(void) {
 
     msImportOutputFilePath = msImportFilPath;
     LOG_INF("Import file output path: {}", msImportOutputFilePath);
-
 
     if (!parseInfoFromPreImport()) {
         return;

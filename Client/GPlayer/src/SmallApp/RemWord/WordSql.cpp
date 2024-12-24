@@ -6,11 +6,10 @@ WordSql::WordSql(std::string dbPath, std::string tableName)
 }
 
 bool WordSql::initDB(void) {
-    LOG_INF("sqlite3_version: {}", sqlite3_libversion());
-
+    //LOG_INF("sqlite3_version: {}", sqlite3_libversion());
     int rc = sqlite3_open(mDBPath.c_str(), &mSqlDB);
     if (rc != 0) {
-        LOG_ERR("Can't open database: %s\n", sqlite3_errmsg(mSqlDB));
+        LOG_ERR("Can't open database: {}", sqlite3_errmsg(mSqlDB));
         sqlite3_close(mSqlDB);
         return false;
     }
@@ -271,8 +270,9 @@ bool WordSql::cleanWordTable(void) {
         return false;
     }
 
-    memset(sqlStmt, 0x00,sizeof(sqlStmt));
-    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE sqlite_sequence SET id=0 WHERE name='%s'", mTableName.c_str());
+    // TODO UPDATE sqlite_sequence
+    //memset(sqlStmt, 0x00,sizeof(sqlStmt));
+    //snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE sqlite_sequence SET id=0 WHERE name='%s'", mTableName.c_str());
 
     ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
     if (praseError(ret, sqlStmt, zErrMsg) == false) {

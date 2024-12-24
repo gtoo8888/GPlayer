@@ -45,7 +45,7 @@ public:
 
     bool praseError(int32 ret, int8* stmt, int8* errStr);
     int64 getNowTime(void);
-    WordSqlInfo WordSql::createWordSqlInfoFromStmt(sqlite3_stmt* stmt);
+    WordSqlInfo createWordSqlInfoFromStmt(sqlite3_stmt* stmt);
 
 private:
     std::string mDBPath;

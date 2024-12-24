@@ -61,7 +61,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\Clock;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -98,8 +98,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="GtooPlayer.qrc" />
+    <QtRcc Include="src\SmallApp\Clock\Stopwatch.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="src\SmallApp\Clock\ClockSetWdg.ui" />
+    <QtUic Include="src\SmallApp\Clock\ClockWdg.ui" />
+    <QtUic Include="src\SmallApp\Clock\StopwatchClockWdg.ui" />
+    <QtUic Include="src\SmallApp\Clock\StopwatchSetShortKey.ui" />
+    <QtUic Include="src\SmallApp\Clock\StopwatchSetWdg.ui" />
+    <QtUic Include="src\SmallApp\Clock\StopwatchWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordExWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordListWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordRemWdg.ui" />
@@ -119,6 +126,13 @@
     <ClCompile Include="src\PlayImage.cpp" />
     <ClCompile Include="src\PlayList.cpp" />
     <ClCompile Include="src\ReadThread.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\ClockConfig.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\ClockSetWdg.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\ClockWdg.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\StopwatchClockWdg.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\StopwatchSetShortKey.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\StopwatchSetWdg.cpp" />
+    <ClCompile Include="src\SmallApp\Clock\StopwatchWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordExWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordListWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordRemWdg.cpp" />
@@ -157,6 +171,13 @@
     <QtMoc Include="src\SmallApp\RemWord\RemWordListWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordExWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordRemWdg.h" />
+    <ClInclude Include="src\SmallApp\Clock\ClockConfig.h" />
+    <QtMoc Include="src\SmallApp\Clock\ClockSetWdg.h" />
+    <QtMoc Include="src\SmallApp\Clock\ClockWdg.h" />
+    <QtMoc Include="src\SmallApp\Clock\StopwatchSetShortKey.h" />
+    <QtMoc Include="src\SmallApp\Clock\StopwatchSetWdg.h" />
+    <QtMoc Include="src\SmallApp\Clock\StopwatchWdg.h" />
+    <QtMoc Include="src\SmallApp\Clock\StopwatchClockWdg.h" />
     <ClInclude Include="src\SmallApp\RemWord\WordSql.h" />
     <ClInclude Include="src\VoiceDecode.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />
@@ -177,6 +198,7 @@
     <None Include="doc\Main\NameNote.md" />
     <None Include="doc\Main\ThirdPartyRepository.md" />
     <None Include="doc\Main\Tool.md" />
+    <None Include="src\SmallApp\Clock\ClockCfg.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

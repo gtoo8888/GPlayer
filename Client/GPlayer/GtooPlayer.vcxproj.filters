@@ -53,6 +53,9 @@
     <Filter Include="doc\Main">
       <UniqueIdentifier>{2c1cf58e-7a0c-40b5-a475-06d6fab72b4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SmalApp\Clock">
+      <UniqueIdentifier>{631b84a2-fb70-49f0-9a50-6d8dfbc43007}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\GtooPlayer.ui">
@@ -84,6 +87,24 @@
     </QtUic>
     <QtUic Include="src\SmallApp\RemWord\RemWordRemWdg.ui">
       <Filter>SmalApp\RemWord</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\Clock\ClockSetWdg.ui">
+      <Filter>SmalApp\Clock</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\Clock\ClockWdg.ui">
+      <Filter>SmalApp\Clock</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\Clock\StopwatchSetShortKey.ui">
+      <Filter>SmalApp\Clock</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\Clock\StopwatchSetWdg.ui">
+      <Filter>SmalApp\Clock</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\Clock\StopwatchWdg.ui">
+      <Filter>SmalApp\Clock</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\Clock\StopwatchClockWdg.ui">
+      <Filter>SmalApp\Clock</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +165,27 @@
     <ClCompile Include="src\SmallApp\RemWord\RemWordRemWdg.cpp">
       <Filter>SmalApp\RemWord</Filter>
     </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\ClockConfig.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\ClockSetWdg.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\ClockWdg.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\StopwatchSetShortKey.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\StopwatchSetWdg.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\StopwatchWdg.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\Clock\StopwatchClockWdg.cpp">
+      <Filter>SmalApp\Clock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -182,6 +224,24 @@
     <QtMoc Include="src\SmallApp\RemWord\RemWordRemWdg.h">
       <Filter>SmalApp\RemWord</Filter>
     </QtMoc>
+    <QtMoc Include="src\SmallApp\Clock\ClockSetWdg.h">
+      <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\Clock\ClockWdg.h">
+      <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\Clock\StopwatchSetShortKey.h">
+      <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\Clock\StopwatchSetWdg.h">
+      <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\Clock\StopwatchWdg.h">
+      <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\Clock\StopwatchClockWdg.h">
+      <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VideoDecode.h">
@@ -214,10 +274,16 @@
     <ClInclude Include="include\global.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="src\SmallApp\Clock\ClockConfig.h">
+      <Filter>SmalApp\Clock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GtooPlayer.qrc">
       <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtRcc Include="src\SmallApp\Clock\Stopwatch.qrc">
+      <Filter>SmalApp\Clock</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +318,9 @@
     </None>
     <None Include="doc\Main\Tool.md">
       <Filter>doc\Main</Filter>
+    </None>
+    <None Include="src\SmallApp\Clock\ClockCfg.json">
+      <Filter>SmalApp\Clock</Filter>
     </None>
   </ItemGroup>
 </Project>

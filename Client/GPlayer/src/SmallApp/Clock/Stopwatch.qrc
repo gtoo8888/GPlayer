@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/Stopwatch">
+        <file>pic/BatchDownload.svg</file>
+        <file>pic/Close.svg</file>
+        <file>pic/Count.svg</file>
+        <file>pic/Download.svg</file>
+        <file>pic/Modify.svg</file>
+        <file>pic/Reset.svg</file>
+        <file>pic/Set.svg</file>
+        <file>pic/Start.svg</file>
+        <file>pic/Stopwatch.svg</file>
+        <file>pic/Stopwatch.ico</file>
+    </qresource>
+</RCC>

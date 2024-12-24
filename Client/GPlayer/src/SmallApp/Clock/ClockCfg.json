@@ -1,0 +1,23 @@
+{
+    "config": {
+      "setting": {
+        "StopwatchCount": 4,
+        "DisplayUnit": "sec",
+        "bDrag": false,
+        "bSlowFastDisplay": false,
+        "bAutoClean": true,
+        "autoCleanTime": 600,
+        "Language": "Chinese"
+      },
+      "keyshot": {
+        "Pause": "space",
+        "CoutTime": "ctrl+d",
+        "Close": "esc",
+        "NewClock": "n"
+      },
+      "about": {
+        "AppName": "Stopwatch",
+        "AppVersion": "0.1"
+      }
+    }
+}

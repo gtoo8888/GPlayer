@@ -6,6 +6,7 @@ RemWordWdg::RemWordWdg(QWidget* parent)
     ui->setupUi(this);
     vlayout = new QVBoxLayout(this);
     ui->funWdg->setLayout(vlayout);
+    this->setMinimumSize(QSize(1600, 600));
 
     mspRemWordListWdg = nullptr;
     mspRemWordRemWdg = nullptr;

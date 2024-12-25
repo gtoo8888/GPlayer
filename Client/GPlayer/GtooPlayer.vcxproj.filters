@@ -106,6 +106,9 @@
     <QtUic Include="src\SmallApp\Clock\StopwatchClockWdg.ui">
       <Filter>SmalApp\Clock</Filter>
     </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\WrtSglWdg.ui">
+      <Filter>SmalApp\RemWord</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\About.cpp">
@@ -186,6 +189,9 @@
     <ClCompile Include="src\SmallApp\Clock\StopwatchClockWdg.cpp">
       <Filter>SmalApp\Clock</Filter>
     </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\WrtSglWdg.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -241,6 +247,9 @@
     </QtMoc>
     <QtMoc Include="src\SmallApp\Clock\StopwatchClockWdg.h">
       <Filter>SmalApp\Clock</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\WrtSglWdg.h">
+      <Filter>SmalApp\RemWord</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

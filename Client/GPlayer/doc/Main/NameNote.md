@@ -89,12 +89,38 @@ void slotForwardPlay (void){}
 
 // Qt控件命名方法
 QPushButton btnTest;
+QToolButton tbnTest;
 QLineEdit leTest;
+QTabWidget twTest;
+QToolBox tbTest;
+QSlider sldTest;
 
 
+QSpinBox spbTest;
+QToolButton tbnTest;
+QComboBox cmbTest;
+QRadioButton rdoTest;
+QGroupBox gbTest;
+QStackedWidget stkTest;
+QWidget wdTest;
+QFrame frmTest;
+QDialog dlgTest;
+QScrollBar scbTest;
+QTextBrowser txbTest;
+QLayout lyTest;
+QProcessBar prbTest;
+QListView lsvTest;
+QListWidget lswTest;
+QTableView tbvTest;
+QTableWidget tbwTest;
+QTreeView tvTest;
+QTreeWidget twTest;
 ```
 
 7. 变量名最好是缩写，每个单词最好不超过5个
 sendMsgMultiple
 
 sendMsgMulti
+
+# 参考资料
+[Qt中的控件缩写](https://blog.csdn.net/qq_37996632/article/details/108438231)

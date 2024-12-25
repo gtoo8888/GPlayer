@@ -51,18 +51,18 @@ bool WordSql::testDB(void) {
     //    return false;
     //}
 
-    if (!deleteWord("test5")) {
-        return false;
-    }
+    //if (!deleteWord("test5")) {
+    //    return false;
+    //}
 
     updateWordTranslation("test4", "测试123");
     updateModifyTime("test4", 123);
     updateModifyTimeNow("test4");
 
 
-    if (!cleanWordTable()) {
-        return false;
-    }
+    //if (!cleanWordTable()) {
+    //    return false;
+    //}
     if (mSqlDB != nullptr) {
         closeDB();
     }

@@ -94,6 +94,7 @@ QLineEdit leTest;
 QTabWidget twTest;
 QToolBox tbTest;
 QSlider sldTest;
+QLabel *labTest;
 
 
 QSpinBox spbTest;

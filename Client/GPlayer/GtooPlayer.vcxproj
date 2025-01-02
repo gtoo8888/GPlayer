@@ -134,12 +134,15 @@
     <ClCompile Include="src\SmallApp\Clock\StopwatchSetShortKey.cpp" />
     <ClCompile Include="src\SmallApp\Clock\StopwatchSetWdg.cpp" />
     <ClCompile Include="src\SmallApp\Clock\StopwatchWdg.cpp" />
+    <ClCompile Include="src\SmallApp\RemWord\GUtils.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordExWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordListWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordRemWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordToolWdg.cpp" />
+    <ClCompile Include="src\SmallApp\RemWord\WordImport.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\WordSql.cpp" />
+    <ClCompile Include="src\SmallApp\RemWord\WordTranform.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\WrtSglWdg.cpp" />
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\cJSON.c" />
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.cpp" />
@@ -180,6 +183,7 @@
     <QtMoc Include="src\SmallApp\Clock\StopwatchSetWdg.h" />
     <QtMoc Include="src\SmallApp\Clock\StopwatchWdg.h" />
     <QtMoc Include="src\SmallApp\Clock\StopwatchClockWdg.h" />
+    <ClInclude Include="src\SmallApp\RemWord\GUtils.h" />
     <ClInclude Include="src\SmallApp\RemWord\WordSql.h" />
     <QtMoc Include="src\SmallApp\RemWord\WrtSglWdg.h" />
     <ClInclude Include="src\VoiceDecode.h" />

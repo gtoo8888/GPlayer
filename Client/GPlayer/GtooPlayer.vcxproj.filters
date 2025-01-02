@@ -192,6 +192,15 @@
     <ClCompile Include="src\SmallApp\RemWord\WrtSglWdg.cpp">
       <Filter>SmalApp\RemWord</Filter>
     </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\GUtils.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\WordTranform.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\WordImport.cpp">
+      <Filter>SmalApp\RemWord</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -285,6 +294,9 @@
     </ClInclude>
     <ClInclude Include="src\SmallApp\Clock\ClockConfig.h">
       <Filter>SmalApp\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SmallApp\RemWord\GUtils.h">
+      <Filter>SmalApp\RemWord</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

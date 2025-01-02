@@ -35,7 +35,8 @@ public:
     bool createWordTable(void);
     bool insertWord(WordSqlInfo wordSqlInfo);
     WordSqlInfo selectWord(std::string word);
-    std::vector<WordSqlInfo> getWordTable(void);
+    std::vector<WordSqlInfo> selectWordTable(void);
+    std::vector<WordSqlInfo> selectWordTableElapsedTime(int64 startTime, int64 endTime);
     bool deleteWord(std::string word);  // TODO 是否仅仅修改删除时间
     bool updateWordTranslation(std::string word, std::string wordTranslation);
     bool updateModifyTime(std::string word, int64 time);

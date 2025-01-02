@@ -1,4 +1,5 @@
 ﻿#include "RemWordListWdg.h"
+#include <QDateEdit>
 
 RemWordListWdg::RemWordListWdg(QWidget* parent)
     : QWidget(parent),
@@ -27,6 +28,8 @@ void RemWordListWdg::initUI(void) {
     ui->twWordList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->dateEdit->setCalendarPopup(true);
+    ui->dateEdit->setDisplayFormat("yyyy-MM-dd");
+    ui->dateEdit->setDateTime(QDateTime::currentDateTime());
 }
 
 void RemWordListWdg::cleanTableWdg(void) {
@@ -58,11 +61,11 @@ void RemWordListWdg::updateTableWdg(void) {
         ui->twWordList->setItem(idx, 4, new QTableWidgetItem(QString::fromStdString(mvWordList[idx].SearchMean)));
         ui->twWordList->setItem(idx, 5, new QTableWidgetItem(QString::fromStdString(mvWordList[idx].Synonym)));
         ui->twWordList->setItem(idx, 6, new QTableWidgetItem(QString::number(mvWordList[idx].MeetTime)));
-        std::string createTimeStr = unix2StrTimeChrono(mvWordList[idx].CreateTime);
+        std::string createTimeStr = GUtils::unix2StrTimeChrono(mvWordList[idx].CreateTime);
         ui->twWordList->setItem(idx, 7, new QTableWidgetItem(QString::fromStdString(createTimeStr)));
-        std::string modifyTimeStr = unix2StrTimeChrono(mvWordList[idx].ModifyTime);
+        std::string modifyTimeStr = GUtils::unix2StrTimeChrono(mvWordList[idx].ModifyTime);
         ui->twWordList->setItem(idx, 8, new QTableWidgetItem(QString::fromStdString(modifyTimeStr)));
-        std::string deleteTimeStr = unix2StrTimeChrono(mvWordList[idx].DeleteTime);
+        std::string deleteTimeStr = GUtils::unix2StrTimeChrono(mvWordList[idx].DeleteTime);
         ui->twWordList->setItem(idx, 9, new QTableWidgetItem(QString::fromStdString(deleteTimeStr)));
     }
 }
@@ -71,26 +74,8 @@ void RemWordListWdg::initWordList(void) {
     mspWordSql = std::make_shared<WordSql>("word.db", "WordList");
     mspWordSql->initDB();
 
-    mvWordList = mspWordSql->getWordTable();
+    mvWordList = mspWordSql->selectWordTable();
 }
 
-QString RemWordListWdg::unix2StrTimeQString(int64 time) {
-    QDateTime dateTime = QDateTime::fromTime_t(time);
-    QString formattedDateTime = dateTime.toString("yyyy-MM-dd HH:mm:ss");
-    LOG_DBG("Formatted datetime: {}", formattedDateTime.toStdString());
-    return formattedDateTime;
-}
-
-std::string RemWordListWdg::unix2StrTimeChrono(int64 time) {
-    if (time == 0) {
-        return std::string("");
-    }
-    std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(time);
-    std::time_t localTime = std::chrono::system_clock::to_time_t(tp);
-    std::tm* tmLocal = localtime(&localTime);
-    char buffer[80];
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tmLocal);
-    std::string formattedDateTime(buffer);
-    LOG_DBG("Formatted datetime: {}", formattedDateTime);
-    return formattedDateTime;
+void RemWordListWdg::slotDateChange(void) {
 }

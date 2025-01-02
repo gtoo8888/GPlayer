@@ -34,3 +34,4 @@ typedef double float64;
 #include <vector>
 
 #include "GtooLogger.h"
+#include "GUtils.h"

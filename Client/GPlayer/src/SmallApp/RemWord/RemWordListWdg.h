@@ -16,8 +16,9 @@ public:
     void cleanTableWdg(void);
     void updateTableWdg(void);
     void initWordList(void);
-    QString unix2StrTimeQString(int64 time);
-    std::string unix2StrTimeChrono(int64 time);
+
+public:
+    void slotDateChange(void);
 
 private:
     Ui::RemWordListWdg *ui;

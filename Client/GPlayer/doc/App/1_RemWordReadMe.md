@@ -10,11 +10,19 @@
       2. 处理每一行前后空格去掉
    3. 导入
       1. textbrowse中添加颜色显示
-      2. 和sqlite交互
-      3. Import按下后，新建文件夹
-   4. 将导入和转化分别拆成一个类，在Wdg类中，用智能指针调用
+      2. Import按下后，新建文件夹
+      3. 有内存没释放
+      4. 输出文件应该是UTF-8，输出GB23
+2. 单词表
+   1. 根据日期选择单词范围
+3. 其他
+   1. 处理终端输出utf-8异常
 
 ## 高优先级
+
+1. 设计功能
+   1. 没有背出的单词怎么办
+   2. 遗忘曲线怎么添加
 
 
 ## 中优先级
@@ -43,7 +51,9 @@
 3. 开启if语句中文会乱码
 4. ofstream会中文乱码
 
-
+参考方式
+1. 保存文件为utf-8
+2. 终端输出的是乱码就是正确的
 
 # 可读SQL
 
@@ -70,6 +80,9 @@ INSERT INTO WordList (word, word_translation, part_of_speech, search_mean, synon
 values ('test7','中文7','','','',0,1734854494,0,0);
 
 SELECT * FROM WordList;
+
+SELECT * FROM WordList WHERE create_time >= 1735823399 AND create_time <= 1735833599;
+
 
 DELETE FROM WordList WHERE word = "test7";
 

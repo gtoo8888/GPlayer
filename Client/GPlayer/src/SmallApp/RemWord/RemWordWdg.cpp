@@ -22,6 +22,8 @@ RemWordWdg::RemWordWdg(QWidget* parent)
     connect(ui->btnWordRember, &QPushButton::clicked, this, &RemWordWdg::slotBtnOpenWordRemWdg);
     connect(ui->btnTool, &QPushButton::clicked, this, &RemWordWdg::slotBtnOpenToolWdg);
     connect(ui->btnWordExample, &QPushButton::clicked, this, &RemWordWdg::slotBtnOpenWordExWdg);
+
+    slotBtnOpenWordRemWdg();
 }
 
 void RemWordWdg::slotBtnOpenWordListWdg(void) {

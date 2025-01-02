@@ -6,7 +6,7 @@ WordSql::WordSql(std::string dbPath, std::string tableName)
 }
 
 bool WordSql::initDB(void) {
-    //LOG_INF("sqlite3_version: {}", sqlite3_libversion());
+    // LOG_INF("sqlite3_version: {}", sqlite3_libversion());
     int rc = sqlite3_open(mDBPath.c_str(), &mSqlDB);
     if (rc != 0) {
         LOG_ERR("Can't open database: {}", sqlite3_errmsg(mSqlDB));
@@ -41,7 +41,7 @@ bool WordSql::testDB(void) {
     // WordSqlInfo wordSqlInfo5("test6", "中文五");
     // insertWord(wordSqlInfo5);
 
-    // std::vector<WordSqlInfo> tvWordList = getWordTable();
+    // std::vector<WordSqlInfo> tvWordList = selectWordTable();
     // if (tvWordList.size() == 0) {
     //     return false;
     // }
@@ -51,18 +51,17 @@ bool WordSql::testDB(void) {
     //    return false;
     //}
 
-    //if (!deleteWord("test5")) {
-    //    return false;
-    //}
+    // if (!deleteWord("test5")) {
+    //     return false;
+    // }
 
     updateWordTranslation("test4", "测试123");
     updateModifyTime("test4", 123);
     updateModifyTimeNow("test4");
 
-
-    //if (!cleanWordTable()) {
-    //    return false;
-    //}
+    // if (!cleanWordTable()) {
+    //     return false;
+    // }
     if (mSqlDB != nullptr) {
         closeDB();
     }
@@ -139,7 +138,7 @@ bool WordSql::insertWord(WordSqlInfo wordSqlInfo) {
     return praseError(ret, sqlStmt, zErrMsg);
 }
 
-std::vector<WordSqlInfo> WordSql::getWordTable(void) {
+std::vector<WordSqlInfo> WordSql::selectWordTable(void) {
     int8 sqlStmt[512];
     snprintf(sqlStmt, sizeof(sqlStmt), "SELECT * FROM %s;", mTableName.c_str());
 
@@ -152,11 +151,37 @@ std::vector<WordSqlInfo> WordSql::getWordTable(void) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         WordSqlInfo wordSqlInfo = createWordSqlInfoFromStmt(stmt);
-        LOG_INF("{}", wordSqlInfo.toStrPrint());
+        LOG_DBG("{}", wordSqlInfo.toStrPrint());
         vSelectWordSqlInfo.push_back(wordSqlInfo);
     }
 
     sqlite3_finalize(stmt);
+    return vSelectWordSqlInfo;
+}
+
+std::vector<WordSqlInfo> WordSql::selectWordTableElapsedTime(int64 startTime, int64 endTime) {
+    int8 sqlStmt[512];
+    snprintf(sqlStmt, sizeof(sqlStmt), "SELECT * FROM %s WHERE create_time >= %lld AND create_time <= %lld;",
+             mTableName.c_str(), startTime, endTime);
+
+    sqlite3_stmt *stmt;
+    std::vector<WordSqlInfo> vSelectWordSqlInfo;
+    if (sqlite3_prepare_v2(mSqlDB, sqlStmt, -1, &stmt, nullptr) != SQLITE_OK) {
+        LOG_ERR("Failed to prepare statement: {}", sqlite3_errmsg(mSqlDB));
+        return vSelectWordSqlInfo;
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        WordSqlInfo wordSqlInfo = createWordSqlInfoFromStmt(stmt);
+        LOG_DBG("{}", wordSqlInfo.toStrPrint());
+        vSelectWordSqlInfo.push_back(wordSqlInfo);
+    }
+    sqlite3_finalize(stmt);
+
+    if (vSelectWordSqlInfo.empty()) {
+        LOG_WRN("No records found for the given time range.");
+        return vSelectWordSqlInfo;
+    }
     return vSelectWordSqlInfo;
 }
 
@@ -214,7 +239,7 @@ WordSqlInfo WordSql::selectWord(std::string word) {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         tmpWordSqlInfo = createWordSqlInfoFromStmt(stmt);
     }
-    LOG_INF("{}", tmpWordSqlInfo.toStrPrint());
+    LOG_DBG("{}", tmpWordSqlInfo.toStrPrint());
     sqlite3_finalize(stmt);
     return tmpWordSqlInfo;
 }
@@ -241,8 +266,8 @@ bool WordSql::updateWordTranslation(std::string word, std::string wordTranslatio
 
 bool WordSql::updateModifyTime(std::string word, int64 time) {
     int8 sqlStmt[512];
-    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE %s SET modify_time = %lld WHERE word = '%s'", mTableName.c_str(),
-        time, word.c_str());
+    snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE %s SET modify_time = %lld WHERE word = '%s'", mTableName.c_str(), time,
+             word.c_str());
 
     char *zErrMsg = nullptr;
     int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
@@ -253,7 +278,7 @@ bool WordSql::updateModifyTimeNow(std::string word) {
     int64 nowTime = getNowTime();
     int8 sqlStmt[512];
     snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE %s SET modify_time = %lld WHERE word = '%s'", mTableName.c_str(),
-        nowTime, word.c_str());
+             nowTime, word.c_str());
 
     char *zErrMsg = nullptr;
     int ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
@@ -271,8 +296,8 @@ bool WordSql::cleanWordTable(void) {
     }
 
     // TODO UPDATE sqlite_sequence
-    //memset(sqlStmt, 0x00,sizeof(sqlStmt));
-    //snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE sqlite_sequence SET id=0 WHERE name='%s'", mTableName.c_str());
+    // memset(sqlStmt, 0x00,sizeof(sqlStmt));
+    // snprintf(sqlStmt, sizeof(sqlStmt), "UPDATE sqlite_sequence SET id=0 WHERE name='%s'", mTableName.c_str());
 
     ret = sqlite3_exec(mSqlDB, sqlStmt, nullptr, 0, &zErrMsg);
     if (praseError(ret, sqlStmt, zErrMsg) == false) {
@@ -280,8 +305,7 @@ bool WordSql::cleanWordTable(void) {
     }
 }
 
-bool WordSql::deleteWordTable(void)
-{
+bool WordSql::deleteWordTable(void) {
     return false;
 }
 

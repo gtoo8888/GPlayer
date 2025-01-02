@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "global.h"
 #include <QWidget>
 #include "WordSql.h"
+#include "global.h"
 #include "ui_RemWordToolWdg.h"
 
 class WordInfo {
@@ -53,7 +53,8 @@ enum LanguageType {
 };
 
 class WordSql;
-
+class WordTranform;
+class WordImport;
 
 class RemWordToolWdg : public QWidget {
     Q_OBJECT
@@ -72,19 +73,8 @@ private:
     Ui::RemWordToolWdg* ui;
     // TODO 变量统一做初始化
     // 保存的txt需要保存格式为ANSI
-    // Tranform
-    bool readFileDatafstream(std::string filePath);
-    bool readFileDatafgets(std::string filePath);
-    bool readFileDataQFile(std::string filePath);
-    bool isLetterC(char letter);
-    bool isLetterCplusplus(char letter);
-    bool mergeChineseAndEnglishWord(void);
-    bool writeMergeWord(std::string filePath);
-    bool showEnglishWordTxt(void);
-    bool showMergeWord(void);
     bool cleanWdg(void);
 
-    int mEnglishTotalLen;
     int64_t mProgressBarMin;
     int64_t mProgressBarMax;
     std::string msOpenPath;
@@ -92,35 +82,57 @@ private:
     std::string msTransformOutputFilePath;
     std::string msImportFilPath;
     std::string msImportOutputFilePath;
+
+    // Tranform
+    bool showEnglishWordTxt(void);
+    bool showMergeWord(void);
+    std::shared_ptr<WordTranform> mspWordTranform;
+    // Import
+    bool showPreImportTxt(void);
+    std::shared_ptr<WordImport> mspWordImport;
+};
+
+class WordTranform {
+public:
+    WordTranform();
+    ~WordTranform() = default;
+    bool readFileDatafstream(std::string filePath);
+    bool readFileDatafgets(std::string filePath);
+    bool readFileDataQFile(std::string filePath);
+    bool mergeChineseAndEnglishWord(void);
+    bool writeMergeWord(std::string filePath);
+
+    int32 mEnglishTotalLen;
     std::vector<std::string> vsEnglishWord;
     std::vector<std::string> vsChineseWord;
     std::vector<std::string> vsMergeWord;
+};
 
-    // Import
+class WordImport {
+public:
+    WordImport();
+    ~WordImport() = default;
+
     bool readImportFileDatafgets(std::string filePath);
-    bool showPreImportTxt(void);
     bool initOutputFilename(std::string filePath);
     bool parseInfoFromPreImport(void);
-    bool splitStringAtDelimiter(const std::string& str, char delimiter, std::string& left, std::string& right);
     bool processWordTree2Vector(void);
     bool writeWordMd(void);
-    bool writeLanguagueMd(std::string path, LanguageType type);
     bool saveWord2Sqlite(void);
-
-    std::string getFilename(const std::string& path);
-    std::string getFilenameWithoutExe(const std::string& path);
-    std::string getFileSuffix(const std::string& path);
-    std::string getAbsolutePath(const std::string& path);
+    bool testWord2Sqlite(void);
+    bool writeLanguagueMd(std::string path, LanguageType type);
     std::string wordInfo2String(WordInfo wordInfo, LanguageType type);
 
+    int32 mEnglishTotalLen;
+    std::vector<std::string> vsPreImportWord;
     std::string oFnChinese;
     std::string oFnEnglish;
     std::string oFnCnAdnEn;
-    std::vector<std::string> vsPreImportWord;
     std::shared_ptr<WordTreeNode> rootWordTree;  // 类似树的结构保存章节信息
     std::vector<std::string> vsOChineseWord;
     std::vector<std::string> vsOEnglishWord;
     std::vector<std::string> vsOChAndEnWord;
+    std::vector<WordInfo> vsWordInfo;
 
     std::shared_ptr<WordSql> mspWordSql;
 };

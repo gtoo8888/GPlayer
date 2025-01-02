@@ -16,6 +16,8 @@ public:
 public:
     void slotBtnTest(void);
     void slotBtnBatchConfirm(void);
+    void slotDateChange(void);
+    void slotBtnClean(void);
 
 private:
     void initUI(void);
@@ -27,5 +29,6 @@ private:
     std::shared_ptr<WordSql> mspWordSql;
     std::vector<WordSqlInfo> mvWordList;
     std::vector<bool> mvbWordListAns;
+    std::vector<uint8> mvEbbinghausForgettingCurve;
     std::vector<std::shared_ptr<WrtSglWdg>> mvspWrtSglWdg;
 };

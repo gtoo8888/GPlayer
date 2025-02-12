@@ -66,7 +66,7 @@ public:
 public:
     void slotBtnOpenFileTransform(void);
     void slotBtnTransform(void);
-    void slotBtnOpenFileImport(void);
+    void slotBtnslotOpenFileImport(void);
     void slotBtnImport(void);
 
 private:

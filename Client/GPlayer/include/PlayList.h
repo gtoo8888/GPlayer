@@ -1,13 +1,3 @@
-/*
- * @file 	PlayList.h
- * @date 	2018/01/07 11:12
- *
- * @author 	itisyang
- * @Contact	itisyang@gmail.com
- *
- * @brief 	播放列表控件
- * @note
- */
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
@@ -51,8 +41,8 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
 
 signals:
-    void SigUpdateUi();	//< 界面排布更新
-    void SigPlay(QString strFile); //< 播放文件
+    void sigUpdateUi();	// 界面排布更新
+    void sigPlay(QString strFile); // 播放文件
 
 private:
     void InitUi();

@@ -1,38 +1,50 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_GPlayer.h"
-#include "ReadThread.h"
-#include "PlayList.h"
 #include "GtooLogger.h"
+#include "PlayList.h"
+#include "ReadThread.h"
 #include "RemWordWdg.h"
+#include "ui_GPlayer.h"
 
-class GPlayer : public QMainWindow
-{
+class Version {
+public:
+    static const uint8 major = 0;
+    static const uint8 minor = 0;
+    static const uint8 patch = 2;
+
+    static std::string getVersionStr(void) {
+        char version[15];
+        sprintf(version, "v%i.%i.%i", major, minor, patch);
+        return std::string(version);
+    }
+};
+
+class GPlayer : public QMainWindow {
     Q_OBJECT
 
 public:
-    GPlayer(QWidget *parent = nullptr);
-    ~GPlayer();
+    GPlayer(QWidget* parent = nullptr);
+    ~GPlayer() = default;
 
-    QPushButton* buttonOccupy; // TODE 临时demo
-    QMenu* tmpExampleMenu; // TODE 临时demo
+    QPushButton* buttonOccupy;         // TODE 临时demo
+    QMenu* tmpExampleMenu;             // TODE 临时demo
     QAction* tmpExampleMenu2PlayList;  // TODE 临时demo
 
     QMenu m_stMenu;
     QMenu* stRemoveMenu;
-    QAction m_stActAdd;     //添加文件
-    QAction m_stActRemove;  //移除文件
-    QAction m_stActClearList;//清空列表
+    QAction m_stActAdd;        // 添加文件
+    QAction m_stActRemove;     // 移除文件
+    QAction m_stActClearList;  // 清空列表
 
 public slots:
-    void openAbout(void);
-    void openFile(void);
-    void openExample2PlayList(void);
-    void showVideoCtrl(void);
+    void slotOpenAbout(void);
+    void slotOpenFile(void);
+    void slotOpenExample2PlayList(void);
+    void slotShowVideoCtrl(void);
 
-    void pauseVideo(void);
-    void startVideo(void);
+    void slotPauseVideo(void);
+    void slotStartVideo(void);
     void startVideoPlayList(QString playFilePath = "");
 
     void slotActionRemWord(void);
@@ -47,8 +59,8 @@ private:
 
 private:
     Ui::GPlayer* ui;
-    QString mPlayerTitile = QString("我的播放器-GtooPlay");
-    ReadThread* mReadThread = nullptr;
+    std::string msPlayerTitile;
+    std::shared_ptr<ReadThread> mspReadThread;
     int64_t mProgressBarMin = 0;
     int64_t mProgressBarMax = 100;
     QString nowPlayFilePath = QString("");

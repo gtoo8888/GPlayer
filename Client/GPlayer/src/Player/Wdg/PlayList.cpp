@@ -46,7 +46,7 @@ void PlayList::InitConnect() {
 
 void PlayList::playClickedItem(QListWidgetItem *item) {
     QString nowItem = item->data(Qt::UserRole).toString();
-    emit SigPlay(nowItem);
+    emit sigPlay(nowItem);
     mCurrentPlayListIndex = ui->listWidget->row(item);
     ui->listWidget->setCurrentRow(mCurrentPlayListIndex);
 }
@@ -107,7 +107,7 @@ void PlayList::dragEnterEvent(QDragEnterEvent *event) {
 }
 
 void PlayList::AddFile() {
-    // QList<QUrl> QFileDialog::getOpenFileUrls
+    // QList<QUrl> QFileDialog::getslotOpenFileUrls
     QStringList listFileName = QFileDialog::getOpenFileNames(this, "Select to play video£¡",  // QDir::homePath(),
         "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video",
         "Video file(*.mkv *.rmvb *.mp4 *.avi *.flv *.wmv *.3gp)");

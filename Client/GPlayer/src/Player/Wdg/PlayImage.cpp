@@ -11,29 +11,16 @@ PlayImage::PlayImage(QWidget *parent)
     this->setAutoFillBackground(true);
 }
 
-/**
- * @brief        传入Qimage图片显示
- * @param image
- */
+// 传入Qimage图片显示
 void PlayImage::updateImage(const QImage &image) {
-    updatePixmap(QPixmap::fromImage(image));
-}
-
-/**
- * @brief        传入QPixmap图片
- * @param pixmap
- */
-void PlayImage::updatePixmap(const QPixmap &pixmap) {
     m_mutex.lock();
-    m_pixmap = pixmap;
+    m_pixmap = QPixmap::fromImage(image);
     m_mutex.unlock();
     update();
 }
 
-/**
- * @brief        使用Qpainter显示图片
- * @param event
- */
+
+// 使用Qpainter显示图片
 void PlayImage::paintEvent(QPaintEvent *event) {
     if (!m_pixmap.isNull()) {
         QPainter painter(this);

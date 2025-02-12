@@ -1,12 +1,4 @@
-/******************************************************************************
- * @文件名     videodecode.h
- * @功能       视频解码类，在这个类中调用ffmpeg打开视频进行解码
- *
- * @开发者     mhf
- * @邮箱       1603291350@qq.com
- * @时间       2022/09/15
- * @备注
- *****************************************************************************/
+// 视频解码类，在这个类中调用ffmpeg打开视频进行解码
 #ifndef VIDEODECODE_H
 #define VIDEODECODE_H
 
@@ -22,10 +14,12 @@ struct SwsContext;
 struct AVBufferRef;
 class QImage;
 
+#define ERROR_LEN 1024  // 异常信息数组长度
+
 class VideoFileInfo {
 public:
     VideoFileInfo();
-    ~VideoFileInfo();
+    ~VideoFileInfo() = default;
 
     void clear();
     void transformTime();
@@ -67,21 +61,21 @@ private:
     void free();                                   // 释放
 
 private:
-    AVFormatContext* m_formatContext = nullptr;    // 解封装上下文
-    AVCodecContext* m_codecContext = nullptr;      // 解码器上下文
-    SwsContext* m_swsContext = nullptr;            // 图像转换上下文
-    AVPacket* m_packet = nullptr;                  // 数据包
-    AVFrame* m_frame = nullptr;                    // 解码后的视频帧
-    int m_videoIndex = 0;                          // 视频流索引
-    qint64 m_obtainFrames = 0;                     // 视频当前获取到的帧数
-    qint64 m_pts = 0;                              // 图像帧的显示时间
-    char* m_error = nullptr;                       // 保存异常信息
-    bool m_end = false;                            // 视频读取完成
-    uchar* m_buffer = nullptr;  // YUV图像需要转换位RGBA图像，这里保存转换后的图形数据
+    AVFormatContext* mFormatContext = nullptr;     // 解封装上下文
+    AVCodecContext* mCodecContext = nullptr;       // 解码器上下文
+    SwsContext* mSwsContext = nullptr;             // 图像转换上下文
+    AVPacket* mPacket = nullptr;                   // 数据包
+    AVFrame* mFrame = nullptr;                     // 解码后的视频帧
+    int mVideoIndex = 0;                           // 视频流索引
+    qint64 mObtainFrames = 0;                      // 视频当前获取到的帧数
+    qint64 mPts = 0;                               // 图像帧的显示时间
 
-    AVCodecContext* m_audioCodecContext = nullptr;
-    int m_audioIndex = 0;
-    AVFrame* m_audioFrame = nullptr;  // 解码后的视频帧
+    bool mEnd = false;                             // 视频读取完成
+    uchar* mBuffer = nullptr;  // YUV图像需要转换位RGBA图像，这里保存转换后的图形数据
+
+    AVCodecContext* mAudioCodecContext = nullptr;
+    int mAudioIndex = 0;
+    AVFrame* mAudioFrame = nullptr;  // 解码后的视频帧
 };
 
-#endif                                // VIDEODECODE_H
+#endif                               // VIDEODECODE_H

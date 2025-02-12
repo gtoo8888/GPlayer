@@ -11,8 +11,8 @@ extern void read_audio_data(void* udata, Uint8* stream, int len);
 
 class VoiceDecode {
 public:
-    VoiceDecode();
-    ~VoiceDecode();
+    VoiceDecode() = default;
+    ~VoiceDecode() = default;
 
     bool open(const QString& m_url);
 

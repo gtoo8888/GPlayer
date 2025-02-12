@@ -22,7 +22,7 @@ RemWordToolWdg::RemWordToolWdg(QWidget* parent)
 
     connect(ui->btnTransformFile, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnOpenFileTransform);
     connect(ui->btnTransform, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnTransform);
-    connect(ui->btnImportFile, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnOpenFileImport);
+    connect(ui->btnImportFile, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnslotOpenFileImport);
     connect(ui->btnImport, &QPushButton::clicked, this, &RemWordToolWdg::slotBtnImport);
 
     mspWordTranform = std::make_shared<WordTranform>();
@@ -87,7 +87,7 @@ void RemWordToolWdg::slotBtnTransform(void) {
     showMergeWord();
 }
 
-void RemWordToolWdg::slotBtnOpenFileImport(void) {
+void RemWordToolWdg::slotBtnslotOpenFileImport(void) {
     cleanWdg();
     QString importFilePath = QFileDialog::getOpenFileName(
         this, "Selecting Import file", QString::fromStdString(msOpenPath), "Markdown (*.md);; Other(*)");

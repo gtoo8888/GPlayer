@@ -32,6 +32,7 @@ typedef double float64;
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "GtooLogger.h"
 #include "GUtils.h"

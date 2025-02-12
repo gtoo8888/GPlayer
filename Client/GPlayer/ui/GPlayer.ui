@@ -96,7 +96,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButtonStart">
+        <widget class="QPushButton" name="btnStart">
          <property name="minimumSize">
           <size>
            <width>60</width>
@@ -110,12 +110,12 @@
           </size>
          </property>
          <property name="text">
-          <string>开始</string>
+          <string>start</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButtonPause">
+        <widget class="QPushButton" name="btnPause">
          <property name="minimumSize">
           <size>
            <width>60</width>
@@ -134,7 +134,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButtonNext">
+        <widget class="QPushButton" name="btnNext">
          <property name="minimumSize">
           <size>
            <width>60</width>
@@ -153,7 +153,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButtonPrevious">
+        <widget class="QPushButton" name="btnPrevious">
          <property name="minimumSize">
           <size>
            <width>60</width>

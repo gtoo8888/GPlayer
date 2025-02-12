@@ -27,7 +27,7 @@ void test(void) {
 static Uint8 *audio_chunk;
 static Uint32 audio_len;
 static Uint8 *audio_pos;
-int pcm_buffer_size = 4096;
+int pcmBuffer_size = 4096;
 
 // 回调函数，音频设备需要更多数据的时候会调用该回调函数
 void read_audio_data2(void *udata, Uint8 *stream, int len) {
@@ -66,26 +66,26 @@ int testSDL() {
         printf("cannot open this file\n");
         return -1;
     }
-    char *pcm_buffer = (char *)malloc(pcm_buffer_size);
+    char *pcmBuffer = (char *)malloc(pcmBuffer_size);
 
     // 播放
     SDL_PauseAudio(0);
 
     while (1) {
-        if (fread(pcm_buffer, 1, pcm_buffer_size, fp) !=
-            pcm_buffer_size) {  // 从文件中读取数据，剩下的就交给音频设备去完成了，它播放完一段数据后会执行回调函数，获取等多的数据
+        if (fread(pcmBuffer, 1, pcmBuffer_size, fp) !=
+            pcmBuffer_size) {  // 从文件中读取数据，剩下的就交给音频设备去完成了，它播放完一段数据后会执行回调函数，获取等多的数据
             break;
         }
 
-        audio_chunk = (Uint8 *)pcm_buffer;
-        audio_len = pcm_buffer_size;  // 长度为读出数据长度，在read_audio_data中做减法
+        audio_chunk = (Uint8 *)pcmBuffer;
+        audio_len = pcmBuffer_size;  // 长度为读出数据长度，在read_audio_data中做减法
         audio_pos = audio_chunk;
         LOG_DBG("audio_len:{:d}", audio_len);
 
         while (audio_len > 0)  // 判断是否播放完毕
             SDL_Delay(1);
     }
-    free(pcm_buffer);
+    free(pcmBuffer);
     SDL_Quit();
 
     return 0;
@@ -93,12 +93,10 @@ int testSDL() {
 
 GPlayer::GPlayer(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::GPlayer),
-      mReadThread(new ReadThread) {
+      ui(new Ui::GPlayer) {
+    mspReadThread = std::make_shared<ReadThread>();
     // QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); // 没有用
     // qDebug() << QString::fromLocal8Bit("中文");
-    qDebug() << "中文";
-
     // testSDL();
 
     ui->setupUi(this);
@@ -143,6 +141,11 @@ void GPlayer::initUtils(void) {
 }
 
 void GPlayer::initUi(void) {
+    std::stringstream ss;
+    ss << "GPlayer " << Version::getVersionStr();
+    msPlayerTitile = ss.str();
+
+    this->setWindowTitle(QString::fromStdString(msPlayerTitile));
     // 保留一下添加toolbar的方式
     // buttonOccupy = new QPushButton(QString::fromLocal8Bit("about"));
     // ui->ToolBar->addWidget(buttonOccupy);
@@ -158,30 +161,30 @@ void GPlayer::initUi(void) {
 }
 
 void GPlayer::initConnect(void) {
-    this->setWindowTitle(mPlayerTitile);
-    connect(ui->actionAbout, &QAction::triggered, this, &GPlayer::openAbout);
-    connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GPlayer::openExample2PlayList);
-    connect(ui->actionVideoCtrl, &QAction::triggered, this, &GPlayer::showVideoCtrl);
+    connect(ui->actionAbout, &QAction::triggered, this, &GPlayer::slotOpenAbout);
+    connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GPlayer::slotOpenExample2PlayList);
+    connect(ui->actionVideoCtrl, &QAction::triggered, this, &GPlayer::slotShowVideoCtrl);
 
-    connect(ui->actionOpen, &QAction::triggered, this, &GPlayer::openFile);
-    connect(ui->pushButtonStart, &QPushButton::clicked, this, &GPlayer::startVideo);
-    connect(ui->pushButtonPause, &QPushButton::clicked, this, &GPlayer::pauseVideo);
-    connect(ui->pushButtonPrevious, &QPushButton::clicked, this, &GPlayer::pauseVideo);
-    connect(ui->pushButtonNext, &QPushButton::clicked, this, &GPlayer::pauseVideo);
+    connect(ui->actionOpen, &QAction::triggered, this, &GPlayer::slotOpenFile);
+    connect(ui->btnStart, &QPushButton::clicked, this, &GPlayer::slotStartVideo);
+    connect(ui->btnPause, &QPushButton::clicked, this, &GPlayer::slotPauseVideo);
+    connect(ui->btnPrevious, &QPushButton::clicked, this, &GPlayer::slotPauseVideo);
+    connect(ui->btnNext, &QPushButton::clicked, this, &GPlayer::slotPauseVideo);
 
     connect(ui->actionRemWord, &QAction::triggered, this, &GPlayer::slotActionRemWord);
 
     // ui->play_list->currentText()
-    //connect(ui->playListWidget, &PlayList::SigPlay, this, &GPlayer::startVideoPlayList);
+    // connect(ui->playListWidget, &PlayList::sigPlay, this, &GPlayer::startVideoPlayList);
 
     // 它表示当信号被触发时，槽函数会立即在发射信号的线程上被调用。这意味着信号和槽之间的通信是直接的、同步的，不涉及事件循环的调度
     // 这是不同线程中的触发
-    connect(mReadThread, &ReadThread::updateImage, ui->playImageWidget, &PlayImage::updateImage, Qt::DirectConnection);
-    connect(mReadThread, &ReadThread::playState, this, &GPlayer::onPlayState);
-    connect(mReadThread, &ReadThread::updateTime, this, &GPlayer::updateTime);
+    connect(mspReadThread.get(), &ReadThread::updateImage, ui->playImageWidget, &PlayImage::updateImage,
+            Qt::DirectConnection);
+    connect(mspReadThread.get(), &ReadThread::playState, this, &GPlayer::onPlayState);
+    connect(mspReadThread.get(), &ReadThread::updateTime, this, &GPlayer::updateTime);
 }
 
-void GPlayer::openAbout(void) {
+void GPlayer::slotOpenAbout(void) {
     About *aboutWindow = new About();
     // QWidget作为单独的显示窗口，初始化时候不能使用this
     // 如果初始化中继承了this，新建的窗口就和主窗口是同一个，拖不开了
@@ -189,42 +192,38 @@ void GPlayer::openAbout(void) {
     aboutWindow->show();
 }
 
-void GPlayer::openExample2PlayList(void) {
+void GPlayer::slotOpenExample2PlayList(void) {
     PlayList *exampleWindow = new PlayList();
     exampleWindow->show();
     // exampleWindow->showFullScreen();
 }
 
-void GPlayer::openFile(void) {
-    LOG_DBG("openFile");
-    QString filePath = QFileDialog::getOpenFileName(
-        this, "Select Play Video", "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video",
-        "Video (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
-    qDebug() << filePath;
+void GPlayer::slotOpenFile(void) {
+    QString filePath = QFileDialog::getOpenFileName(this, "Select Play Video", "G:\download",
+                                                    "Video (*.mp4 *.m4v *.mov *.avi *.flv);; Other(*)");
     QFileInfo info(filePath);
+    nowPlayFilePath = filePath;
 }
 
-void GPlayer::showVideoCtrl(void) {
+void GPlayer::slotShowVideoCtrl(void) {
     VideoCtrl *videoCtrlWidget = new VideoCtrl();
     videoCtrlWidget->show();
 }
 
-void GPlayer::startVideo(void) {
-    LOG_DBG("startVideo");
-    if (ui->pushButtonStart->text() == "start") {
-        mReadThread->open(nowPlayFilePath);
+void GPlayer::slotStartVideo(void) {
+    if (ui->btnStart->text() == "start") {
+        mspReadThread->open(nowPlayFilePath);
     } else {
-        mReadThread->close();
+        mspReadThread->close();
     }
 }
 
 void GPlayer::startVideoPlayList(QString playFilePath) {
-    LOG_DBG("startVideoPlayList");
     nowPlayFilePath = playFilePath;
-    if (ui->pushButtonStart->text() == "start") {
-        mReadThread->open(nowPlayFilePath);
+    if (ui->btnStart->text() == "start") {
+        mspReadThread->open(nowPlayFilePath);
     } else {
-        mReadThread->close();
+        mspReadThread->close();
     }
 }
 
@@ -233,18 +232,16 @@ void GPlayer::slotActionRemWord(void) {
     remWordWdg->show();
 }
 
-void GPlayer::pauseVideo(void) {
-    LOG_DBG("pauseVideo");
+void GPlayer::slotPauseVideo(void) {
 }
 
 void GPlayer::onPlayState(ReadThread::PlayState state) {
     if (state == ReadThread::play) {
-        // this->setWindowTitle(QString("正在播放： %1").arg(mReadThread->url())); // 需要解决文件名太长的问题
+        // this->setWindowTitle(QString("正在播放： %1").arg(mspReadThread->url())); // 需要解决文件名太长的问题
         this->setWindowTitle(QString("be playing: %1").arg("test"));
-        ui->pushButtonStart->setText("stop");
+        ui->btnStart->setText("stop");
     } else if (state == ReadThread::end) {
-        ui->pushButtonStart->setText("start");
-        this->setWindowTitle(mPlayerTitile);
+        ui->btnStart->setText("start");
     }
 }
 
@@ -255,7 +252,4 @@ void GPlayer::updateTime(QString nowTime, QString totalTime, qreal progressValue
     qreal nowProgress = progressValue * (mProgressBarMax - mProgressBarMin);
     ui->progressBar->setValue(int(nowProgress));
     ui->progressBar->setFormat(QString("%1%").arg(QString::number(nowProgress, 'f', 2)));
-}
-
-GPlayer::~GPlayer() {
 }

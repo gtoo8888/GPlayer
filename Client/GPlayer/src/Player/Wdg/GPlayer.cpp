@@ -5,7 +5,7 @@
 #include <QTextCodec>
 
 #include "About.h"
-#include "GtooPlayer.h"
+#include "GPlayer.h"
 #include "VideoCtrl.h"
 
 #include "SDL.h"
@@ -61,7 +61,7 @@ int testSDL() {
     }
 
     FILE *fp =
-        fopen("E:\\Desktop\\languguetest\\Cplusplustest\\3-VisualStudio2017\\0-GtooPlayer\\test_video\\123.pcm", "rb+");
+        fopen("E:\\Desktop\\languguetest\\Cplusplustest\\3-VisualStudio2017\\0-GPlayer\\test_video\\123.pcm", "rb+");
     if (fp == NULL) {
         printf("cannot open this file\n");
         return -1;
@@ -91,9 +91,9 @@ int testSDL() {
     return 0;
 }
 
-GtooPlayer::GtooPlayer(QWidget *parent)
+GPlayer::GPlayer(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::GtooPlayer),
+      ui(new Ui::GPlayer),
       mReadThread(new ReadThread) {
     // QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); // 没有用
     // qDebug() << QString::fromLocal8Bit("中文");
@@ -122,7 +122,7 @@ void testLog(void) {
     LOG_DBG("qstr:{}", qstr.toStdString());  // 不能直接输出QString
 }
 
-void GtooPlayer::initUtils(void) {
+void GPlayer::initUtils(void) {
     testLog();
     QMediaPlayer *player = new QMediaPlayer();
     QList<QAudio::Role> ans = player->supportedAudioRoles();
@@ -130,7 +130,7 @@ void GtooPlayer::initUtils(void) {
 
     // QMediaPlayer mediaPlayer;
     // QMediaContent
-    // mediaPlayer->setMedia(QUrl::fromLocalFile("E:\\Desktop\\languguetest\\Cplusplustest\\3-VisualStudio2017\\0-GtooPlayer\\test_video\\123.mp3"));
+    // mediaPlayer->setMedia(QUrl::fromLocalFile("E:\\Desktop\\languguetest\\Cplusplustest\\3-VisualStudio2017\\0-GPlayer\\test_video\\123.mp3"));
     // ans = mediaPlayer.supportedAudioRoles();
     // mediaPlayer.play();
     //// 等待音频播放完成
@@ -142,7 +142,7 @@ void GtooPlayer::initUtils(void) {
     int t = 1;
 }
 
-void GtooPlayer::initUi(void) {
+void GPlayer::initUi(void) {
     // 保留一下添加toolbar的方式
     // buttonOccupy = new QPushButton(QString::fromLocal8Bit("about"));
     // ui->ToolBar->addWidget(buttonOccupy);
@@ -157,31 +157,31 @@ void GtooPlayer::initUi(void) {
     ui->progressBar->setValue(mProgressBarMin);
 }
 
-void GtooPlayer::initConnect(void) {
+void GPlayer::initConnect(void) {
     this->setWindowTitle(mPlayerTitile);
-    connect(ui->actionAbout, &QAction::triggered, this, &GtooPlayer::openAbout);
-    connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GtooPlayer::openExample2PlayList);
-    connect(ui->actionVideoCtrl, &QAction::triggered, this, &GtooPlayer::showVideoCtrl);
+    connect(ui->actionAbout, &QAction::triggered, this, &GPlayer::openAbout);
+    connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GPlayer::openExample2PlayList);
+    connect(ui->actionVideoCtrl, &QAction::triggered, this, &GPlayer::showVideoCtrl);
 
-    connect(ui->actionOpen, &QAction::triggered, this, &GtooPlayer::openFile);
-    connect(ui->pushButtonStart, &QPushButton::clicked, this, &GtooPlayer::startVideo);
-    connect(ui->pushButtonPause, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
-    connect(ui->pushButtonPrevious, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
-    connect(ui->pushButtonNext, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
+    connect(ui->actionOpen, &QAction::triggered, this, &GPlayer::openFile);
+    connect(ui->pushButtonStart, &QPushButton::clicked, this, &GPlayer::startVideo);
+    connect(ui->pushButtonPause, &QPushButton::clicked, this, &GPlayer::pauseVideo);
+    connect(ui->pushButtonPrevious, &QPushButton::clicked, this, &GPlayer::pauseVideo);
+    connect(ui->pushButtonNext, &QPushButton::clicked, this, &GPlayer::pauseVideo);
 
-    connect(ui->actionRemWord, &QAction::triggered, this, &GtooPlayer::slotActionRemWord);
+    connect(ui->actionRemWord, &QAction::triggered, this, &GPlayer::slotActionRemWord);
 
     // ui->play_list->currentText()
-    connect(ui->playListWidget, &PlayList::SigPlay, this, &GtooPlayer::startVideoPlayList);
+    //connect(ui->playListWidget, &PlayList::SigPlay, this, &GPlayer::startVideoPlayList);
 
     // 它表示当信号被触发时，槽函数会立即在发射信号的线程上被调用。这意味着信号和槽之间的通信是直接的、同步的，不涉及事件循环的调度
     // 这是不同线程中的触发
     connect(mReadThread, &ReadThread::updateImage, ui->playImageWidget, &PlayImage::updateImage, Qt::DirectConnection);
-    connect(mReadThread, &ReadThread::playState, this, &GtooPlayer::onPlayState);
-    connect(mReadThread, &ReadThread::updateTime, this, &GtooPlayer::updateTime);
+    connect(mReadThread, &ReadThread::playState, this, &GPlayer::onPlayState);
+    connect(mReadThread, &ReadThread::updateTime, this, &GPlayer::updateTime);
 }
 
-void GtooPlayer::openAbout(void) {
+void GPlayer::openAbout(void) {
     About *aboutWindow = new About();
     // QWidget作为单独的显示窗口，初始化时候不能使用this
     // 如果初始化中继承了this，新建的窗口就和主窗口是同一个，拖不开了
@@ -189,27 +189,27 @@ void GtooPlayer::openAbout(void) {
     aboutWindow->show();
 }
 
-void GtooPlayer::openExample2PlayList(void) {
+void GPlayer::openExample2PlayList(void) {
     PlayList *exampleWindow = new PlayList();
     exampleWindow->show();
     // exampleWindow->showFullScreen();
 }
 
-void GtooPlayer::openFile(void) {
+void GPlayer::openFile(void) {
     LOG_DBG("openFile");
     QString filePath = QFileDialog::getOpenFileName(
-        this, "Select Play Video", "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
+        this, "Select Play Video", "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video",
         "Video (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
     qDebug() << filePath;
     QFileInfo info(filePath);
 }
 
-void GtooPlayer::showVideoCtrl(void) {
+void GPlayer::showVideoCtrl(void) {
     VideoCtrl *videoCtrlWidget = new VideoCtrl();
     videoCtrlWidget->show();
 }
 
-void GtooPlayer::startVideo(void) {
+void GPlayer::startVideo(void) {
     LOG_DBG("startVideo");
     if (ui->pushButtonStart->text() == "start") {
         mReadThread->open(nowPlayFilePath);
@@ -218,7 +218,7 @@ void GtooPlayer::startVideo(void) {
     }
 }
 
-void GtooPlayer::startVideoPlayList(QString playFilePath) {
+void GPlayer::startVideoPlayList(QString playFilePath) {
     LOG_DBG("startVideoPlayList");
     nowPlayFilePath = playFilePath;
     if (ui->pushButtonStart->text() == "start") {
@@ -228,16 +228,16 @@ void GtooPlayer::startVideoPlayList(QString playFilePath) {
     }
 }
 
-void GtooPlayer::slotActionRemWord(void) {
+void GPlayer::slotActionRemWord(void) {
     RemWordWdg *remWordWdg = new RemWordWdg();
     remWordWdg->show();
 }
 
-void GtooPlayer::pauseVideo(void) {
+void GPlayer::pauseVideo(void) {
     LOG_DBG("pauseVideo");
 }
 
-void GtooPlayer::onPlayState(ReadThread::PlayState state) {
+void GPlayer::onPlayState(ReadThread::PlayState state) {
     if (state == ReadThread::play) {
         // this->setWindowTitle(QString("正在播放： %1").arg(mReadThread->url())); // 需要解决文件名太长的问题
         this->setWindowTitle(QString("be playing: %1").arg("test"));
@@ -248,7 +248,7 @@ void GtooPlayer::onPlayState(ReadThread::PlayState state) {
     }
 }
 
-void GtooPlayer::updateTime(QString nowTime, QString totalTime, qreal progressValue) {
+void GPlayer::updateTime(QString nowTime, QString totalTime, qreal progressValue) {
     ui->labelNowTime->setText(nowTime);
     ui->labelTotalTime->setText(totalTime);
 
@@ -257,5 +257,5 @@ void GtooPlayer::updateTime(QString nowTime, QString totalTime, qreal progressVa
     ui->progressBar->setFormat(QString("%1%").arg(QString::number(nowProgress, 'f', 2)));
 }
 
-GtooPlayer::~GtooPlayer() {
+GPlayer::~GPlayer() {
 }

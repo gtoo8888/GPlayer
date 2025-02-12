@@ -6,7 +6,7 @@
 #include <QJsonObject>    // { }
 #include <QJsonParseError>
 #include <QJsonValue>     // int float double bool null { } [ ]
-#include "GtooPlayer.h"
+#include "GtooLogger.h"
 
 ClockConfig::ClockConfig() {
 }

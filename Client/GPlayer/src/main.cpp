@@ -1,7 +1,7 @@
 ﻿#include <QTextCodec>
 #include <QtWidgets/QApplication>
 #include "ClockWdg.h"
-#include "GtooPlayer.h"
+#include "GPlayer.h"
 #include "RemWordWdg.h"
 #include "XiaomiWatchDisplayWdg.h"
 
@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     // QTextCodec *codec = QTextCodec::codecForName("UTF-8");  // 或者"GBK",不分大小写
     // QTextCodec::setCodecForLocale(codec);
 
-    GtooPlayer w;
+    GPlayer w;
     w.show();
 
     // ClockWdg clockwdg;

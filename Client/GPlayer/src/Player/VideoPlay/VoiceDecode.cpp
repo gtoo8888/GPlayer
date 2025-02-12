@@ -42,7 +42,7 @@ void read_audio_data(void *udata, Uint8 *stream, int len) {
 
 bool VoiceDecode::open(const QString &url) {
     // QString
-    // newUrl("E:\\Desktop\\languguetest\\Cplusplustest\\3-VisualStudio2017\\0-GtooPlayer\\test_video\\123.mp3");
+    // newUrl("E:\\Desktop\\languguetest\\Cplusplustest\\3-VisualStudio2017\\0-GPlayer\\test_video\\123.mp3");
     if (url.isNull()) return false;
 
     AVDictionary *dict = nullptr;

@@ -1,19 +1,19 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_GtooPlayer.h"
+#include "ui_GPlayer.h"
 #include "ReadThread.h"
 #include "PlayList.h"
 #include "GtooLogger.h"
 #include "RemWordWdg.h"
 
-class GtooPlayer : public QMainWindow
+class GPlayer : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    GtooPlayer(QWidget *parent = nullptr);
-    ~GtooPlayer();
+    GPlayer(QWidget *parent = nullptr);
+    ~GPlayer();
 
     QPushButton* buttonOccupy; // TODE 临时demo
     QMenu* tmpExampleMenu; // TODE 临时demo
@@ -46,7 +46,7 @@ private:
     void updateSlider(int64_t);
 
 private:
-    Ui::GtooPlayer* ui;
+    Ui::GPlayer* ui;
     QString mPlayerTitile = QString("我的播放器-GtooPlay");
     ReadThread* mReadThread = nullptr;
     int64_t mProgressBarMin = 0;

@@ -61,7 +61,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\Clock;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)3rdparty\sqlite3\;$(ProjectDir)src\Player\VideoPlay;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\Clock;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -125,18 +125,21 @@
     <QtUic Include="src\SmallApp\RemWord\WrtSglWdg.ui" />
     <QtUic Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.ui" />
     <QtUic Include="ui\About.ui" />
-    <QtUic Include="ui\GtooPlayer.ui" />
+    <QtUic Include="ui\GPlayer.ui" />
     <QtUic Include="ui\PlayList.ui" />
     <QtUic Include="ui\VideoCtrl.ui" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\About.cpp" />
-    <ClCompile Include="src\GtooLogger.cpp" />
-    <ClCompile Include="src\GtooPlayer.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\PlayImage.cpp" />
-    <ClCompile Include="src\PlayList.cpp" />
-    <ClCompile Include="src\ReadThread.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Player\VideoPlay\ReadThread.cpp" />
+    <ClCompile Include="src\Player\VideoPlay\VideoDecode.cpp" />
+    <ClCompile Include="src\Player\VideoPlay\VoiceDecode.cpp" />
+    <ClCompile Include="src\Player\Wdg\About.cpp" />
+    <ClCompile Include="src\Player\Wdg\GPlayer.cpp" />
+    <ClCompile Include="src\Player\Wdg\GtooLogger.cpp" />
+    <ClCompile Include="src\Player\Wdg\PlayImage.cpp" />
+    <ClCompile Include="src\Player\Wdg\PlayList.cpp" />
+    <ClCompile Include="src\Player\Wdg\VideoCtrl.cpp" />
     <ClCompile Include="src\SmallApp\Clock\ClockConfig.cpp" />
     <ClCompile Include="src\SmallApp\Clock\ClockSetWdg.cpp" />
     <ClCompile Include="src\SmallApp\Clock\ClockWdg.cpp" />
@@ -156,15 +159,9 @@
     <ClCompile Include="src\SmallApp\RemWord\WrtSglWdg.cpp" />
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\cJSON.c" />
     <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.cpp" />
-    <ClCompile Include="src\VideoCtrl.cpp" />
-    <ClCompile Include="src\VideoDecode.cpp" />
-    <ClCompile Include="src\VoiceDecode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="include\GtooPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\PlayImage.h" />
@@ -173,10 +170,8 @@
     <ResourceCompile Include="GtooPlayer.rc" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\ReadThread.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="include\global.h" />
+    <QtMoc Include="include\GPlayer.h" />
     <ClInclude Include="include\GtooLogger.h" />
     <QtMoc Include="include\VideoCtrl.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordWdg.h" />
@@ -185,6 +180,9 @@
     <QtMoc Include="src\SmallApp\RemWord\RemWordListWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordExWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordRemWdg.h" />
+    <QtMoc Include="src\Player\VideoPlay\ReadThread.h" />
+    <ClInclude Include="src\Player\VideoPlay\VideoDecode.h" />
+    <ClInclude Include="src\Player\VideoPlay\VoiceDecode.h" />
     <ClInclude Include="src\SmallApp\Clock\ClockConfig.h" />
     <QtMoc Include="src\SmallApp\Clock\ClockSetWdg.h" />
     <QtMoc Include="src\SmallApp\Clock\ClockWdg.h" />
@@ -195,14 +193,12 @@
     <ClInclude Include="src\SmallApp\RemWord\GUtils.h" />
     <ClInclude Include="src\SmallApp\RemWord\WordSql.h" />
     <QtMoc Include="src\SmallApp\RemWord\WrtSglWdg.h" />
-    <ClInclude Include="src\VoiceDecode.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />
     <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h" />
     <ClInclude Include="x64\Debug\uic\ui_PlayList.h" />
     <ClInclude Include="x64\Debug\uic\ui_PlayListOld.h" />
     <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h" />
     <QtMoc Include="include\PlayList.h" />
-    <ClInclude Include="src\VideoDecode.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CHANGELOG.md" />

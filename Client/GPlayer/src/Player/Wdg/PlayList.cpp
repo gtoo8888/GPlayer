@@ -28,7 +28,7 @@ void PlayList::InitUi() {
 
     //-----------TODEBUG-----------------
     QFileInfo fileInfo(
-        "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video/"
+        "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video/"
         "1_1_autoconf自动生成Makefile_第9课 autoconf自动生成Makefile.mp4");
     pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // 用户数据 TODO 用户数存到了哪？
     pItem->setText(fileInfo.fileName());                          // 显示文本
@@ -109,7 +109,7 @@ void PlayList::dragEnterEvent(QDragEnterEvent *event) {
 void PlayList::AddFile() {
     // QList<QUrl> QFileDialog::getOpenFileUrls
     QStringList listFileName = QFileDialog::getOpenFileNames(this, "Select to play video！",  // QDir::homePath(),
-        "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
+        "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video",
         "Video file(*.mkv *.rmvb *.mp4 *.avi *.flv *.wmv *.3gp)");
 
     qDebug() << listFileName;

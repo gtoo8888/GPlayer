@@ -86,9 +86,11 @@ private:
     // Tranform
     bool showEnglishWordTxt(void);
     bool showMergeWord(void);
-    std::shared_ptr<WordTranform> mspWordTranform;
     // Import
     bool showPreImportTxt(void);
+
+
+    std::shared_ptr<WordTranform> mspWordTranform;
     std::shared_ptr<WordImport> mspWordImport;
 };
 

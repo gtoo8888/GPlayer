@@ -1,4 +1,4 @@
-#include "StopwatchClockWdg.h"
+﻿#include "StopwatchClockWdg.h"
 #include <QDebug>
 #include <QEvent>
 #include <QFileDialog>

@@ -29,10 +29,10 @@ void PlayList::InitUi() {
     //-----------TODEBUG-----------------
     QFileInfo fileInfo(
         "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video/"
-        "1_1_autoconfè‡ªåŠ¨ç”ŸæˆMakefile_ç¬¬9è¯¾ autoconfè‡ªåŠ¨ç”ŸæˆMakefile.mp4");
-    pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // ç”¨æˆ·æ•°æ® TODO ç”¨æˆ·æ•°å­˜åˆ°äº†å“ªï¼Ÿ
-    pItem->setText(fileInfo.fileName());                          // æ˜¾ç¤ºæ–‡æœ¬
-    pItem->setToolTip(fileInfo.filePath());  // å·¥å…·æç¤ºï¼ˆé¼ æ ‡æ‚¬åœæ—¶æ˜¾ç¤ºçš„æ–‡æœ¬ï¼‰ä¸ºæ–‡ä»¶çš„å®Œæ•´è·¯å¾„ã€‚
+        "1_1_autoconf×Ô¶¯Éú³ÉMakefile_µÚ9¿Î autoconf×Ô¶¯Éú³ÉMakefile.mp4");
+    pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // ÓÃ»§Êı¾İ TODO ÓÃ»§Êı´æµ½ÁËÄÄ£¿
+    pItem->setText(fileInfo.fileName());                          // ÏÔÊ¾ÎÄ±¾
+    pItem->setToolTip(fileInfo.filePath());  // ¹¤¾ßÌáÊ¾£¨Êó±êĞüÍ£Ê±ÏÔÊ¾µÄÎÄ±¾£©ÎªÎÄ¼şµÄÍêÕûÂ·¾¶¡£
     ui->listWidget->addItem(pItem);
     //-----------TODEBUG-----------------
 }
@@ -108,11 +108,9 @@ void PlayList::dragEnterEvent(QDragEnterEvent *event) {
 
 void PlayList::AddFile() {
     // QList<QUrl> QFileDialog::getOpenFileUrls
-    QStringList listFileName = QFileDialog::getOpenFileNames(
-        this, "é€‰æ‹©æ’­æ”¾è§†é¢‘ï¼",
-        // QDir::homePath(),
+    QStringList listFileName = QFileDialog::getOpenFileNames(this, "Select to play video£¡",  // QDir::homePath(),
         "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
-        "è§†é¢‘æ–‡ä»¶(*.mkv *.rmvb *.mp4 *.avi *.flv *.wmv *.3gp)");
+        "Video file(*.mkv *.rmvb *.mp4 *.avi *.flv *.wmv *.3gp)");
 
     qDebug() << listFileName;
 
@@ -132,14 +130,14 @@ void PlayList::OnAddFile(QString strFileName) {
     }
 
     QFileInfo fileInfo(strFileName);
-    // å¤„ç†æ–‡ä»¶é‡å¤çš„æƒ…å†µ,å¦‚æœæ–‡ä»¶å·²ç»æ·»åŠ äº†å°±å¼¹åˆ°å·²ç»æ·»åŠ çš„æ–‡ä»¶çš„ä½ç½®
+    // ´¦ÀíÎÄ¼şÖØ¸´µÄÇé¿ö,Èç¹ûÎÄ¼şÒÑ¾­Ìí¼ÓÁË¾Íµ¯µ½ÒÑ¾­Ìí¼ÓµÄÎÄ¼şµÄÎ»ÖÃ
     QList<QListWidgetItem *> listRepeatItem = ui->listWidget->findItems(fileInfo.fileName(), Qt::MatchExactly);
     QListWidgetItem *pItem = nullptr;
     if (listRepeatItem.isEmpty()) {
         pItem = new QListWidgetItem(ui->listWidget);
-        pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // ç”¨æˆ·æ•°æ® TODO ç”¨æˆ·æ•°å­˜åˆ°äº†å“ªï¼Ÿ
-        pItem->setText(fileInfo.fileName());                          // æ˜¾ç¤ºæ–‡æœ¬
-        pItem->setToolTip(fileInfo.filePath());  // å·¥å…·æç¤ºï¼ˆé¼ æ ‡æ‚¬åœæ—¶æ˜¾ç¤ºçš„æ–‡æœ¬ï¼‰ä¸ºæ–‡ä»¶çš„å®Œæ•´è·¯å¾„ã€‚
+        pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // ÓÃ»§Êı¾İ TODO ÓÃ»§Êı´æµ½ÁËÄÄ£¿
+        pItem->setText(fileInfo.fileName());                          // ÏÔÊ¾ÎÄ±¾
+        pItem->setToolTip(fileInfo.filePath());  // ¹¤¾ßÌáÊ¾£¨Êó±êĞüÍ£Ê±ÏÔÊ¾µÄÎÄ±¾£©ÎªÎÄ¼şµÄÍêÕûÂ·¾¶¡£
         ui->listWidget->addItem(pItem);
     } else {
         pItem = listRepeatItem.at(0);
@@ -166,8 +164,8 @@ void PlayList::OnAddFileAndPlay(QString strFileName) {
     // if (listItem.isEmpty())
     //{
     //     pItem = new QListWidgetItem(ui->List);
-    //     pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // ç”¨æˆ·æ•°æ®
-    //     pItem->setText(fileInfo.fileName());  // æ˜¾ç¤ºæ–‡æœ¬
+    //     pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // ÓÃ»§Êı¾İ
+    //     pItem->setText(fileInfo.fileName());  // ÏÔÊ¾ÎÄ±¾
     //     pItem->setToolTip(fileInfo.filePath());
     //     ui->List->addItem(pItem);
     // }

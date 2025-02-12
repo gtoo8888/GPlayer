@@ -12,14 +12,14 @@ int main(int argc, char *argv[]) {
     // QTextCodec *codec = QTextCodec::codecForName("UTF-8");  // 或者"GBK",不分大小写
     // QTextCodec::setCodecForLocale(codec);
 
-    //GtooPlayer w;
-    //w.show();
+    GtooPlayer w;
+    w.show();
 
     // ClockWdg clockwdg;
     // clockwdg.show();
 
-    RemWordWdg *remWordWdg = new RemWordWdg();
-    remWordWdg->show();
+    //RemWordWdg *remWordWdg = new RemWordWdg();
+    //remWordWdg->show();
 
     // XiaomiWatchDisplayWdg* miWdg = new XiaomiWatchDisplayWdg();
     // miWdg->show();

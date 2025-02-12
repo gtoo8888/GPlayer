@@ -169,22 +169,22 @@ bool VideoDecode::open(const QString& url) {
         // 查找音频解码器
         const AVCodec* audioCodec = avcodec_find_decoder(m_formatContext->streams[m_audioIndex]->codecpar->codec_id);
         if (!audioCodec) {
-            LOG_ERR("找不到音频解码器");
+            LOG_ERR("No audio decoder found.");
         }
 
         AVCodecContext* m_audioCodecContext = avcodec_alloc_context3(audioCodec);
         if (!m_audioCodecContext) {
-            LOG_ERR("无法分配音频解码器上下文");
+            LOG_ERR("Unable to assign audio decoder context");
         }
 
         // 将参数复制到音频解码器上下文
         if (avcodec_parameters_to_context(m_audioCodecContext, m_formatContext->streams[m_audioIndex]->codecpar) < 0) {
-            LOG_ERR("无法复制音频解码器参数");
+            LOG_ERR("Unable to copy audio decoder parameters");
         }
 
         // 打开音频解码器
         if (avcodec_open2(m_audioCodecContext, audioCodec, NULL) < 0) {
-            LOG_ERR("无法打开音频解码器");
+            LOG_ERR("Unable to open audio decoder");
         }
     }
 
@@ -215,7 +215,7 @@ bool VideoDecode::open(const QString& url) {
     // 分配AVCodecContext并将其字段设置为默认值。
     m_codecContext = avcodec_alloc_context3(codec);
     if (!m_codecContext) {
-        LOG_ERR("创建视频解码器上下文失败！");
+        LOG_ERR("Failed to create video decoder context!");
         free();
         return false;
     }
@@ -243,7 +243,7 @@ bool VideoDecode::open(const QString& url) {
     m_packet = av_packet_alloc();
     if (!m_packet) {
 #if PRINT_LOG
-        qWarning() << "av_packet_alloc() Error！";
+        qWarning() << "av_packet_alloc() Error!";
 #endif
         free();
         return false;
@@ -251,14 +251,14 @@ bool VideoDecode::open(const QString& url) {
     // 分配AVFrame并将其字段设置为默认值。
     m_frame = av_frame_alloc();
     if (!m_frame) {
-        LOG_WRN("av_frame_alloc() Error！");
+        LOG_WRN("av_frame_alloc() Error!");
         free();
         return false;
     }
 
     m_audioFrame = av_frame_alloc();
     if (!m_audioFrame) {
-        LOG_WRN("av_frame_alloc() Error！");
+        LOG_WRN("av_frame_alloc() Error!");
         free();
         return false;
     }
@@ -393,7 +393,7 @@ QImage VideoDecode::read() {
             nullptr);  // 特定缩放算法需要的参数(?)，默认为NULL
         if (!m_swsContext) {
 #if PRINT_LOG
-            qWarning() << "sws_getCachedContext() Error！";
+            qWarning() << "sws_getCachedContext() Error!";
 #endif
             free();
             return QImage();
@@ -454,7 +454,7 @@ void VideoDecode::showError(int err) {
 #if PRINT_LOG
     memset(m_error, 0, ERROR_LEN);  // 将数组置零
     av_strerror(err, m_error, ERROR_LEN);
-    qWarning() << "DecodeVideo Error：" << m_error;
+    qWarning() << "DecodeVideo Error:" << m_error;
 #else
     Q_UNUSED(err)
 #endif

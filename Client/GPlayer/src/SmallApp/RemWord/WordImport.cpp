@@ -119,8 +119,6 @@ bool WordImport::processWordTree2Vector(void) {
                 vsOChAndEnWord.push_back(wordInfo2String(word, LanguageType::ChAndEn));
                 vsOChineseWord.push_back(wordInfo2String(word, LanguageType::Chinese));
                 vsOEnglishWord.push_back(wordInfo2String(word, LanguageType::English));
-
-                // TODO 需要拆分两个类，这个需要重新处理
                 vsWordInfo.push_back(word);
             }
         }

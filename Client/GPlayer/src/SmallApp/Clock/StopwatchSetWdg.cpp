@@ -1,4 +1,4 @@
-#include "StopwatchSetWdg.h"
+﻿#include "StopwatchSetWdg.h"
 #include "ui_StopwatchSetWdg.h"
 
 StopwatchSetWdg* StopwatchSetWdg::instanceSetWdg = nullptr;

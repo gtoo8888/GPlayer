@@ -59,7 +59,7 @@ void StopwatchWdg::slotBtnNewClock(void) {
         connect(stopwatchClockWdg, &StopwatchClockWdg::sigClockCloseWnd, this, &StopwatchWdg::slotClockClose);
         stopwatchClockWdg->show();
     } else {
-        QMessageBox box(QMessageBox::Warning, QString("警告"), QString("当前秒表达到最大%1个").arg(nowClockNum));
+        QMessageBox box(QMessageBox::Warning, QString("Warning"), QString("The current stopwatch has reached its maximum limit %1").arg(nowClockNum));
         box.exec();
     }
 }

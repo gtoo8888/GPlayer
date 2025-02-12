@@ -198,8 +198,8 @@ void GtooPlayer::openExample2PlayList(void) {
 void GtooPlayer::openFile(void) {
     LOG_DBG("openFile");
     QString filePath = QFileDialog::getOpenFileName(
-        this, "选择播放视频~！", "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
-        "视频 (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
+        this, "Select Play Video", "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
+        "Video (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
     qDebug() << filePath;
     QFileInfo info(filePath);
 }
@@ -211,7 +211,7 @@ void GtooPlayer::showVideoCtrl(void) {
 
 void GtooPlayer::startVideo(void) {
     LOG_DBG("startVideo");
-    if (ui->pushButtonStart->text() == "开始") {
+    if (ui->pushButtonStart->text() == "start") {
         mReadThread->open(nowPlayFilePath);
     } else {
         mReadThread->close();
@@ -221,7 +221,7 @@ void GtooPlayer::startVideo(void) {
 void GtooPlayer::startVideoPlayList(QString playFilePath) {
     LOG_DBG("startVideoPlayList");
     nowPlayFilePath = playFilePath;
-    if (ui->pushButtonStart->text() == "开始") {
+    if (ui->pushButtonStart->text() == "start") {
         mReadThread->open(nowPlayFilePath);
     } else {
         mReadThread->close();
@@ -240,10 +240,10 @@ void GtooPlayer::pauseVideo(void) {
 void GtooPlayer::onPlayState(ReadThread::PlayState state) {
     if (state == ReadThread::play) {
         // this->setWindowTitle(QString("正在播放： %1").arg(mReadThread->url())); // 需要解决文件名太长的问题
-        this->setWindowTitle(QString("正在播放： %1").arg("test"));
-        ui->pushButtonStart->setText("停止");
+        this->setWindowTitle(QString("be playing: %1").arg("test"));
+        ui->pushButtonStart->setText("stop");
     } else if (state == ReadThread::end) {
-        ui->pushButtonStart->setText("开始");
+        ui->pushButtonStart->setText("start");
         this->setWindowTitle(mPlayerTitile);
     }
 }

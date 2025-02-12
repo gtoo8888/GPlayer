@@ -78,6 +78,12 @@ SDL2test.lib
 2. 会有很长串的报错
 3. 关键词：无法解析的外部符号
 
+错误	LNK1181	无法打开输入文件“D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\lib\Qt5Core.libkernel32.lib”
+链接器->输入->附加依赖项，其中的%(AdditionalDependencies)后面没有分号
+%(AdditionalDependencies)kernel32.lib
+
+kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib
+
 
 ### 5. 链接器->输入->附加依赖项
 1. 添加sqlite3.lib 
@@ -122,3 +128,4 @@ index 63646e6..73a2fa5 160000
 [SQLite Download Page](https://www.sqlite.org/download.html)
 [如何在Windows 10上构建SQLite3.lib文件](https://blog.csdn.net/m0_37909265/article/details/105102982)
 [6.DLL中.def文件的使用](https://blog.csdn.net/qq_33757398/article/details/81570004)
+[cannot open file 'SOIL.libkernel32.lib'](https://stackoverflow.com/questions/20018396/cannot-open-file-soil-libkernel32-lib)

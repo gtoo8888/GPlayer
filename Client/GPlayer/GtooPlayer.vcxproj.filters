@@ -29,14 +29,8 @@
     <Filter Include="doc">
       <UniqueIdentifier>{dd8661fa-167d-4db6-9661-eb7b7e6e29cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="test">
-      <UniqueIdentifier>{cb4af611-d367-499e-b569-f22b50dbea69}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ui\uic">
       <UniqueIdentifier>{80b7c100-d6ca-4ef5-8251-2fa47359f03e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\moc">
-      <UniqueIdentifier>{1e9ed934-7e8f-4b19-ba4d-77402991ae4f}</UniqueIdentifier>
     </Filter>
     <Filter Include="SmalApp">
       <UniqueIdentifier>{16045eca-dd91-4205-8f24-d69408789bed}</UniqueIdentifier>
@@ -119,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="src\PlayImage.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="test\TestReadThread.cpp">
-      <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="src\ReadThread.cpp">
       <Filter>src\VideoPlay</Filter>
@@ -342,6 +333,9 @@
     </None>
     <None Include="src\SmallApp\Clock\ClockCfg.json">
       <Filter>SmalApp\Clock</Filter>
+    </None>
+    <None Include="CHANGELOG.md">
+      <Filter>doc</Filter>
     </None>
   </ItemGroup>
 </Project>

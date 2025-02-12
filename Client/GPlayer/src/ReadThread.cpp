@@ -24,10 +24,9 @@ ReadThread::~ReadThread() {
 void ReadThread::open(const QString &url) {
     if (!this->isRunning()) {
         m_url = url;
-        emit this->start();  
+        emit this->start();
     }
 }
-
 
 void ReadThread::pause(bool flag) {
     m_pause = flag;
@@ -59,7 +58,7 @@ void ReadThread::run() {
         m_etime2.start();
         emit playState(play);
     } else {
-        qWarning() << "打开失败！";
+        qWarning() << "open fail";
     }
     // 循环读取视频图像
     while (m_play) {
@@ -89,7 +88,7 @@ void ReadThread::run() {
         }
     }
 
-    qDebug() << "播放结束！";
+    qDebug() << "play finish";
     mVideoDecode->close();
     emit playState(end);
 }

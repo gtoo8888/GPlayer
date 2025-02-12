@@ -99,6 +99,8 @@ void RemWordToolWdg::slotBtnOpenFileImport(void) {
     msImportFilPath = importFilePath.toStdString();
     LOG_INF("Read import file path: {}", msImportFilPath);
 
+    // TODO 如果文件名是20250102的形式，输入单词就是这个日期
+    // 如果不是，就用当前时间
     if (!mspWordImport->readImportFileDatafgets(msImportFilPath)) {
         return;
     }
@@ -139,24 +141,22 @@ void RemWordToolWdg::slotBtnImport(void) {
 }
 
 bool RemWordToolWdg::showEnglishWordTxt(void) {
-    // TODO
-    // size_t wordLen = vsChineseWord.size();
-    // for (size_t i = 0; i < wordLen; i++) {
-    //    ui->textBrowser->append(QString::fromLocal8Bit(vsEnglishWord[i].c_str()));
-    //    ui->textBrowser->append(QString::fromLocal8Bit(vsChineseWord[i].c_str()));
-    //}
+    size_t wordLen = mspWordTranform->vsChineseWord.size();
+    for (size_t i = 0; i < wordLen; i++) {
+        ui->textBrowser->append(QString::fromLocal8Bit(mspWordTranform->vsEnglishWord[i].c_str()));
+        ui->textBrowser->append(QString::fromLocal8Bit(mspWordTranform->vsChineseWord[i].c_str()));
+    }
     return true;
 }
 
 bool RemWordToolWdg::showMergeWord(void) {
     ui->textBrowser->append(QString("# Title"));
     ui->textBrowser->append(QString("## Sub Title"));
-    // TODO
-    // for (std::string& str : vsMergeWord) {
-    //    // 只有这种方式string转QString中文不会乱码
-    //    const QString qstringMergeWord = QString::fromLocal8Bit(str.c_str());
-    //    ui->textBrowser->append(qstringMergeWord);
-    //}
+    for (std::string& str : mspWordTranform->vsMergeWord) {
+        // 只有这种方式string转QString中文不会乱码
+        const QString qstringMergeWord = QString::fromLocal8Bit(str.c_str());
+        ui->textBrowser->append(qstringMergeWord);
+    }
     return true;
 }
 
@@ -169,10 +169,8 @@ bool RemWordToolWdg::cleanWdg(void) {
 }
 
 bool RemWordToolWdg::showPreImportTxt(void) {
-    // TODO
-    // int wordLen = vsPreImportWord.size();
-    // for (int i = 0; i < wordLen; i++) {
-    //    ui->textBrowser->append(QString::fromLocal8Bit(vsPreImportWord[i].c_str()));
-    //}
+    for (std::string& preImportWord : mspWordImport->vsPreImportWord) {
+        ui->textBrowser->append(QString::fromLocal8Bit(preImportWord.c_str()));
+    }
     return true;
 }

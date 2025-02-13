@@ -8,7 +8,7 @@
 #include "Config.h"
 #include "Lock.h"
 #include "Logger.h"
-#include "PIGG_test/PIGG_test.h"
+#include "PIGG_test.h"
 #include "Webserver.h"
 
 void test_mysql() {

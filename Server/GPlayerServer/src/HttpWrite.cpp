@@ -58,7 +58,7 @@ bool PIGG_http_conn::add_content(const char *content) {
 }
 
 // 读取进程
-bool PIGG_http_conn::process_write(PIGG_HTTP_CODE read_ret) {
+bool PIGG_http_conn::process_write(HTTP_CODE read_ret) {
     switch (read_ret) {
         case INTERNAL_ERROR: {  // 内部错误
             add_status_line(500, error_500_title);

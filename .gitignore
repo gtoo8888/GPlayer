@@ -12,6 +12,8 @@
 *.la
 *.exe
 *.db
+code_stats.csv
+code_stats.md
 
 
 # CLion.

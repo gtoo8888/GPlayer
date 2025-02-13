@@ -11,26 +11,6 @@
 #include "PIGG_test/PIGG_test.h"
 #include "Webserver.h"
 
-// #include <QDebug>
-// #include <QObject>
-// #include <QTimer>
-
-void test_namespace() {  // 对命名空间使用的测试
-    // PIGG_init_test::PIGG_test *NBPIGG_test;
-    // NBPIGG_test->test_shared_ptr();
-    // PIGG_init_test::test_namespace1();
-    // std::cout << "PIGG_init_test::test3" << std::endl;
-
-    // PIGG_init_test::PIGG_test::test_shared_ptr()    //
-    // 这样的用法是错误的，这是一个非静态对象，一定要用它的实例去调用它
-    PIGG_init_test::PIGG_test main_PIGG_test;  // 普通的生成一个类的实例的调用方法
-    main_PIGG_test.test_shared_ptr();
-    main_PIGG_test.test_log();
-
-    // std::shared_ptr<PIGG_init_test::PIGG_test> main_test = std::make_shared<PIGG_init_test::PIGG_test>();   //
-    // 制造了一个智能指针调用方法 main_test->test_shared_ptr();        // 这样的使用方式不好调试
-}
-
 void test_mysql() {
     std::string user = "root";
     std::string passwd = "root";
@@ -118,47 +98,8 @@ void test_all() {
 }
 
 int main(int argc, char *argv[]) {
-    // test_all();
-    PIGG_init_test::PIGG_test my_test;  // 专门用来测试的函数
-
-    std::string user = "root";
-    std::string passwd = "root";
-    std::string databasename = "yourdb";
-
-    std::cout << "-----PIGG_server start run------" << std::endl;
-    // 解析命令行
-    PIGG_Config config;
-    config.parse_arg(argc, argv);
-
-    // 参数初始化
-    PIGG_WebServer server;
-    server.init(config);
-    std::cout << "-----PIGG_WebServer::init()------" << std::endl;
-
-    server.log_write();
-    my_test.test_log();
-    std::cout << "-----PIGG_WebServer::log_write()------" << std::endl;
-
-    server.sql_pool();           // 数据库连接池
-    std::cout << "-----PIGG_WebServer::sql_pool()------" << std::endl;
-    server.thread_pool();        // 开启线程池
-    std::cout << "-----PIGG_WebServer::thread_pool()------" << std::endl;
-    server.init_trig_mod(0, 0);  // 默认LT+LT,不选择优雅关闭
-    std::cout << "-----PIGG_WebServer::init_trig_mod()------" << std::endl;
-    server.event_listen();       // socket通讯的基本流程，开始建立通讯
-    std::cout << "-----PIGG_WebServer::event_listen()------" << std::endl;
-    std::cout << "-----enent_loop()start------" << std::endl;
-    server.event_loop();         // 整个主程序在这里循环
-
-    // test_namespace(); // 对命名空间使用的测试,正常应该注释掉
-    // PIGG_init_test::PIGG_test main_PIGG_test;        // 普通的生成一个类的实例的调用方法
-    // main_PIGG_test.test_fflush();
-    // qDebug() << QString("imagesNum:%1, ").arg(123)
-
+    Config config;
+    GPlayerServer server(config);
+    server.event_loop();
     return 0;
 }
-
-// int main(int argc,char *argv[]){
-//     test_all();
-//     return 0;
-// }

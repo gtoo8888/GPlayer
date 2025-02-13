@@ -10,8 +10,8 @@ inline bool exist_file(const char *name) {
     printf("%s\n", name);
     struct stat buffer;
     if (stat(name, &buffer) < 0) {
-        // LOG_WARN("%s","PIGG_WebServer::PIGG_WebServer():html file not exist");   // 日志还没有起来
-        printf("%s", "\n!!!!!!PIGG_WebServer::PIGG_WebServer():html file not exist!!!!!\n\n");
+        // LOG_WARN("%s","GPlayerServer::GPlayerServer():html file not exist");   // 日志还没有起来
+        printf("%s", "\n!!!!!!GPlayerServer::GPlayerServer():html file not exist!!!!!\n\n");
         return false;
     } else {
         printf("%s", "html file is exist\n");
@@ -19,15 +19,53 @@ inline bool exist_file(const char *name) {
     }
 }
 
-// 这是在构造PIGG_WebServer的时候检测的，这个时候日志还没有起来
-PIGG_WebServer::PIGG_WebServer() {
+GPlayerServer::GPlayerServer(Config &tmpConfig) {
     // 预先为每个可能的客户连接分配一个http_conn对象
     PIGG_http_users = new PIGG_http_conn[MAX_FD];
     PIGG_users_timer = new PIGG_client_data[MAX_FD];  // 需要分配一下空间，不然后面直接报错
+
+    // 基础配置
+    PIGG_port = tmpConfig.port;
+    PIGG_user = tmpConfig.user;
+    PIGG_password = tmpConfig.passwd;
+    PIGG_databasename = tmpConfig.databasename;
+    PIGG_actor_model = tmpConfig.actor_model;
+
+    // 日志相关
+    PIGG_close_log = tmpConfig.close_log;                        // 是否关闭日志,false才是开启日志
+    PIGG_log_queue = tmpConfig.log_queue;                        // 开启日志队列
+    PIGG_log_record_max = tmpConfig.log_record_max;              // 日志文件记录的最大条数 800000
+    PIGG_block_queue_max_len = tmpConfig.block_queue_max_len;    // 最大阻塞队列长度 2000
+    PIGG_block_queue_max_wait = tmpConfig.block_queue_max_wait;  // 最多有多少个消息可以在队列中等待 800
+
+    // 线程池+mysql连接池
+    PIGG_thread_num = tmpConfig.thread_num;
+    PIGG_sql_num = tmpConfig.sql_num;
+
+    // root文件夹路径
+    char server_path[200];
+    getcwd(server_path, 200);  // 检测当前可执行文件位置
+    // printf("%s\n",server_path);
+    const char *root_path = tmpConfig.html_root.c_str();  // 只需要将string首地址传过去就可以了
+    // exist_file(root_path);
+    PIGG_root_path = (char *)malloc(strlen(server_path) + strlen(root_path) + 1);
+    strcpy(PIGG_root_path, server_path);
+    strcat(PIGG_root_path, root_path);  // fix:覆盖了
+#ifdef _DEBUG                           // 为了vscode调试使用
+    PIGG_root_path = "/data_hdd/GPlayerServer/html_root";
+    printf("_DEBUG\n");
+#endif
+    exist_file(PIGG_root_path);
+
+    log_write();
+    sql_pool();           // 数据库连接池
+    thread_pool();        // 开启线程池
+    init_trig_mod(0, 0);  // 默认LT+LT,不选择优雅关闭
+    event_listen();       // socket通讯的基本流程，开始建立通讯
 }
 
 // 析构的时候需要delete释放
-PIGG_WebServer::~PIGG_WebServer() {
+GPlayerServer::~GPlayerServer() {
     close(PIGG_epollfd);
     close(PIGG_listenfd);
     close(PIGG_pipefd[1]);
@@ -36,43 +74,9 @@ PIGG_WebServer::~PIGG_WebServer() {
     // delete[] PIGG_users_timer;
     // delete PIGG_pool;
 }
-void PIGG_WebServer::init(PIGG_Config &temp_config) {
-    // 基础配置
-    PIGG_port = temp_config.port;
-    PIGG_user = temp_config.user;
-    PIGG_password = temp_config.passwd;
-    PIGG_databasename = temp_config.databasename;
-    PIGG_actor_model = temp_config.actor_model;
-
-    // 日志相关
-    PIGG_close_log = temp_config.close_log;                        // 是否关闭日志,false才是开启日志
-    PIGG_log_queue = temp_config.log_queue;                        // 开启日志队列
-    PIGG_log_record_max = temp_config.log_record_max;              // 日志文件记录的最大条数 800000
-    PIGG_block_queue_max_len = temp_config.block_queue_max_len;    // 最大阻塞队列长度 2000
-    PIGG_block_queue_max_wait = temp_config.block_queue_max_wait;  // 最多有多少个消息可以在队列中等待 800
-
-    // 线程池+mysql连接池
-    PIGG_thread_num = temp_config.thread_num;
-    PIGG_sql_num = temp_config.sql_num;
-
-    // root文件夹路径
-    char server_path[200];
-    getcwd(server_path, 200);  // 检测当前可执行文件位置
-    // printf("%s\n",server_path);
-    const char *root_path = temp_config.html_root.c_str();  // 只需要将string首地址传过去就可以了
-    // exist_file(root_path);
-    PIGG_root_path = (char *)malloc(strlen(server_path) + strlen(root_path) + 1);
-    strcpy(PIGG_root_path, server_path);
-    strcat(PIGG_root_path, root_path);  // fix:覆盖了
-#ifdef _DEBUG                           // 为了vscode调试使用
-    PIGG_root_path = "/data_hdd/PIGG_WebServer/html_root";
-    printf("_DEBUG\n");
-#endif
-    exist_file(PIGG_root_path);
-}
 
 // 只有使用./build/PIGG_webserve才能正确创建
-void PIGG_WebServer::log_write() {
+void GPlayerServer::log_write() {
     if (PIGG_log_queue == true) {  // 是否写日志，开启就是写
         // 缓冲区长度2000, 一个日志文件记录的最大条数800000, 最大阻塞队列长度2000，最多有800个消息可以在队列中等待
         bool flag = PIGG_log::get_instance()->init("./ServerLog", PIGG_close_log, PIGG_block_queue_max_wait,
@@ -91,7 +95,7 @@ void PIGG_WebServer::log_write() {
     }
 }
 
-void PIGG_WebServer::sql_pool() {
+void GPlayerServer::sql_pool() {
     // 初始化数据库连接池
     PIGG_connPool = PIGG_connection_pool::GetInstance();
     PIGG_connPool->init("localhost", PIGG_user, PIGG_password, PIGG_databasename, 3306, PIGG_sql_num, PIGG_close_log);
@@ -108,11 +112,11 @@ void PIGG_WebServer::sql_pool() {
     }
 }
 
-void PIGG_WebServer::thread_pool() {
+void GPlayerServer::thread_pool() {
     PIGG_pool = new PIGG_threadpool<PIGG_http_conn>(PIGG_actor_model, PIGG_connPool, PIGG_thread_num);
 }
 
-void PIGG_WebServer::init_trig_mod(int trig_mode, int opt_LINGER) {
+void GPlayerServer::init_trig_mod(int trig_mode, int opt_LINGER) {
     PIGG_trig_mode = trig_mode;        // 触发模式
     PIGG_opt_LINGER = opt_LINGER;      // 优雅关闭
     if (PIGG_trig_mode == 0) {         // LT+LT
@@ -132,7 +136,7 @@ void PIGG_WebServer::init_trig_mod(int trig_mode, int opt_LINGER) {
 
 // 开始socket监听
 // 很多时钟的内容没有添加
-void PIGG_WebServer::event_listen() {
+void GPlayerServer::event_listen() {
     // 网络编程基础步骤
     //  PF_INET IPV4协议
     //  SOCK_STREAM TCP通讯
@@ -155,7 +159,7 @@ void PIGG_WebServer::event_listen() {
     struct sockaddr_in address;
     bzero(&address, sizeof(address));
     address.sin_family = AF_INET;
-    address.sin_port = htons(PIGG_port);  // 将一个无符号短整型数值转换为网络字节序，即大端模式(big-endian)　
+    address.sin_port = htons(PIGG_port);          // 将一个无符号短整型数值转换为网络字节序，即大端模式(big-endian)　
     address.sin_addr.s_addr = htonl(INADDR_ANY);  // 将主机的无符号长整形数转换成网络字节顺序
 
     int flag = 1;
@@ -192,7 +196,7 @@ void PIGG_WebServer::event_listen() {
 }
 
 // 主程序循环，不断接收请求
-void PIGG_WebServer::event_loop() {
+void GPlayerServer::event_loop() {
     bool timeout = false;
     bool stop_server = false;
 
@@ -237,7 +241,7 @@ void PIGG_WebServer::event_loop() {
 }
 
 // 判断时间
-void PIGG_WebServer::adjust_timer(PIGG_util_timer *timer) {
+void GPlayerServer::adjust_timer(PIGG_util_timer *timer) {
     time_t cur = time(NULL);
     timer->expire = cur + 3 * TIMESLOT;
     PIGG_webserver_utils.PIGG_timer_lst.adjust_timer(timer);
@@ -246,7 +250,7 @@ void PIGG_WebServer::adjust_timer(PIGG_util_timer *timer) {
 }
 
 // 处理时间
-void PIGG_WebServer::deal_timer(PIGG_util_timer *timer, int sockfd) {
+void GPlayerServer::deal_timer(PIGG_util_timer *timer, int sockfd) {
     timer->PIGG_cb_func(&PIGG_users_timer[sockfd]);
     if (timer) {
         PIGG_webserver_utils.PIGG_timer_lst.del_timer(timer);
@@ -255,7 +259,7 @@ void PIGG_WebServer::deal_timer(PIGG_util_timer *timer, int sockfd) {
 }
 
 // 处理客户端的数据
-bool PIGG_WebServer::deal_client_data() {
+bool GPlayerServer::deal_client_data() {
     struct sockaddr_in PIGG_client_addr;
     socklen_t PIGG_client_addr_len = sizeof(PIGG_client_addr);
     if (PIGG_listen_trig_mode == 0) {
@@ -290,7 +294,7 @@ bool PIGG_WebServer::deal_client_data() {
 }
 
 // 处理信号
-bool PIGG_WebServer::deal_with_signal(bool &timeout, bool &stop_server) {
+bool GPlayerServer::deal_with_signal(bool &timeout, bool &stop_server) {
     int ret = 0;
     int sig;
     char signals[1024];
@@ -317,7 +321,7 @@ bool PIGG_WebServer::deal_with_signal(bool &timeout, bool &stop_server) {
 }
 
 // 处理读取
-void PIGG_WebServer::deal_with_read(int sockfd) {
+void GPlayerServer::deal_with_read(int sockfd) {
     // 创建定时器临时变量，将该连接对应的定时器取出来
     PIGG_util_timer *timer = PIGG_users_timer[sockfd].PIGG_timer;
 
@@ -363,7 +367,7 @@ void PIGG_WebServer::deal_with_read(int sockfd) {
 }
 
 // 处理写
-void PIGG_WebServer::deal_with_write(int sockfd) {
+void GPlayerServer::deal_with_write(int sockfd) {
     PIGG_util_timer *timer = PIGG_users_timer[sockfd].PIGG_timer;
     // reactor
     if (PIGG_actor_model) {
@@ -393,7 +397,7 @@ void PIGG_WebServer::deal_with_write(int sockfd) {
     }
 }
 
-void PIGG_WebServer::PIGG_timer(int connfd, struct sockaddr_in clinet_address) {
+void GPlayerServer::PIGG_timer(int connfd, struct sockaddr_in clinet_address) {
     PIGG_http_users[connfd].init(connfd, clinet_address, PIGG_root_path, PIGG_conn_trig_mode, PIGG_close_log, PIGG_user,
                                  PIGG_password, PIGG_databasename);
 
@@ -403,12 +407,12 @@ void PIGG_WebServer::PIGG_timer(int connfd, struct sockaddr_in clinet_address) {
     PIGG_users_timer[connfd].sockfd = connfd;
     PIGG_users_timer[connfd].address = clinet_address;
 
-    PIGG_util_timer *timer = new PIGG_util_timer;  // 创建定时器临时变量
-    timer->user_data = &PIGG_users_timer[connfd];  // 设置定时器对应的连接资源
-    timer->PIGG_cb_func = PIGG_cb_func;            // 设置回调函数
+    PIGG_util_timer *timer = new PIGG_util_timer;          // 创建定时器临时变量
+    timer->user_data = &PIGG_users_timer[connfd];          // 设置定时器对应的连接资源
+    timer->PIGG_cb_func = PIGG_cb_func;                    // 设置回调函数
 
     time_t cur = time(NULL);
-    timer->expire = cur + 3 * TIMESLOT;            // 设置绝对超时时间
-    PIGG_users_timer[connfd].PIGG_timer = timer;   // 创建该连接对应的定时器，初始化为前述临时变量
+    timer->expire = cur + 3 * TIMESLOT;                    // 设置绝对超时时间
+    PIGG_users_timer[connfd].PIGG_timer = timer;           // 创建该连接对应的定时器，初始化为前述临时变量
     PIGG_webserver_utils.PIGG_timer_lst.add_timer(timer);  // 将该定时器添加到链表中
 }

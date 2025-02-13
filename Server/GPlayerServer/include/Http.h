@@ -40,21 +40,21 @@ public:
         CHECK_STATE_CONTENT            // 解析消息体，仅用于解析POST请求
     };
 
-    enum PIGG_HTTP_CODE {              // 报文解析的结果
+    enum HTTP_CODE {                   // 报文解析的结果
         NO_REQUEST,                    // 请求不完整，需要继续读取请求报文数据
         GET_REQUEST,                   // 获得了完整的HTTP请求
         BAD_REQUEST,                   // HTTP请求报文有语法错误
         FORBIDDEN_REQUEST,             // 禁止请求 forbidden
         FILE_REQUEST,
-        INTERNAL_ERROR,  // 服务器内部错误 internal 该结果在主状态机逻辑switch的default下，一般不会触发
-        CLOSED_CONNECTION,   // 关闭连接
-        NO_SOURCE            // 没有请求的资源
+        INTERNAL_ERROR,                // 服务器内部错误 internal 该结果在主状态机逻辑switch的default下，一般不会触发
+        CLOSED_CONNECTION,             // 关闭连接
+        NO_SOURCE                      // 没有请求的资源
     };
 
-    enum PIGG_LINE_STATUS {  // 从状态机的状态
-        LINE_OK = 0,         // 完整读取一行
-        LINE_BAD,            // 报文语法有误
-        LINE_OPEN            // 读取的行不完整
+    enum PIGG_LINE_STATUS {            // 从状态机的状态
+        LINE_OK = 0,                   // 完整读取一行
+        LINE_BAD,                      // 报文语法有误
+        LINE_OPEN                      // 读取的行不完整
     };
 
 public:
@@ -80,16 +80,16 @@ public:
 
 private:
     void init();
-    PIGG_HTTP_CODE parse_request_line(char *text);  // 主状态机解析报文中的请求行数据
-    PIGG_HTTP_CODE parse_headers(char *text);       // 主状态机解析报文中的请求头数据
-    PIGG_HTTP_CODE parse_content(char *text);       // 主状态机解析报文中的请求内容
-    PIGG_HTTP_CODE process_read();                  // 从m_read_buf读取，并处理请求报文
-    PIGG_HTTP_CODE do_request();                    // 生成响应报文
-    PIGG_LINE_STATUS parse_line();                  // 从状态机读取一行，分析是请求报文的哪一部分
+    HTTP_CODE parse_request_line(char *text);  // 主状态机解析报文中的请求行数据
+    HTTP_CODE parse_headers(char *text);       // 主状态机解析报文中的请求头数据
+    HTTP_CODE parse_content(char *text);       // 主状态机解析报文中的请求内容
+    HTTP_CODE process_read();                  // 从m_read_buf读取，并处理请求报文
+    HTTP_CODE do_request();                    // 生成响应报文
+    PIGG_LINE_STATUS parse_line();             // 从状态机读取一行，分析是请求报文的哪一部分
 
     void unmap();
-    bool process_write(PIGG_HTTP_CODE read_ret);    // 向m_write_buf写入响应报文数据
-                                                  // 根据响应报文格式，生成对应8个部分，以下函数均由do_request调用
+    bool process_write(HTTP_CODE read_ret);    // 向m_write_buf写入响应报文数据
+                                               // 根据响应报文格式，生成对应8个部分，以下函数均由do_request调用
     bool add_response(const char *format, ...);
     bool add_status_line(int status, const char *title);
     bool add_headers(int content_len);

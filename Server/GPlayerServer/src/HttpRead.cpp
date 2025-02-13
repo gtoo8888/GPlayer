@@ -12,8 +12,8 @@ std::map<std::string, std::string> users;
 PIGG_http_conn::PIGG_LINE_STATUS PIGG_http_conn::parse_line() {
     char temp;
     for (; PIGG_checked_idx < PIGG_read_idx; ++PIGG_checked_idx) {
-        temp = PIGG_read_buf[PIGG_checked_idx];  // temp为将要分析的字节
-        if (temp == '\r') {                      // 如果当前是\r字符，则有可能会读取到完整行
+        temp = PIGG_read_buf[PIGG_checked_idx];           // temp为将要分析的字节
+        if (temp == '\r') {                               // 如果当前是\r字符，则有可能会读取到完整行
             if ((PIGG_checked_idx + 1) == PIGG_read_idx)  // 下一个字符达到了buffer结尾，则接收不完整，需要继续接收
                 return LINE_OPEN;
             else if (PIGG_read_buf[PIGG_checked_idx + 1] == '\n') {  // 下一个字符是\n，将\r\n改为\0\0
@@ -38,7 +38,7 @@ PIGG_http_conn::PIGG_LINE_STATUS PIGG_http_conn::parse_line() {
 }
 
 // 解析http请求行，获得请求方法，目标url及http版本号
-PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::parse_request_line(char *text) {
+PIGG_http_conn::HTTP_CODE PIGG_http_conn::parse_request_line(char *text) {
     /*************************************处理url******************************/
     PIGG_url = strpbrk(text, " \t");  // str1 中第一个匹配字符串 str2 中字符的字符数
     if (!PIGG_url) {
@@ -78,7 +78,7 @@ PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::parse_request_line(char *text) {
 }
 
 // 解析http请求的一个头部信息
-PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::parse_headers(char *text) {
+PIGG_http_conn::HTTP_CODE PIGG_http_conn::parse_headers(char *text) {
     if (text[0] == '\0') {
         if (PIGG_content_length != 0) {
             PIGG_check_status = CHECK_STATE_CONTENT;
@@ -106,7 +106,7 @@ PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::parse_headers(char *text) {
 }
 
 // 判断http请求是否被完整读入
-PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::parse_content(char *text) {
+PIGG_http_conn::HTTP_CODE PIGG_http_conn::parse_content(char *text) {
     if (PIGG_read_idx >= (PIGG_content_length + PIGG_checked_idx)) {
         text[PIGG_content_length] = '\0';
         PIGG_string = text;  // POST请求中最后为输入的用户名和密码
@@ -115,7 +115,7 @@ PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::parse_content(char *text) {
     return NO_REQUEST;
 }
 
-PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::do_request() {
+PIGG_http_conn::HTTP_CODE PIGG_http_conn::do_request() {
     strcpy(PIGG_real_file, PIGG_doc_root);  // 把 doc_root 所指向的字符串复制到 PIGG_real_file
     int len = strlen(PIGG_doc_root);
     const char *p = strrchr(PIGG_url, '/');
@@ -223,10 +223,10 @@ PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::do_request() {
 // 读取的进程
 // m_start_line是行在buffer中的起始位置，将该位置后面的数据赋给text
 // 此时从状态机已提前将一行的末尾字符\r\n变为\0\0，所以text可以直接取出完整的行进行解析
-PIGG_http_conn::PIGG_HTTP_CODE PIGG_http_conn::process_read() {
+PIGG_http_conn::HTTP_CODE PIGG_http_conn::process_read() {
     // 初始化从状态机状态、HTTP请求解析结果
     PIGG_LINE_STATUS line_status = LINE_OK;
-    PIGG_HTTP_CODE ret = NO_REQUEST;
+    HTTP_CODE ret = NO_REQUEST;
     char *text = 0;
 
     // 这里为什么要写两个判断条件？第一个判断条件为什么这样写？

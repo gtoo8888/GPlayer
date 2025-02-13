@@ -21,12 +21,11 @@
 const int MAX_EVENT_NUMBER = 10;  // 最大事件数
 const int TIMESLOT = 5;           // 最小超时单位
 
-class PIGG_WebServer {
+class GPlayerServer {
 public:
-    PIGG_WebServer();
-    ~PIGG_WebServer();
-
-    void init(PIGG_Config& temp_config);
+    GPlayerServer() = default;
+    GPlayerServer(Config& tmpConfig);
+    ~GPlayerServer();
 
     void log_write();
     void sql_pool();                                          // 初始化mysql的连接池子

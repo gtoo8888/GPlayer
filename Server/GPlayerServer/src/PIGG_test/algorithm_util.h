@@ -3,82 +3,81 @@
 
 // #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
 
-#include <iostream>
-#include <cmath>
-#include <vector>
 #include <algorithm>
-#include <set>
+#include <cmath>
+#include <iostream>
 #include <map>
+#include <numeric>  // iota() ÊâπÈáèÈÄíÂ¢û
 #include <queue>
+#include <set>
 #include <stack>
-#include <unordered_set>
 #include <unordered_map>
-#include <numeric> // iota() ≈˙¡øµ›‘ˆ
-//#include <iomanip>//<< setw(5)
+#include <unordered_set>
+#include <vector>
+// #include <iomanip>//<< setw(5)
 using namespace std;
 
-// ◊Ó¥Û÷ “Ú ˝
-int gcd(int a,int b) { return b?gcd(b,a%b):a;}
-
-// ◊Ó–°π´±∂ ˝
-int lcm(int m,int g)  {
-     return m/gcd(m,g)*g;
+// ÊúÄÂ§ßË¥®Âõ†Êï∞
+int gcd(int a, int b) {
+    return b ? gcd(b, a % b) : a;
 }
 
-class PrintVector{
+// ÊúÄÂ∞èÂÖ¨ÂÄçÊï∞
+int lcm(int m, int g) {
+    return m / gcd(m, g) * g;
+}
+
+class PrintVector {
 public:
-	void operator ()(int val) {
-		cout << val << " ";
-	}
+    void operator()(int val) {
+        cout << val << " ";
+    }
 };
 //	for_each(temp.begin(),temp.end(),printVector());
 
-// ◊Ó‘Áµƒ∑Ω∑®
+// ÊúÄÊó©ÁöÑÊñπÊ≥ï
 // void PrintVector(vector<int> v){
 // 	for(auto it = v.begin();it != v.end();it++)
 // 		cout << *it << " ";
-// 	cout << endl; 
+// 	cout << endl;
 // }
 
-// ≥£”√µƒ∑Ω∑®
+// Â∏∏Áî®ÁöÑÊñπÊ≥ï
 // void PrintVector(vector<int> v){
 // 	for(auto it : v)
 // 		cout << it << " ";
 // 	cout << endl;
 // }
 
-//  π”√ƒ£∞Â¿¥ºÚªØ
-template<typename T>
-void PrintVector(vector<T> v){
-	for(auto it : v)
-		cout << it << " ";
-	cout << endl;
+// ‰ΩøÁî®Ê®°ÊùøÊù•ÁÆÄÂåñ
+template <typename T>
+void PrintVector(vector<T> v) {
+    for (auto it : v) cout << it << " ";
+    cout << endl;
 }
-// ƒ£∞Â∆´ÃÿªØ
-// ∂‘”⁄string”–Ãÿ ‚¥¶¿Ì
+// Ê®°ÊùøÂÅèÁâπÂåñ
+// ÂØπ‰∫éstringÊúâÁâπÊÆäÂ§ÑÁêÜ
 // template<typename T>
-void PrintVector(vector<string> v){
-	for(auto it : v)
-		cout << it << endl;
+void PrintVector(vector<string> v) {
+    for (auto it : v) cout << it << endl;
 }
 
 // void PrintSet(set<int> s) {
 // 	for(set<int>::iterator it = s.begin();it != s.end();it++)
 // 		printf("%d ",*it);
-// 	cout << endl;	
+// 	cout << endl;
 // }
 
 // void PrintSet(set<int> s) {
 // 	for(auto it : s)
 // 		cout << it << endl;
-// 	cout << endl;	
+// 	cout << endl;
 // }
 
-template<typename T>
+template <typename T>
 void PrintSet(set<T> s) {
-	for(auto it : s)
-		cout << it << endl;
-	cout << endl;	
+    for (auto it : s) cout << it << endl;
+    cout << endl;
 }
 
 // void PrintMap(map<int,int> m) {
@@ -86,73 +85,71 @@ void PrintSet(set<T> s) {
 // // 		cout << (*it).first << " " << it->second << endl;
 // 	for(auto it : m)
 // 		printf("%d %d\n",it.first,it.second);
-// 	cout << endl;	
+// 	cout << endl;
 // }
 
-template<typename T,typename N>
-void PrintMap(map<T,T> m) {
-	for(auto it = m.begin();it != m.end();it++)
-		cout << (*it).first << " " << it->second << endl;
-	cout << endl;	
+template <typename T, typename N>
+void PrintMap(map<T, T> m) {
+    for (auto it = m.begin(); it != m.end(); it++) cout << (*it).first << " " << it->second << endl;
+    cout << endl;
 }
 
-template<typename T>
+template <typename T>
 void PrintUnorder_Set(unordered_set<T> m) {
-	for(auto it : m)
-		cout << it << " ";
-	cout << endl;	
+    for (auto it : m) cout << it << " ";
+    cout << endl;
 }
 
 // void PrintUnorder_Map(unordered_map<char,int> m) {
 // 	for(auto it : m)
 // 		cout << it.first << " " << it.second << endl;
 // 		// printf("%d %d\n",it.first,it.second);
-// 	cout << endl;	
+// 	cout << endl;
 // }
 
-template<typename T,typename N>
-void PrintUnorder_Map(unordered_map<T,N> m) {
-	for(auto it : m)
-		cout << it.first << " " << it.second << endl;
-	cout << endl;	
+template <typename T, typename N>
+void PrintUnorder_Map(unordered_map<T, N> m) {
+    for (auto it : m) cout << it.first << " " << it.second << endl;
+    cout << endl;
 }
 
-
-vector<int> NumSeparate(int n) {//√ø∏ˆŒª≤ø™
-	vector<int> ans;
-	int temp = n;
-	while(temp != 0){
-		ans.push_back(temp%10);
-		temp = temp / 10;			
-	}
-	return ans;
+vector<int> NumSeparate(int n) {  // ÊØè‰∏™‰ΩçÊãÜÂºÄ
+    vector<int> ans;
+    int temp = n;
+    while (temp != 0) {
+        ans.push_back(temp % 10);
+        temp = temp / 10;
+    }
+    return ans;
 }
 
-template<typename T>
-void PrintStack(stack<T> st){
-	while(!st.empty()){
-		cout << st.top() << " ";
-		st.pop();
-	}
-	cout << endl; 
+template <typename T>
+void PrintStack(stack<T> st) {
+    while (!st.empty()) {
+        cout << st.top() << " ";
+        st.pop();
+    }
+    cout << endl;
 }
 
-template<typename T>
-void PrintQueue(queue<T> q){
-	while(!q.empty()){
-		cout << q.front() << endl;
-		q.pop();
-	}
-	cout << endl; 
-}
-	
-void PrintBool(bool val){
-	if(val == true)		cout << "true" << endl;
-	else				cout << "false" << endl;
-	cout << endl;
+template <typename T>
+void PrintQueue(queue<T> q) {
+    while (!q.empty()) {
+        cout << q.front() << endl;
+        q.pop();
+    }
+    cout << endl;
 }
 
-// ◊Ó‘≠ ºµƒ∑Ω∑®
+void PrintBool(bool val) {
+    if (val == true)
+        cout << "true" << endl;
+    else
+        cout << "false" << endl;
+    cout << endl;
+}
+
+// ÊúÄÂéüÂßãÁöÑÊñπÊ≥ï
 // void PrintVVector(vector<vector<int>>& v){
 // 	for(auto iter = v.begin();iter != v.end();iter++){
 // 		auto it_temp = *iter;
@@ -163,7 +160,7 @@ void PrintBool(bool val){
 // 	cout << endl;
 // }
 
-// ≥£”√µƒ∑Ω∑®
+// Â∏∏Áî®ÁöÑÊñπÊ≥ï
 // void PrintVVector(vector<vector<int>>& v){
 // 	for(auto iter : v){
 // 		auto it_tmp = iter;
@@ -174,138 +171,137 @@ void PrintBool(bool val){
 // 	cout << endl;
 // }
 
-//  π”√ƒ£∞ÂºÚªØ∫Ø ˝
-template<typename T>
-void PrintVVector(vector<vector<T>> v){
-	for(auto iter : v){
-		auto it_tmp = iter;
-		for(auto it : it_tmp)
-			cout << it << " ";
-		cout << endl;
-	}
-	cout << endl;
+// ‰ΩøÁî®Ê®°ÊùøÁÆÄÂåñÂáΩÊï∞
+template <typename T>
+void PrintVVector(vector<vector<T>> v) {
+    for (auto iter : v) {
+        auto it_tmp = iter;
+        for (auto it : it_tmp) cout << it << " ";
+        cout << endl;
+    }
+    cout << endl;
 }
 
-
-void PrintVVVector(vector<vector<vector<int>>> grid){
-	int n = grid.size();
-	int m = grid[0].size();
-	int l = grid[0][0].size();
-	int k = 0;
-	for(int k = 0;k < l;k++){	// ∞—√ø“ª√Êµƒ ˝◊È◊˜Œ™“ª∏ˆ«–∆¨
-		for(int i = 0;i < n;i++){
-			for(int j = 0;j < m;j++){
-				cout << grid[i][j][k] << " ";		
-			}
-			cout << endl;
-		}	
-		cout << endl;
-	}
-	cout << endl;
+void PrintVVVector(vector<vector<vector<int>>> grid) {
+    int n = grid.size();
+    int m = grid[0].size();
+    int l = grid[0][0].size();
+    int k = 0;
+    for (int k = 0; k < l; k++) {  // ÊääÊØè‰∏ÄÈù¢ÁöÑÊï∞ÁªÑ‰Ωú‰∏∫‰∏Ä‰∏™ÂàáÁâá
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                cout << grid[i][j][k] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
 
-void PrintPriQueue(priority_queue<long,vector<int>,greater<long>> pri){
-	while(!pri.empty()){
-		cout << pri.top() << endl;
-		pri.pop();
-	}
+void PrintPriQueue(priority_queue<long, vector<int>, greater<long>> pri) {
+    while (!pri.empty()) {
+        cout << pri.top() << endl;
+        pri.pop();
+    }
 }
 
-struct ListNode{
-	int val;
-	ListNode *next;
-	ListNode() : val(0), next(nullptr) {}
-	ListNode(int x) : val(x), next(nullptr) {}
-	ListNode(int x,ListNode *next) : val(x), next(next){}
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode()
+        : val(0),
+          next(nullptr) {
+    }
+    ListNode(int x)
+        : val(x),
+          next(nullptr) {
+    }
+    ListNode(int x, ListNode* next)
+        : val(x),
+          next(next) {
+    }
 };
 
-// Õ∑≈newø™±Ÿµƒø’º‰£¨≤ªΩ¯––ª·µº÷¬ƒ⁄¥Ê–π¬©
-void releaseNode(ListNode* node)
-{
+// ÈáäÊîænewÂºÄËæüÁöÑÁ©∫Èó¥Ôºå‰∏çËøõË°å‰ºöÂØºËá¥ÂÜÖÂ≠òÊ≥ÑÊºè
+void releaseNode(ListNode* node) {
     ListNode* temp = NULL;
     if (node == NULL)
-        cout << "¡¥±ÌΩ⁄µ„ƒ⁄¥ÊŒ™ø’\n";
+        cout << "ÈìæË°®ËäÇÁÇπÂÜÖÂ≠ò‰∏∫Á©∫\n";
     else
-	    while (node != NULL){
-	        temp = node;
-	        node = node->next;
-	        delete temp;
-	        cout << "Ω⁄µ„ƒ⁄¥Ê«Â≥˝≥…π¶\n";
-	    }
+        while (node != NULL) {
+            temp = node;
+            node = node->next;
+            delete temp;
+            cout << "ËäÇÁÇπÂÜÖÂ≠òÊ∏ÖÈô§ÊàêÂäü\n";
+        }
 }
 
-// ¥¥Ω®¡–±ÌΩ⁄µ„
-ListNode* CreateListNode(vector<int> value){
-	int len = value.size();
-	ListNode* head = new ListNode(value[len -1]);
-	for(int i = 1;i < len;i++)
-		head = new ListNode(value[len-1-i],head);
-	return head;
+// ÂàõÂª∫ÂàóË°®ËäÇÁÇπ
+ListNode* CreateListNode(vector<int> value) {
+    int len = value.size();
+    ListNode* head = new ListNode(value[len - 1]);
+    for (int i = 1; i < len; i++) head = new ListNode(value[len - 1 - i], head);
+    return head;
 }
 
-// ‰≥ˆ¡¥±Ì 
-void PrintListNode(ListNode* head){
-	while(head != nullptr){
-		cout << head -> val << " ";
-		head = head -> next;
-	}
-	cout << endl;
+// ËæìÂá∫ÈìæË°®
+void PrintListNode(ListNode* head) {
+    while (head != nullptr) {
+        cout << head->val << " ";
+        head = head->next;
+    }
+    cout << endl;
 }
 
-//n & 1 == 1≈–∂œ’‚“ªŒª «≤ª «1
-//n | 0 == 0≈–∂œ’‚“ªŒª «≤ª «0
-//∂˛Ω¯÷∆ ‰≥ˆ
-// “ª∂®“™∞— ‰»Îµƒ ˝◊÷«ø÷∆◊™ªØ≥…uint32_tµƒ
-// »Áπ˚ «int¿‡–Õ,Œ™∏∫ ˝µƒ ±∫Ú£¨ª·Ω¯»ÎÀ¿—≠ª∑£¨Œﬁ∑® ‰≥ˆ
-void PrintBit(uint32_t n) {	// uint32_t±£÷§¡À ‰»ÎŒ™∏∫ ˝ ±£¨≤ªª·±®¥Ì
-	string str;
-	while(n != 0) {
-		if(n & 1 == 1)  
-			str.push_back('1');
-		else   
-			str.push_back('0');
-		n >>= 1;
-	}
-	reverse(str.begin(),str.end());
-	cout << str << endl;
+// n & 1 == 1Âà§Êñ≠Ëøô‰∏Ä‰ΩçÊòØ‰∏çÊòØ1
+// n | 0 == 0Âà§Êñ≠Ëøô‰∏Ä‰ΩçÊòØ‰∏çÊòØ0
+// ‰∫åËøõÂà∂ËæìÂá∫
+//  ‰∏ÄÂÆöË¶ÅÊääËæìÂÖ•ÁöÑÊï∞Â≠óÂº∫Âà∂ËΩ¨ÂåñÊàêuint32_tÁöÑ
+//  Â¶ÇÊûúÊòØintÁ±ªÂûã,‰∏∫Ë¥üÊï∞ÁöÑÊó∂ÂÄôÔºå‰ºöËøõÂÖ•Ê≠ªÂæ™ÁéØÔºåÊó†Ê≥ïËæìÂá∫
+void PrintBit(uint32_t n) {  // uint32_t‰øùËØÅ‰∫ÜËæìÂÖ•‰∏∫Ë¥üÊï∞Êó∂Ôºå‰∏ç‰ºöÊä•Èîô
+    string str;
+    while (n != 0) {
+        if (n & 1 == 1)
+            str.push_back('1');
+        else
+            str.push_back('0');
+        n >>= 1;
+    }
+    reverse(str.begin(), str.end());
+    cout << str << endl;
 }
 
-int str_to_num(string str){
-	reverse(str.begin(),str.end());
-	// cout << str << endl;
-	int num = 0;
-	for(int i = 0;i < str.size();i++){	
-		// ∑µªÿ∏°µ„ ˝£¨»Áπ˚≤ªœÚ…œ»°’˚æÕ”–æ´∂»Œ Ã‚,9*100.00ª·±‰≥…999
-		num += (str[i]-'0')*ceil(pow(10,i));
-		// printf("%d %d %f\n",num,i,ceil(pow(10,i));
-	}
-	return num;
+int str_to_num(string str) {
+    reverse(str.begin(), str.end());
+    // cout << str << endl;
+    int num = 0;
+    for (int i = 0; i < str.size(); i++) {
+        // ËøîÂõûÊµÆÁÇπÊï∞ÔºåÂ¶ÇÊûú‰∏çÂêë‰∏äÂèñÊï¥Â∞±ÊúâÁ≤æÂ∫¶ÈóÆÈ¢ò,9*100.00‰ºöÂèòÊàê999
+        num += (str[i] - '0') * ceil(pow(10, i));
+        // printf("%d %d %f\n",num,i,ceil(pow(10,i));
+    }
+    return num;
 }
 
-string num_to_str(int num){
-	string str;
-	while(num != 0){
-		int tmp = num%10;
-		str.push_back('0'+tmp);
-		num /= 10;
-	}
-	reverse(str.begin(),str.end());
-	return str;
-}
-		
-void turnVVector(string str1){
-	for(int i = 0;i < str1.size();i++){
-		if(str1[i] == '[')
-			str1[i] = '{';
-		if(str1[i] == ']')
-			str1[i] = '}';
-		if(str1[i] == '\"')
-			str1[i] = '\'';
-	}
-	cout << str1 << endl;
+string num_to_str(int num) {
+    string str;
+    while (num != 0) {
+        int tmp = num % 10;
+        str.push_back('0' + tmp);
+        num /= 10;
+    }
+    reverse(str.begin(), str.end());
+    return str;
 }
 
-
+void turnVVector(string str1) {
+    for (int i = 0; i < str1.size(); i++) {
+        if (str1[i] == '[') str1[i] = '{';
+        if (str1[i] == ']') str1[i] = '}';
+        if (str1[i] == '\"') str1[i] = '\'';
+    }
+    cout << str1 << endl;
+}
 
 #endif /* _ALGORITHM_UTIL_ */
-

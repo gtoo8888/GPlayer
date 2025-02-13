@@ -1,16 +1,19 @@
 #include "global.h"
 
-
-
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         printf("need video file:\r\n");
         return -1;
     }
-    const char *inputFileName = argv[1];
+
+    std::string inputFileName = std::string(argv[1]);
+    MediaProfiler mediaProfiler(std::string(argv[1]));
+
+    TranscodingManager *transcodingManager(MediaProfiler);
+
     AVFormatContext *pFormatCtx = nullptr;
 
-    if (avformat_open_input(&pFormatCtx, inputFileName, NULL, NULL) != 0) {
+    if (avformat_open_input(&pFormatCtx, inputFileName.c_str(), NULL, NULL) != 0) {
         fprintf(stderr, "cant open file\n");
         return -1;
     }
@@ -19,7 +22,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "cant find stream info\n");
         return -1;
     }
-    av_dump_format(pFormatCtx, 0, inputFileName, 0);
+    av_dump_format(pFormatCtx, 0, inputFileName.c_str(), 0);
 
     int videoStream = -1;
     AVCodecParameters *pCodecParams = nullptr;

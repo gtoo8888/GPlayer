@@ -40,6 +40,7 @@ typedef double float64;
 #include <memory>
 #include <sstream>
 #include <string>
+#include <queue>
 #include <unordered_map>
 #include <vector>
 
@@ -48,6 +49,9 @@ extern "C" {
 #include <libavformat/avformat.h>
 }
 
-#include "video_decode.h"
+#include "MediaProfiler.h"
+#include "FFmpegDecoder.h"
+#include "TranscodingManager.h"
+#include "TranscodingTask.h"
 
 #endif  // GLOBAL_H

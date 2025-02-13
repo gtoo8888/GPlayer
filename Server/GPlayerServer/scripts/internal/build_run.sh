@@ -30,9 +30,10 @@ function build_all() {
 
 
 function run_demo() {
-    exe_file=./
-    config_file=config/
-    ${exe_file} ${config_file}
+    exe_file=./archives/Debug/bin/GXCodec_d
+    # config_file=config/
+    ${exe_file} /date_sdb/soft/0_my_test/7_ffmpeg/test_video/test1.mp4
+    # ${exe_file} ${config_file}
 }
 
 

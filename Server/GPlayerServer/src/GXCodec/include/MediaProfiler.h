@@ -4,11 +4,12 @@
 #include "global.h"
 
 class MediaProfiler {
-    public:
+public:
     MediaProfiler();
     MediaProfiler(std::string filePath);
     ~MediaProfiler() = default;
 
+    std::string mInputFilename;
 };
 
 #endif  // MEDIAPROFILER_H

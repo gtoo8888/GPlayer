@@ -5,8 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/**",
-                "/usr/local/ffmpeg/include",
-                "src/GXCodec/include/**",
+                // "/usr/local/ffmpeg/include",
+                "3rdparty/**",
+                "src/GXCodec/include/**"
             ],
             "defines": [
                 "_DEBUG",

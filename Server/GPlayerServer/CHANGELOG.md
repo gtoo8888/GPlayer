@@ -1,5 +1,9 @@
 # CHANGELOG
 
+Fri Feb 14 2025 13:47 - v0.0.3
+  - feat: 增加了spdlog作为日志
+  - feat: 获取视频format信息
+
 Thu Feb 13 2025 17:43 - v0.0.2
   - refactor: 修改变量名，去除无效代码，暂时关闭jsoncpp使用
   - refactor: 重新整理文件结构

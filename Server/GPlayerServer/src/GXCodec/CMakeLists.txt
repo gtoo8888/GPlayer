@@ -35,9 +35,13 @@ include_directories("include")
 
 link_directories(/usr/local/ffmpeg/lib/)
 
+find_package(spdlog REQUIRED)
+
 target_link_libraries(${PROJECT_NAME}
     /usr/local/ffmpeg/lib/libavcodec.so
     /usr/local/ffmpeg/lib/libavformat.so
+    /usr/local/ffmpeg/lib/libavutil.so
+    spdlog::spdlog
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX _d)

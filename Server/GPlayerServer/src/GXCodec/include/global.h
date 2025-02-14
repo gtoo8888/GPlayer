@@ -38,9 +38,9 @@ typedef double float64;
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <queue>
 #include <sstream>
 #include <string>
-#include <queue>
 #include <unordered_map>
 #include <vector>
 
@@ -49,9 +49,11 @@ extern "C" {
 #include <libavformat/avformat.h>
 }
 
-#include "MediaProfiler.h"
 #include "FFmpegDecoder.h"
-#include "TranscodingManager.h"
-#include "TranscodingTask.h"
+#include "GXCodecLogger.h"
+#include "GXCodecManager.h"
+#include "GXCodecTask.h"
+#include "MediaProfiler.h"
+#include "Version.h"
 
 #endif  // GLOBAL_H

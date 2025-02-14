@@ -8,5 +8,6 @@ void GXCodecManager::pushMedia(MediaProfiler* mediaProfiler) {
 }
 
 void GXCodecManager::run() {
-    mpTranscodingTask->run();
+    // mpTranscodingTask->run();
+    mpTranscodingTask->splitAudioStream();
 }

@@ -13,9 +13,13 @@ public:
 
     bool run(void);
     bool splitAudioStream(void);
+
     bool openFile(void);
-    bool getStreamInfo(void);
+    bool showFormatInfo(void);
+    bool showStreamInfo(AVFormatContext* formatCtx) ;
     bool getCoder(void);
+    bool saveAudioFile(void);
+    bool saveVideoFile(void);
     bool free(void);
 
     MediaProfiler* mpMediaProfiler = nullptr;

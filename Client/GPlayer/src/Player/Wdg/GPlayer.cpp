@@ -95,6 +95,7 @@ GPlayer::GPlayer(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::GPlayer) {
     mspReadThread = std::make_shared<ReadThread>();
+    mspReadVideoThread = std::make_shared<ReadVoiceThread>();
     // QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); // 没有用
     // qDebug() << QString::fromLocal8Bit("中文");
     // testSDL();
@@ -213,6 +214,7 @@ void GPlayer::slotShowVideoCtrl(void) {
 void GPlayer::slotStartVideo(void) {
     if (ui->btnStart->text() == "start") {
         mspReadThread->open(nowPlayFilePath);
+        mspReadVideoThread->open(nowPlayFilePath);
     } else {
         mspReadThread->close();
     }

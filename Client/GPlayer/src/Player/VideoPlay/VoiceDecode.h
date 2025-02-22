@@ -14,7 +14,7 @@ public:
     VoiceDecode() = default;
     ~VoiceDecode() = default;
 
-    bool open(const QString& m_url);
+    bool open(const QString& mUrl);
 
 private:
     AVFormatContext* pFormatCtx = nullptr;

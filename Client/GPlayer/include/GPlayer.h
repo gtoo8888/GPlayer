@@ -11,7 +11,7 @@ class Version {
 public:
     static const uint8 major = 0;
     static const uint8 minor = 0;
-    static const uint8 patch = 2;
+    static const uint8 patch = 3;
 
     static std::string getVersionStr(void) {
         char version[15];
@@ -61,6 +61,7 @@ private:
     Ui::GPlayer* ui;
     std::string msPlayerTitile;
     std::shared_ptr<ReadThread> mspReadThread;
+    std::shared_ptr<ReadVideoThread> mspReadVideoThread;
     int64_t mProgressBarMin = 0;
     int64_t mProgressBarMax = 100;
     QString nowPlayFilePath = QString("");

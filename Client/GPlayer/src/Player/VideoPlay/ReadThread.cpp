@@ -10,7 +10,6 @@
 ReadThread::ReadThread(QObject *parent)
     : QThread(parent) {
     mVideoDecode = new VideoDecode();
-    mVoiceDecode = new VoiceDecode();
 
     qRegisterMetaType<PlayState>("PlayState");  // 注册自定义枚举类型，否则信号槽无法发送
 }
@@ -23,22 +22,22 @@ ReadThread::~ReadThread() {
 
 void ReadThread::open(const QString &url) {
     if (!this->isRunning()) {
-        m_url = url;
+        mUrl = url;
         emit this->start();
     }
 }
 
 void ReadThread::pause(bool flag) {
-    m_pause = flag;
+    mPause = flag;
 }
 
 void ReadThread::close() {
-    m_play = false;
-    m_pause = false;
+    mPlay = false;
+    mPause = false;
 }
 
 const QString &ReadThread::url() {
-    return m_url;
+    return mUrl;
 }
 
 // 非阻塞延时
@@ -50,32 +49,32 @@ void sleepMsec(int msec) {
 }
 
 void ReadThread::run() {
-    bool ret = mVideoDecode->open(m_url);  // 打开网络流时会比较慢，如果放到Ui线程会卡
-    ret = mVoiceDecode->open(m_url);
+    bool ret = mVideoDecode->open(mUrl);  // 打开网络流时会比较慢，如果放到Ui线程会卡
+    // ret = mVoiceDecode->open(mUrl);
     if (ret) {
-        m_play = true;
-        m_etime1.start();
-        m_etime2.start();
+        mPlay = true;
+        mTime1.start();
+        mTime2.start();
         emit playState(play);
     } else {
-        qWarning() << "open fail";
+        LOG_WRN("open fail");
     }
     // 循环读取视频图像
-    while (m_play) {
+    while (mPlay) {
         // 暂停
-        while (m_pause) {
+        while (mPause) {
             sleepMsec(200);
         }
 
         QImage image = mVideoDecode->read();  // 读取视频图像
         if (!image.isNull()) {
             // 1倍速播放
-#if 0
-            sleepMsec(int(m_decodeVideo->pts() - m_etime1.elapsed()));         // 不支持后退
-#else
-            sleepMsec(int(mVideoDecode->pts() -
-                          m_etime2.elapsed()));  // 支持后退（如果能读取到视频，但一直不显示可以把这一行代码注释试试）
-#endif
+
+            sleepMsec(int(mVideoDecode->pts() - mTime1.elapsed()));  // 不支持后退
+
+            // 支持后退（如果能读取到视频，但一直不显示可以把这一行代码注释试试）
+            // sleepMsec(int(mVideoDecode->pts() - mTime2.elapsed()));
+
             emit updateImage(image);
             emit updateTime(mVideoDecode->mVideoFileInfo->mNowTimeStr, mVideoDecode->mVideoFileInfo->mTotalTimeStr,
                             mVideoDecode->mVideoFileInfo->mProgressValue);
@@ -91,4 +90,22 @@ void ReadThread::run() {
     qDebug() << "play finish";
     mVideoDecode->close();
     emit playState(end);
+}
+
+ReadVoiceThread::ReadVoiceThread(QObject *parent) {
+    mspVoiceDecode = std::make_shared<VoiceDecode>();
+}
+
+ReadVoiceThread::~ReadVoiceThread() {
+}
+
+void ReadVoiceThread::open(const QString &url) {
+    if (!this->isRunning()) {
+        mUrl = url;
+        emit this->start();
+    }
+}
+
+void ReadVoiceThread::run() {
+    bool ret = mspVoiceDecode->open(mUrl);
 }

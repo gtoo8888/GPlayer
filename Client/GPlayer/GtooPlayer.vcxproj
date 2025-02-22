@@ -180,7 +180,7 @@
     <QtMoc Include="src\SmallApp\RemWord\RemWordListWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordExWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordRemWdg.h" />
-    <QtMoc Include="src\Player\VideoPlay\ReadThread.h" />
+    <QtMoc Include="include\ReadThread.h" />
     <ClInclude Include="src\Player\VideoPlay\VideoDecode.h" />
     <ClInclude Include="src\Player\VideoPlay\VoiceDecode.h" />
     <ClInclude Include="src\SmallApp\Clock\ClockConfig.h" />

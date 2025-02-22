@@ -56,3 +56,4 @@
 https://david1840.github.io/2019/04/19/SDL2%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/
 [M了个J【秒懂音视频开发】](https://www.cnblogs.com/mjios/p/?page=2)
 [ffmpeg 32位](https://github.com/sudo-nautilus/FFmpeg-Builds-Win32)
+[关于Visual Studio无法高亮显示问题（非设置问题）](https://blog.csdn.net/u010635451/article/details/79616309)

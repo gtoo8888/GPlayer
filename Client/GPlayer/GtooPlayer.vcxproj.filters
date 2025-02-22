@@ -251,10 +251,10 @@
     <QtMoc Include="src\SmallApp\RemWord\WrtSglWdg.h">
       <Filter>src\SmalApp\RemWord</Filter>
     </QtMoc>
-    <QtMoc Include="src\Player\VideoPlay\ReadThread.h">
-      <Filter>src\Player\VideoPlay</Filter>
-    </QtMoc>
     <QtMoc Include="include\GPlayer.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="include\ReadThread.h">
       <Filter>include</Filter>
     </QtMoc>
   </ItemGroup>

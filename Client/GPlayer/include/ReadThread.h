@@ -4,6 +4,7 @@
 #include <QElapsedTimer>
 #include <QThread>
 #include <QTime>
+#include "global.h"
 
 class VideoDecode;
 class VoiceDecode;
@@ -35,13 +36,32 @@ signals:
     void updateTime(const QString& nowTimeStr, const QString totalTimeStr, const qreal progressValue);
 
 private:
-    VoiceDecode* mVoiceDecode = nullptr;
     VideoDecode* mVideoDecode = nullptr;  // 视频解码类
-    QString m_url;                        // 打开的视频地址
-    bool m_play = false;                  // 播放控制
-    bool m_pause = false;                 // 暂停控制
-    QElapsedTimer m_etime1;               // 控制视频播放速度（更精确，但不支持视频后退）
-    QTime m_etime2;                       // 控制视频播放速度（支持视频后退）
+    QString mUrl;                         // 打开的视频地址
+    bool mPlay = false;                   // 播放控制
+    bool mPause = false;                  // 暂停控制
+    QElapsedTimer mTime1;                 // 控制视频播放速度（更精确，但不支持视频后退）
+    QTime mTime2;                         // 控制视频播放速度（支持视频后退）
 };
 
-#endif                                    // READTHREAD_H
+class ReadVideoThread : public QThread {
+    Q_OBJECT
+public:
+    enum PlayState {
+        play,
+        end
+    };
+
+    explicit ReadVideoThread(QObject* parent = nullptr);
+    ~ReadVideoThread() override;
+    void open(const QString& url = QString());  // 打开视频
+
+protected:
+    void run() override;
+
+private:
+    std::shared_ptr<VoiceDecode> mspVoiceDecode = nullptr;
+    QString mUrl;
+};
+
+#endif  // READTHREAD_H

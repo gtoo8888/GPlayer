@@ -1,22 +1,4 @@
-#include "videodecode.h"
-#include <qdatetime.h>
-#include <QAudioBuffer>
-#include <QAudioFormat>
-#include <QDebug>
-#include <QImage>
-#include <QMediaPlayer>
-#include <QMutex>
-#include "GtooLogger.h"
-
-extern "C" {  // 用C规则编译指定的代码
-#include "libavcodec/avcodec.h"
-#include "libavformat/avformat.h"
-#include "libavutil/avutil.h"
-#include "libavutil/imgutils.h"
-#include "libswscale/swscale.h"
-
-#include "libavutil/time.h"
-}
+#include "VideoDecode.h"
 
 VideoFileInfo::VideoFileInfo()
     :  // TODO 没有初始化完全
@@ -245,9 +227,11 @@ bool VideoDecode::open(const QString& url) {
     // application wrote to memory after end of heap buffer)
     //         特别是这个视频流http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4
 
-    mBuffer = new uchar[size + 1000];  // 这里多分配1000个字节就基本不会出现拷贝超出的情况了,反正不缺这点内存
-       //m_image = new QImage(mBuffer, mSize.width(), mSize.height(), QImage::Format_RGBA8888);  //
+    // 这里多分配1000个字节就基本不会出现拷贝超出的情况了,反正不缺这点内存
+    // m_image = new QImage(mBuffer, mSize.width(), mSize.height(), QImage::Format_RGBA8888);
     //    这种方式分配内存大部分情况下也可以,但是因为存在拷贝超出数组的情况,delete时也会报错
+    mBuffer = new uchar[size + 1000];
+
     mEnd = false;
     return true;
 }
@@ -267,62 +251,20 @@ QImage VideoDecode::read() {
         {
             AVRational time_base = mFormatContext->streams[mVideoIndex]->time_base;
             // 计算当前帧时间(毫秒)
-#if 1  // 方法一:适用于所有场景,但是存在一定误差
+            // 方法一:适用于所有场景,但是存在一定误差
             mPacket->pts = qRound64(mPacket->pts * (1000 * rationalToDouble(&time_base)));
             mPacket->dts = qRound64(mPacket->dts * (1000 * rationalToDouble(&time_base)));
 
-#else  // 方法二:适用于播放本地视频文件,计算每一帧时间较准,但是由于网络视频流无法获取总帧数,所以无法适用
-            mObtainFrames++;
-            mPacket->pts = qRound64(mObtainFrames * (qreal(m_totalTime) / m_totalFrames));
-#endif
+            // 方法二:适用于播放本地视频文件,计算每一帧时间较准,但是由于网络视频流无法获取总帧数,所以无法适用
+            // mObtainFrames++;
+            // mPacket->pts = qRound64(mObtainFrames * (qreal(m_totalTime) / m_totalFrames));
+
             // 将读取到的原始数据包传入解码器
             int ret = avcodec_send_packet(mCodecContext, mPacket);
             if (ret < 0) {
                 showError(ret);
             }
         }
-        // if (mPacket->stream_index == mAudioIndex) {
-        //     if (avcodec_send_packet(mAudioCodecContext, mPacket) < 0)
-        //     {
-        //         LOG_ERR("无法发送音频包到解码器");
-        //     }
-
-        //    int ret = avcodec_receive_frame(mAudioCodecContext, mAudioFrame);
-        //    if (ret < 0)
-        //    {
-        //        av_frame_unref(mFrame);
-        //        if (readRet < 0)
-        //        {
-        //            mEnd = true;     // 当无法读取到AVPacket并且解码器中也没有数据时表示读取完成
-        //        }
-        //        return QImage();
-        //    }
-
-        //    QMediaPlayer* m_audioPlayer;
-        //    if (!m_audioPlayer)
-        //    {
-        //        m_audioPlayer = new QMediaPlayer;
-        //        m_audioPlayer->setMedia(QMediaContent());
-        //        //m_audioPlayer->setAudioOutput(QAudioOutput::defaultAudioOutput());
-        //        m_audioPlayer->setVolume(50); // 根据需要调整音量
-        //    }
-
-        //    QAudioFormat format;
-        //    format.setSampleRate(mAudioCodecContext->sample_rate);
-        //    format.setChannelCount(mAudioCodecContext->channels);
-        //    format.setSampleSize(16); // 根据需要调整采样大小
-        //    format.setCodec("audio/pcm");
-        //    format.setByteOrder(QAudioFormat::LittleEndian);
-        //    format.setSampleType(QAudioFormat::SignedInt);
-
-        //    //QAudioBuffer buffer(mAudioFrame->data[0], mAudioFrame->linesize[0], format);
-
-        //    if (m_audioPlayer->state() == QMediaPlayer::StoppedState)
-        //    {
-        //        //m_audioPlayer->setMedia(QMediaContent(), &buffer);
-        //        m_audioPlayer->play();
-        //    }
-        //}
     }
     av_packet_unref(mPacket);  // 释放数据包,引用计数-1,为0时释放空间
 
@@ -365,9 +307,7 @@ QImage VideoDecode::read() {
             nullptr,   // 输出图像的滤波器信息, 若不需要传NULL
             nullptr);  // 特定缩放算法需要的参数(?),默认为NULL
         if (!mSwsContext) {
-#if PRINT_LOG
-            qWarning() << "sws_getCachedContext() Error!";
-#endif
+            LOG_WRN("sws_getCachedContext() Error!");
             free();
             return QImage();
         }
@@ -416,7 +356,7 @@ void VideoDecode::showError(int err) {
     char* mError = new char[ERROR_LEN];
     memset(mError, 0, ERROR_LEN);
     av_strerror(err, mError, ERROR_LEN);
-    qWarning() << "DecodeVideo Error:" << mError;
+    LOG_ERR("DecodeVideo Error: {:d}", mError);
 }
 
 // 将AVRational转换为double,用于计算帧率

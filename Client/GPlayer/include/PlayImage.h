@@ -1,8 +1,7 @@
 #ifndef PLAYIMAGE_H
 #define PLAYIMAGE_H
 
-#include <qmutex.h>
-#include <QWidget>
+#include "global.h"
 
 class PlayImage : public QWidget {
     Q_OBJECT

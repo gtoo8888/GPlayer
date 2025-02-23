@@ -1,9 +1,6 @@
 #ifndef READTHREAD_H
 #define READTHREAD_H
 
-#include <QElapsedTimer>
-#include <QThread>
-#include <QTime>
 #include "global.h"
 
 class VideoDecode;
@@ -44,7 +41,7 @@ private:
     QTime mTime2;                         // 控制视频播放速度（支持视频后退）
 };
 
-class ReadVideoThread : public QThread {
+class ReadVoiceThread : public QThread {
     Q_OBJECT
 public:
     enum PlayState {
@@ -52,8 +49,8 @@ public:
         end
     };
 
-    explicit ReadVideoThread(QObject* parent = nullptr);
-    ~ReadVideoThread() override;
+    explicit ReadVoiceThread(QObject* parent = nullptr);
+    ~ReadVoiceThread() override;
     void open(const QString& url = QString());  // 打开视频
 
 protected:

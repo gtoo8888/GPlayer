@@ -139,6 +139,7 @@
     <ClCompile Include="src\Player\Wdg\GtooLogger.cpp" />
     <ClCompile Include="src\Player\Wdg\PlayImage.cpp" />
     <ClCompile Include="src\Player\Wdg\PlayList.cpp" />
+    <ClCompile Include="src\Player\Wdg\TestFunc.cpp" />
     <ClCompile Include="src\Player\Wdg\VideoCtrl.cpp" />
     <ClCompile Include="src\SmallApp\Clock\ClockConfig.cpp" />
     <ClCompile Include="src\SmallApp\Clock\ClockSetWdg.cpp" />

@@ -11,7 +11,7 @@ LogConfig::LogConfig() {
     path = "log/gtoo_log.log";
     size = 5 * 1024 * 1024;
     count = 10;
-    bTruncate = false;  // 不追加，每次都用新的
+    bTruncate = true;  // 不追加，每次都用新的
 }
 
 GtooLogger::GtooLogger() {
@@ -70,4 +70,19 @@ void GtooLogger::testLogger(void) {
     logger->debug("This message should not be displayed!");
     logger->set_level(spdlog::level::trace);  // Set specific logger's log level
     logger->debug("This message should be displayed..");
+}
+
+void testLog(void) {
+    LOG_DBG("中文");
+    LOG_TRC("trace");
+    LOG_DBG("debug");
+    LOG_DBG("info");
+    LOG_WRN("warn");
+    LOG_ERR("error");
+    LOG_CRT("critical");
+
+    LOG_DBG("PID:[{:08d}] {:08d} ", 123, 123);
+    LOG_DBG("str:{}", "test");
+    QString qstr("qstr");
+    LOG_DBG("qstr:{}", qstr.toStdString());  // 不能直接输出QString
 }

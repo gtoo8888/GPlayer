@@ -1,9 +1,7 @@
-// 视频解码类，在这个类中调用ffmpeg打开视频进行解码
 #ifndef VIDEODECODE_H
 #define VIDEODECODE_H
 
-#include <QSize>
-#include <QString>
+#include "global.h"
 
 struct AVFormatContext;
 struct AVCodecContext;

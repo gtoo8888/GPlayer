@@ -1,11 +1,4 @@
 #include "ReadThread.h"
-#include "VideoDecode.h"
-#include "VoiceDecode.h"
-
-#include <qimage.h>
-#include <QDebug>
-#include <QEventLoop>
-#include <QTimer>
 
 ReadThread::ReadThread(QObject *parent)
     : QThread(parent) {
@@ -107,5 +100,5 @@ void ReadVoiceThread::open(const QString &url) {
 }
 
 void ReadVoiceThread::run() {
-    bool ret = mspVoiceDecode->open(mUrl);
+    bool ret = mspVoiceDecode->openVoiceUrl(mUrl.toStdString());
 }

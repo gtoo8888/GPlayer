@@ -1,25 +1,19 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include <QWidget>
-#include <QListWidgetItem>
-#include <QDropEvent>
-#include <QDragEnterEvent>
-#include <QMimeData>
-#include <QFileDialog>
+#include "global.h"
 #include "ui_PlayList.h"
 
-
-class PlayList : public QWidget
-{
+class PlayList : public QWidget {
     Q_OBJECT
 
 public:
     explicit PlayList(QWidget *parent = 0);
     ~PlayList();
 
-    //获取播放列表状态
+    // 获取播放列表状态
     bool GetPlaylistStatus();
+
 public:
     // 添加文件
     void OnAddFile(QString strFileName);
@@ -30,10 +24,10 @@ public:
     void OnForwardPlay();
 
     // 在这里定义dock的初始大小
-    QSize sizeHint() const
-    {
+    QSize sizeHint() const {
         return QSize(150, 900);
     }
+
 protected:
     // 放下事件
     void dropEvent(QDropEvent *event);
@@ -41,8 +35,8 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
 
 signals:
-    void sigUpdateUi();	// 界面排布更新
-    void sigPlay(QString strFile); // 播放文件
+    void sigUpdateUi();             // 界面排布更新
+    void sigPlay(QString strFile);  // 播放文件
 
 private:
     void InitUi();
@@ -59,4 +53,4 @@ private:
     int mCurrentPlayListIndex;
 };
 
-#endif // PLAYLIST_H
+#endif  // PLAYLIST_H

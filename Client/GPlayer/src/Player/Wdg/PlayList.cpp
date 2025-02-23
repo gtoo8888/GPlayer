@@ -1,7 +1,4 @@
 #include "PlayList.h"
-#include <QDebug>
-#include <QDir>
-#include <QHBoxLayout>
 
 PlayList::PlayList(QWidget *parent)
     : QWidget(parent),
@@ -108,9 +105,10 @@ void PlayList::dragEnterEvent(QDragEnterEvent *event) {
 
 void PlayList::AddFile() {
     // QList<QUrl> QFileDialog::getslotOpenFileUrls
-    QStringList listFileName = QFileDialog::getOpenFileNames(this, "Select to play video£¡",  // QDir::homePath(),
-        "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video",
-        "Video file(*.mkv *.rmvb *.mp4 *.avi *.flv *.wmv *.3gp)");
+    QStringList listFileName =
+        QFileDialog::getOpenFileNames(this, "Select to play video!",  // QDir::homePath(),
+                                      "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GPlayer/test_video",
+                                      "Video file(*.mkv *.rmvb *.mp4 *.avi *.flv *.wmv *.3gp)");
 
     qDebug() << listFileName;
 

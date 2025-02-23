@@ -1,6 +1,8 @@
 #ifndef GTOOLOGGER_H
 #define GTOOLOGGER_H
 
+#include "global.h"
+
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/stdout_sinks.h"
@@ -18,7 +20,7 @@ enum LoggerType  // 日志类型，暂时无用
 
 struct LogConfig {  // 日志的配置项
     LogConfig();
-    ~LogConfig();
+    ~LogConfig() = default;
 
     spdlog::level::level_enum level;  // 当前日志等级
     std::string path;

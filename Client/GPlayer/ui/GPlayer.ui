@@ -234,6 +234,15 @@
     </item>
    </layout>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -267,23 +276,10 @@
     <addaction name="menuScale"/>
     <addaction name="action4_2"/>
    </widget>
-   <widget class="QMenu" name="menu_3">
-    <property name="title">
-     <string>控制</string>
-    </property>
-    <addaction name="action1_2"/>
-    <addaction name="action2_2"/>
-    <addaction name="action3_3"/>
-    <addaction name="action4_3"/>
-    <addaction name="action5"/>
-    <addaction name="action6"/>
-    <addaction name="action7"/>
-   </widget>
    <widget class="QMenu" name="menu4VideoCtrl">
     <property name="title">
      <string>控制</string>
     </property>
-    <addaction name="actionVideoCtrl"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -301,20 +297,10 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
-   <addaction name="menu_3"/>
    <addaction name="menu4VideoCtrl"/>
    <addaction name="menuHelp"/>
    <addaction name="menu"/>
   </widget>
-  <widget class="QToolBar" name="toolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
    <property name="text">
     <string>打开</string>

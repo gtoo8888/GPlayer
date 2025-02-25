@@ -17,6 +17,22 @@ public:
     }
 };
 
+struct VideoAction {
+    std::string text;
+    std::function<void()> slotFunction;
+};
+
+typedef enum {
+    VIDEO_CRTL_PLAY_PAUSE = 0,
+    VIDEO_CRTL_STOP,
+    VIDEO_CRTL_SINGLE_FRAME_STEP,
+    VIDEO_CRTL_SINGLE_FRAME_BACK,
+    VIDEO_CRTL_FIRST_FRAME,
+    VIDEO_CRTL_LASE_FRAME,
+    VIDEO_CRTL_VIDEO_LOACTION,
+    VIDEO_CRTL_SETUP,
+} EnumVideoCtrlType;
+
 class GPlayer : public QMainWindow {
     Q_OBJECT
 
@@ -33,6 +49,8 @@ public:
     QAction m_stActAdd;        // 添加文件
     QAction m_stActRemove;     // 移除文件
     QAction m_stActClearList;  // 清空列表
+    std::vector<QAction*> mvActVideoCtrlList;
+    std::vector<VideoAction> mvVideoActions;
 
 public slots:
     void slotOpenAbout(void);

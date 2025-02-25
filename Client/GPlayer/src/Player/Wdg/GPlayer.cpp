@@ -8,7 +8,7 @@ GPlayer::GPlayer(QWidget *parent)
     std::stringstream ss;
     ss << "GPlayer " << Version::getVersionStr();
     msPlayerTitile = ss.str();
-    //LOG_DBG("{:s}\n", avcodec_configuration());
+    // LOG_DBG("{:s}\n", avcodec_configuration());
     LOG_INF("{:s}\n", msPlayerTitile);
 
     mspReadThread = std::make_shared<ReadThread>();
@@ -29,6 +29,23 @@ void GPlayer::initUi(void) {
     tmpExampleMenu = ui->menuBar->addMenu("example");  // 创建例子
     tmpExampleMenu2PlayList = tmpExampleMenu->addAction("playlist");
 
+    mvVideoActions = {
+        {"播放/暂停", nullptr}, {"停止", nullptr},
+        {"单帧步进", nullptr},  {"单帧后退", nullptr},
+        {"第一帧", nullptr},    {"最末帧", nullptr},
+        {"定位", nullptr},      {"视频设置", std::bind(&GPlayer::slotShowVideoCtrl, this)},
+    };
+
+    for (const VideoAction &actionInfo : mvVideoActions) {
+        QAction *action = new QAction(QString::fromStdString(actionInfo.text), this);
+        mvActVideoCtrlList.push_back(action);
+        ui->menu4VideoCtrl->addAction(action);
+
+        if (actionInfo.slotFunction) {
+            connect(action, &QAction::triggered, this, actionInfo.slotFunction);
+        }
+    }
+
     // ui->play_list->setEditable(true); // QComboBox需要开启才能编辑
 
     ui->progressBar->setMinimum(mProgressBarMin);
@@ -39,7 +56,7 @@ void GPlayer::initUi(void) {
 void GPlayer::initConnect(void) {
     connect(ui->actionAbout, &QAction::triggered, this, &GPlayer::slotOpenAbout);
     connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GPlayer::slotOpenExample2PlayList);
-    connect(ui->actionVideoCtrl, &QAction::triggered, this, &GPlayer::slotShowVideoCtrl);
+
 
     connect(ui->actionOpen, &QAction::triggered, this, &GPlayer::slotOpenFile);
     connect(ui->btnStart, &QPushButton::clicked, this, &GPlayer::slotStartVideo);

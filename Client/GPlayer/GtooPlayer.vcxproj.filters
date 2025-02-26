@@ -265,16 +265,7 @@
     <ClInclude Include="x64\Debug\uic\ui_About.h">
       <Filter>ui\uic</Filter>
     </ClInclude>
-    <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h">
-      <Filter>ui\uic</Filter>
-    </ClInclude>
     <ClInclude Include="x64\Debug\uic\ui_PlayList.h">
-      <Filter>ui\uic</Filter>
-    </ClInclude>
-    <ClInclude Include="x64\Debug\uic\ui_PlayListOld.h">
-      <Filter>ui\uic</Filter>
-    </ClInclude>
-    <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h">
       <Filter>ui\uic</Filter>
     </ClInclude>
     <ClInclude Include="include\GtooLogger.h">

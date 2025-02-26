@@ -1,5 +1,8 @@
 # CHANGELOG
 
+Wed Feb 26 2025 23:57 - v0.0.5
+  - feat: 将GPlayer中的菜单栏使用代码实现
+
 Sun Feb 23 2025 16:18 - v0.0.4
   - refactor: 整理头文件，全都统一到global.h中
   - feat: 音频解码VoiceDecode拆分成多个函数

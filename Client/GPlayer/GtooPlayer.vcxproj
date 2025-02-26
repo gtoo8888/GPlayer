@@ -195,10 +195,7 @@
     <ClInclude Include="src\SmallApp\RemWord\WordSql.h" />
     <QtMoc Include="src\SmallApp\RemWord\WrtSglWdg.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />
-    <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h" />
     <ClInclude Include="x64\Debug\uic\ui_PlayList.h" />
-    <ClInclude Include="x64\Debug\uic\ui_PlayListOld.h" />
-    <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h" />
     <QtMoc Include="include\PlayList.h" />
   </ItemGroup>
   <ItemGroup>

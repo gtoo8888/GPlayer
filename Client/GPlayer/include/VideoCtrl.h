@@ -3,13 +3,19 @@
 #include "global.h"
 #include "ui_VideoCtrl.h"
 
-class VideoCtrl : public QWidget {
+class VideoCtrlWdg : public QWidget {
     Q_OBJECT
 
 public:
-    VideoCtrl(QWidget* parent = nullptr);
-    ~VideoCtrl();
+    VideoCtrlWdg(QWidget* parent = nullptr);
+    ~VideoCtrlWdg();
+
+signals:
+    void sigSldBrightnessChanged(int value);
+    void sigSldContrastChanged(int value);
+    void sigSldSaturationChanged(int value);
+    void sigSldColorChanged(int value);
 
 private:
-    Ui::VideoCtrl* ui;
+    Ui::VideoCtrlWdg* ui;
 };

@@ -13,6 +13,7 @@ GPlayer::GPlayer(QWidget *parent)
 
     mspReadThread = std::make_shared<ReadThread>();
     mspReadVoiceThread = std::make_shared<ReadVoiceThread>();
+    mspVideoCtrlWdg = std::make_shared<VideoCtrlWdg>();
     // QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); // 没有用
     // qDebug() << QString::fromLocal8Bit("中文");
 
@@ -26,24 +27,55 @@ void GPlayer::initUi(void) {
     // buttonOccupy = new QPushButton(QString::fromLocal8Bit("about"));
     // ui->ToolBar->addWidget(buttonOccupy);
 
-    tmpExampleMenu = ui->menuBar->addMenu("example");  // 创建例子
-    tmpExampleMenu2PlayList = tmpExampleMenu->addAction("playlist");
+    mvMenuName = {"文件", "视图", "控制", "帮助", "应用"};
+    for (const std::string &menuName : mvMenuName) {
+        QMenu *menu = new QMenu(QString::fromStdString(menuName), this);
+        mvMenu.push_back(menu);
+        ui->menuBar->addMenu(menu);
+    }
 
-    mvVideoActions = {
-        {"播放/暂停", nullptr}, {"停止", nullptr},
-        {"单帧步进", nullptr},  {"单帧后退", nullptr},
-        {"第一帧", nullptr},    {"最末帧", nullptr},
-        {"定位", nullptr},      {"视频设置", std::bind(&GPlayer::slotShowVideoCtrl, this)},
-    };
+    mvFileOperationName = {"打开", "关闭", "退出", "播放列表"};
+    for (const std::string &actName : mvFileOperationName) {
+        QAction *action = new QAction(QString::fromStdString(actName), this);
+        mvActFileOperation.push_back(action);
+        mvMenu[MenuType::FILE_OPE]->addAction(action);
+    }
 
-    for (const VideoAction &actionInfo : mvVideoActions) {
-        QAction *action = new QAction(QString::fromStdString(actionInfo.text), this);
-        mvActVideoCtrlList.push_back(action);
-        ui->menu4VideoCtrl->addAction(action);
+    mvViewName = {"统计信息", "全屏"};
+    for (const std::string &actName : mvViewName) {
+        QAction *action = new QAction(QString::fromStdString(actName), this);
+        mvActView.push_back(action);
+        mvMenu[MenuType::VIEW]->addAction(action);
+    }
+    menuZoom = new QMenu(QString::fromStdString("缩放"), this);
+    mvMenu[MenuType::VIEW]->addMenu(menuZoom);
 
-        if (actionInfo.slotFunction) {
-            connect(action, &QAction::triggered, this, actionInfo.slotFunction);
-        }
+    mvViewZoomName = {"50%", "100%", "200%"};
+    for (const std::string &actName : mvViewZoomName) {
+        QAction *action = new QAction(QString::fromStdString(actName), this);
+        mvActViewZoom.push_back(action);
+        menuZoom->addAction(action);
+    }
+
+    mvCtrlName = {"播放/暂停", "停止", "单帧步进", "单帧后退", "第一帧", "最末帧", "定位", "视频设置"};
+    for (const std::string &actName : mvCtrlName) {
+        QAction *action = new QAction(QString::fromStdString(actName), this);
+        mvActCtrl.push_back(action);
+        mvMenu[MenuType::CTRL]->addAction(action);
+    }
+
+    mvHelpName = {"操作说明", "关于"};
+    for (const std::string &actName : mvHelpName) {
+        QAction *action = new QAction(QString::fromStdString(actName), this);
+        mvActHelp.push_back(action);
+        mvMenu[MenuType::HRLP]->addAction(action);
+    }
+
+    mvAppName = {"背单词", "秒表"};
+    for (const std::string &actName : mvAppName) {
+        QAction *action = new QAction(QString::fromStdString(actName), this);
+        mvActApp.push_back(action);
+        mvMenu[MenuType::APP]->addAction(action);
     }
 
     // ui->play_list->setEditable(true); // QComboBox需要开启才能编辑
@@ -54,40 +86,43 @@ void GPlayer::initUi(void) {
 }
 
 void GPlayer::initConnect(void) {
-    connect(ui->actionAbout, &QAction::triggered, this, &GPlayer::slotOpenAbout);
-    connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GPlayer::slotOpenExample2PlayList);
+    connect(mvActFileOperation[FileOperationType::OPEN], &QAction::triggered, this, &GPlayer::slotOpenFile);
+    connect(mvActFileOperation[FileOperationType::PALY_LIST], &QAction::triggered, this,
+            &GPlayer::slotOpenExample2PlayList);
 
+    connect(mvActCtrl[VideoCtrlType::SETUP], &QAction::triggered, this, &GPlayer::slotShowVideoCtrlWdg);
 
-    connect(ui->actionOpen, &QAction::triggered, this, &GPlayer::slotOpenFile);
+    connect(mvActHelp[HelpType::ABOUT], &QAction::triggered, this, &GPlayer::slotOpenAbout);
+
+    connect(mvActApp[AppType::REM_WORD], &QAction::triggered, this, &GPlayer::slotActionRemWord);
+
     connect(ui->btnStart, &QPushButton::clicked, this, &GPlayer::slotStartVideo);
     connect(ui->btnPause, &QPushButton::clicked, this, &GPlayer::slotPauseVideo);
     connect(ui->btnPrevious, &QPushButton::clicked, this, &GPlayer::slotPauseVideo);
     connect(ui->btnNext, &QPushButton::clicked, this, &GPlayer::slotPauseVideo);
 
-    connect(ui->actionRemWord, &QAction::triggered, this, &GPlayer::slotActionRemWord);
-
     // ui->play_list->currentText()
     // connect(ui->playListWidget, &PlayList::sigPlay, this, &GPlayer::startVideoPlayList);
 
-    // 它表示当信号被触发时，槽函数会立即在发射信号的线程上被调用。这意味着信号和槽之间的通信是直接的、同步的，不涉及事件循环的调度
-    // 这是不同线程中的触发
     connect(mspReadThread.get(), &ReadThread::updateImage, ui->playImageWidget, &PlayImage::updateImage,
             Qt::DirectConnection);
     connect(mspReadThread.get(), &ReadThread::playState, this, &GPlayer::onPlayState);
     connect(mspReadThread.get(), &ReadThread::updateTime, this, &GPlayer::updateTime);
+
+    connect(mspVideoCtrlWdg.get(), &VideoCtrlWdg::sigSldBrightnessChanged, this, &GPlayer::slotVideoCtrlBrtChanged);
+    connect(mspVideoCtrlWdg.get(), &VideoCtrlWdg::sigSldContrastChanged, this, &GPlayer::slotVideoCtrlBrtChanged);
+    connect(mspVideoCtrlWdg.get(), &VideoCtrlWdg::sigSldSaturationChanged, this, &GPlayer::slotVideoCtrlBrtChanged);
+    connect(mspVideoCtrlWdg.get(), &VideoCtrlWdg::sigSldColorChanged, this, &GPlayer::slotVideoCtrlBrtChanged);
 }
 
 void GPlayer::slotOpenAbout(void) {
-    About *aboutWindow = new About();
-    // QWidget作为单独的显示窗口，初始化时候不能使用this,如果初始化中继承了this，新建的窗口就和主窗口是同一个，拖不开了
-    // About* aboutWindow = new About(this);
-    aboutWindow->show();
+    About *aboutWdg = new About();
+    aboutWdg->show();
 }
 
 void GPlayer::slotOpenExample2PlayList(void) {
-    PlayList *exampleWindow = new PlayList();
-    exampleWindow->show();
-    // exampleWindow->showFullScreen();
+    PlayList *playListWdg = new PlayList();
+    playListWdg->show();
 }
 
 void GPlayer::slotOpenFile(void) {
@@ -97,9 +132,8 @@ void GPlayer::slotOpenFile(void) {
     nowPlayFilePath = filePath;
 }
 
-void GPlayer::slotShowVideoCtrl(void) {
-    VideoCtrl *videoCtrlWidget = new VideoCtrl();
-    videoCtrlWidget->show();
+void GPlayer::slotShowVideoCtrlWdg(void) {
+    mspVideoCtrlWdg->show();
 }
 
 void GPlayer::slotStartVideo(void) {
@@ -123,6 +157,10 @@ void GPlayer::startVideoPlayList(QString playFilePath) {
 void GPlayer::slotActionRemWord(void) {
     RemWordWdg *remWordWdg = new RemWordWdg();
     remWordWdg->show();
+}
+
+void GPlayer::slotVideoCtrlBrtChanged(int32 value) {
+    LOG_DBG("sld Brightness {:d}", value);
 }
 
 void GPlayer::slotPauseVideo(void) {
